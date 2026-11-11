@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% set active_page = "diagnostic" %}
+
+{% block title %}IELTS Diagnostic Assessment — AI IELTS Ecosystem{% endblock %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 0 auto; display:flex; flex-direction:column; gap:var(--space-md);">
+  <div class="card" style="background: linear-gradient(135deg, var(--primary-600), var(--purple-600)); color:#fff; padding:var(--space-xl);">
+    <span class="badge badge-warning" style="margin-bottom:var(--space-xs);">15-Minute Diagnostic Test</span>
+    <h2 style="font-size:1.75rem; margin-bottom:var(--space-xs);">Initial IELTS Skill Level Assessment</h2>
+    <p style="opacity:0.9;">Evaluate your baseline ability across Reading, Listening, Writing, and Speaking to unlock your personalized dynamic study plan.</p>
+  </div>
+
+  <div class="card">
+    <h3 class="card-title">Take Diagnostic Assessment</h3>
+    <p class="card-subtitle" style="margin-bottom:var(--space-lg);">Answer 4 sample questions across skills to estimate your current starting band.</p>
+
+    <form id="diagnostic-form">
+      <!-- Reading Diagnostic Question -->
+      <div style="background-color:var(--neutral-100); padding:var(--space-md); border-radius:var(--radius-md); margin-bottom:var(--space-md);">
+        <strong style="color:var(--primary-700);">1. Reading Diagnostic (True/False/Not Given)</strong>
+        <p style="margin:var(--space-xs) 0;">"Satellite data confirms a 30-year reduction in Arctic sea ice." (Passage states: 'Satellite observations recorded an alarming decline over 3 decades.')</p>
+        <div style="display:flex; gap:var(--space-md); margin-top:var(--space-xs);">
+          <label><input type="radio" name="diag_r1" value="True" checked> True</label>
+          <label><input type="radio" name="diag_r1" value="False"> False</label>
+          <label><input type="radio" name="diag_r1" value="Not Given"> Not Given</label>
+        </div>
+      </div>
+
+      <!-- Listening Diagnostic Question -->
+      <div style="background-color:var(--neutral-100); padding:var(--space-md); border-radius:var(--radius-md); margin-bottom:var(--space-md);">
+        <strong style="color:var(--primary-700);">2. Listening Diagnostic (Form Completion)</strong>
+        <p style="margin:var(--space-xs) 0;">"Monthly rent for Park Avenue single room is £950 including water."</p>
+        <input type="text" name="diag_l1" class="form-control" placeholder="Rent amount..." value="950">
+      </div>
+
+      <!-- Writing Sample -->
+      <div style="background-color:var(--neutral-100); padding:var(--space-md); border-radius:var(--radius-md); margin-bottom:var(--space-md);">
+        <strong style="color:var(--primary-700);">3. Writing Diagnostic Sample</strong>
+        <p style="margin:var(--space-xs) 0;">Write 1 sentence stating your view on Artificial Intelligence in employment.</p>
+        <input type="text" name="diag_w1" class="form-control" value="In my opinion, artificial intelligence will automate repetitive tasks while creating high-skilled tech jobs." placeholder="Your sentence...">
+      </div>
+
+      <button type="button" class="btn btn-accent btn-block btn-lg" onclick="runDiagnosticEvaluation()">
+        📊 Calculate Estimated Starting Band & Study Plan
+      </button>
+    </form>
+
+    <!-- Diagnostic Score Report Card -->
+    <div id="diag-result-card" style="display:none; margin-top:var(--space-lg); padding:var(--space-lg); border-radius:var(--radius-md); background-color:var(--primary-50); border:2px solid var(--primary-500);">
+      <h3 style="color:var(--primary-700); margin-bottom:var(--space-xs);">🎯 Diagnostic Assessment Results</h3>
+      <p class="card-subtitle" style="margin-bottom:var(--space-md);">Note: These are AI Estimated Bands for learning guidance, not official IELTS test scores.</p>
+
+      <div class="grid-cols-4" style="margin-bottom:var(--space-md);">
+        <div style="background:#fff; padding:var(--space-sm); border-radius:var(--radius-sm); text-align:center;">
+          <div style="font-size:0.75rem; color:var(--neutral-600);">Reading</div>
+          <strong style="font-size:1.5rem; color:var(--primary-600);" id="diag-r-score">7.0</strong>
+        </div>
+        <div style="background:#fff; padding:var(--space-sm); border-radius:var(--radius-sm); text-align:center;">
+          <div style="font-size:0.75rem; color:var(--neutral-600);">Listening</div>
+          <strong style="font-size:1.5rem; color:var(--primary-600);" id="diag-l-score">7.5</strong>
+        </div>
+        <div style="background:#fff; padding:var(--space-sm); border-radius:var(--radius-sm); text-align:center;">
+          <div style="font-size:0.75rem; color:var(--neutral-600);">Writing (AI)</div>
+          <strong style="font-size:1.5rem; color:var(--primary-600);" id="diag-w-score">6.5</strong>
+        </div>
+        <div style="background:#fff; padding:var(--space-sm); border-radius:var(--radius-sm); text-align:center;">
+          <div style="font-size:0.75rem; color:var(--neutral-600);">Speaking (AI)</div>
+          <strong style="font-size:1.5rem; color:var(--primary-600);" id="diag-s-score">6.5</strong>
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; background:#fff; padding:var(--space-md); border-radius:var(--radius-sm);">
+        <div>
+          <span style="font-size:0.85rem; color:var(--neutral-600);">Overall Estimated Starting Band</span>
+          <div style="font-size:2rem; font-weight:700; color:var(--primary-700);" id="diag-overall-score">6.8 Band</div>
+        </div>
+        <a href="/dashboard" class="btn btn-primary btn-lg">View Custom Daily Study Plan 🚀</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  async function runDiagnosticEvaluation() {
+    const card = document.getElementById('diag-result-card');
+    card.style.display = 'block';
+
+    const body = {
+      r_ans: document.querySelector('input[name="diag_r1"]:checked').value,
+      l_ans: document.querySelector('input[name="diag_l1"]').value,
+      w_ans: document.querySelector('input[name="diag_w1"]').value
+    };
+
+    const res = await fetch('/api/v1/diagnostic/evaluate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+
+    const data = await res.json();
+    document.getElementById('diag-r-score').innerText = data.r_band;
+    document.getElementById('diag-l-score').innerText = data.l_band;
+    document.getElementById('diag-w-score').innerText = data.w_band;
+    document.getElementById('diag-s-score').innerText = data.s_band;
+    document.getElementById('diag-overall-score').innerText = data.overall_band + ' Band';
+  }
+</script>
+{% endblock %}

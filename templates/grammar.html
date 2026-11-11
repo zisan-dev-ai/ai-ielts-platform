@@ -1,0 +1,1482 @@
+{% extends "base.html" %}
+{% set active_page = "grammar" %}
+
+{% block title %}Grammar Master Hub — AI IELTS Official Rules & Exam Drills{% endblock %}
+
+{% block extra_head %}
+<!-- Google Fonts: Hind Siliguri for Bengali, Plus Jakarta Sans & JetBrains Mono for English -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* FULL PAGE BLEED LAYOUT OVERRIDES (LIKE AI TEACHER) */
+.desktop-sidebar {
+    display: none !important;
+}
+
+.main-content {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 10px 14px !important;
+    height: 100vh !important;
+    overflow: hidden !important;
+}
+
+.grammar-container {
+    display: flex;
+    gap: 14px;
+    height: calc(100vh - 20px) !important;
+    overflow: hidden;
+    font-family: 'Hind Siliguri', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.grammar-sidebar {
+    width: 285px;
+    background: #11141c;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    flex-shrink: 0;
+    gap: 8px;
+    transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1), padding 0.25s ease;
+    position: relative;
+}
+
+.grammar-sidebar.collapsed {
+    width: 58px;
+    padding: 12px 6px;
+}
+
+.grammar-sidebar.collapsed .sidebar-hide-on-collapse {
+    display: none !important;
+}
+
+.grammar-sidebar.collapsed .grammar-cat-hdr {
+    display: none !important;
+}
+
+.grammar-sidebar.collapsed .grammar-topic-item {
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.grammar-sidebar.collapsed .topic-title-stack {
+    display: none !important;
+}
+
+.grammar-sidebar.collapsed .topic-item-icon {
+    font-size: 1.2em;
+    margin: 0;
+}
+
+.grammar-search-input {
+    width: 100%;
+    background: #171b24;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: #fff;
+    font-size: 0.84em;
+    outline: none;
+    font-family: inherit;
+    transition: 0.2s;
+}
+.grammar-search-input:focus {
+    border-color: #6366f1;
+    background: #1c212c;
+    box-shadow: 0 0 8px rgba(99, 102, 241, 0.3);
+}
+
+.grammar-topics-list {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-right: 4px;
+}
+.grammar-topics-list::-webkit-scrollbar { width: 5px; }
+.grammar-topics-list::-webkit-scrollbar-thumb { background: rgba(99, 102, 241, 0.35); border-radius: 4px; }
+.grammar-topics-list::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); }
+
+.grammar-cat-group {
+    margin-bottom: 8px;
+}
+
+.grammar-cat-hdr {
+    font-size: 0.72em;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #a5b4fc;
+    margin: 8px 0 4px;
+    padding: 4px 8px;
+    border-radius: 5px;
+    background: rgba(99, 102, 241, 0.1);
+    border-left: 3px solid #6366f1;
+    letter-spacing: 0.5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.grammar-topic-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: 9px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: #cbd5e1;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    gap: 10px;
+}
+.grammar-topic-item:hover {
+    background: rgba(99, 102, 241, 0.12);
+    border-color: rgba(99, 102, 241, 0.25);
+    color: #fff;
+    transform: translateX(2px);
+}
+.grammar-topic-item.active {
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.25), rgba(99, 102, 241, 0.15));
+    border: 1px solid rgba(99, 102, 241, 0.6);
+    border-left: 3.5px solid #10b981;
+    color: #fff;
+    font-weight: 700;
+}
+
+.topic-item-icon {
+    font-size: 1.15em;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.topic-title-stack {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1;
+    gap: 2px;
+}
+
+.topic-name-en {
+    font-size: 0.86em;
+    font-weight: 700;
+    color: #e2e8f0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.35;
+}
+.grammar-topic-item.active .topic-name-en {
+    color: #fff;
+}
+
+.topic-name-bn {
+    font-size: 0.74em;
+    color: #94a3b8;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3;
+    font-weight: 500;
+}
+.grammar-topic-item.active .topic-name-bn {
+    color: #a5b4fc;
+}
+
+.grammar-main-content {
+    flex: 1;
+    background: #0f1219;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.grammar-header-banner {
+    padding: 16px 22px;
+    background: linear-gradient(135deg, rgba(26, 23, 68, 0.95), rgba(67, 56, 202, 0.85));
+    border-bottom: 1px solid rgba(99, 102, 241, 0.3);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.stage-tab-btn {
+    padding: 8px 18px;
+    font-size: 0.84em;
+    font-weight: 700;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #cbd5e1;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    letter-spacing: 0.3px;
+    user-select: none;
+}
+.stage-tab-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    transform: translateY(-1px);
+}
+.stage-tab-btn.active {
+    background: linear-gradient(135deg, #10b981, #059669);
+    border-color: #34d399;
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
+}
+
+.grammar-scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.grammar-scroll-area::-webkit-scrollbar { width: 6px; }
+.grammar-scroll-area::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 4px; }
+
+/* STAGE 1: CONCEPT, FORMULA & RULE CARDS */
+.concept-card {
+    background: #141722;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 16px;
+}
+
+.formula-highlight {
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.18), rgba(124, 58, 237, 0.14));
+    border: 1.5px solid rgba(124, 58, 237, 0.4);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.12);
+}
+
+.formula-label {
+    font-size: 0.76em;
+    text-transform: uppercase;
+    color: #c4b5fd;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+}
+
+.formula-text {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    color: #f1f5f9;
+    font-size: 1.02em;
+    font-weight: 700;
+    line-height: 1.6;
+}
+
+/* Category Filter Chips */
+.rule-filter-bar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+}
+.rule-filter-chip {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.82em;
+    font-weight: 700;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.05);
+    color: #cbd5e1;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    transition: all 0.2s ease;
+    user-select: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+.rule-filter-chip:hover {
+    background: rgba(99, 102, 241, 0.2);
+    color: #fff;
+    border-color: #6366f1;
+}
+.rule-filter-chip.active {
+    background: #4f46e5;
+    color: #fff;
+    border-color: #818cf8;
+    box-shadow: 0 0 12px rgba(79, 70, 229, 0.45);
+}
+
+/* Rule Card */
+.rule-card {
+    background: #141721;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 12px;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.rule-card:hover {
+    background: #181c28;
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+.rule-card.type-basic {
+    border-left: 4px solid #6366f1;
+}
+.rule-card.type-exception {
+    border-left: 4px solid #f59e0b;
+    background: #171822;
+}
+.rule-card.type-trap {
+    border-left: 4px solid #f43f5e;
+    background: #1b1620;
+}
+
+.rule-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.rule-type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.74em;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+.rule-type-badge.basic {
+    background: rgba(99, 102, 241, 0.2);
+    color: #a5b4fc;
+    border: 1px solid rgba(99, 102, 241, 0.35);
+}
+.rule-type-badge.exception {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fcd34d;
+    border: 1px solid rgba(245, 158, 11, 0.35);
+}
+.rule-type-badge.trap {
+    background: rgba(244, 63, 94, 0.2);
+    color: #fda4af;
+    border: 1px solid rgba(244, 63, 94, 0.35);
+}
+.rule-num-pill {
+    font-size: 0.72em;
+    color: #94a3b8;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.06);
+    padding: 2px 10px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.rule-title-text {
+    font-size: 1.06em;
+    font-weight: 800;
+    color: #38bdf8;
+    letter-spacing: 0.2px;
+    line-height: 1.4;
+}
+
+.rule-desc-text {
+    color: #f1f5f9;
+    font-size: 0.98em;
+    line-height: 1.75;
+}
+
+/* Inline term highlight */
+.rule-term-tag {
+    display: inline;
+    background: rgba(99, 102, 241, 0.16);
+    color: #c7d2fe;
+    padding: 1px 7px;
+    border-radius: 5px;
+    font-weight: 600;
+    font-size: 0.9em;
+    border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+/* Quoted keyword highlight */
+.rule-keyword {
+    color: #fef08a;
+    font-weight: 700;
+    background: rgba(254, 240, 138, 0.12);
+    padding: 0 5px;
+    border-radius: 4px;
+}
+
+/* Example Callout Box */
+.rule-ex-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(16, 185, 129, 0.08);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    border-radius: 8px;
+    padding: 9px 14px;
+    margin-top: 6px;
+}
+.rule-ex-badge {
+    font-size: 0.78em;
+    font-weight: 800;
+    color: #34d399;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+}
+.rule-ex-content {
+    font-size: 0.94em;
+    color: #f8fafc;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 500;
+    line-height: 1.5;
+}
+.rule-ex-content b {
+    color: #34d399;
+    font-weight: 800;
+}
+
+/* Section Header */
+.section-hdr {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 0.95em;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.section-hdr.blue { color: #38bdf8; }
+.section-hdr.yellow { color: #fbbf24; }
+.section-hdr.green { color: #34d399; }
+.section-hdr.red { color: #f87171; }
+.section-hdr.purple { color: #c084fc; }
+
+/* Examples Grid */
+.example-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+@media (min-width: 768px) {
+    .example-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+.example-box {
+    background: #141721;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-left: 4px solid #10b981;
+    padding: 14px 16px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.example-box-text {
+    color: #f8fafc;
+    font-size: 0.96em;
+    line-height: 1.6;
+}
+.example-box-text u {
+    text-decoration: underline;
+    text-decoration-color: #34d399;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 2.5px;
+    font-weight: 700;
+    color: #a7f3d0;
+}
+.example-box-note {
+    color: #94a3b8;
+    font-size: 0.86em;
+    line-height: 1.5;
+}
+
+/* Mistakes Side-by-Side */
+.mistake-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+@media (max-width: 640px) {
+    .mistake-box {
+        grid-template-columns: 1fr;
+    }
+}
+.mistake-col {
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-size: 0.94em;
+    line-height: 1.65;
+}
+.mistake-col.wrong {
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #fca5a5;
+}
+.mistake-col.correct {
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: #86efac;
+}
+
+/* STAGE 2 & 3: QUIZ STYLES */
+.quiz-card {
+    background: #141721;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.option-btn {
+    text-align: left;
+    padding: 12px 16px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #e2e8f0;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+    font-family: inherit;
+}
+.option-btn:hover:not(:disabled) {
+    background: rgba(99, 102, 241, 0.25);
+    border-color: #6366f1;
+    transform: translateY(-1px);
+}
+.option-btn:disabled {
+    cursor: default;
+}
+.option-btn.selected-correct {
+    background: rgba(16, 185, 129, 0.3) !important;
+    border-color: #10b981 !important;
+    color: #34d399 !important;
+    font-weight: 700;
+}
+.option-btn.selected-wrong {
+    background: rgba(239, 68, 68, 0.3) !important;
+    border-color: #ef4444 !important;
+    color: #f87171 !important;
+}
+
+.score-badge-card {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.1));
+    border: 1.5px solid #10b981;
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="grammar-container">
+    <!-- LEFT TOPICS SIDEBAR -->
+    <aside class="grammar-sidebar" id="grammarSidebar">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+            <div class="sidebar-hide-on-collapse" style="display:flex; align-items:center; gap:6px;">
+                <span style="font-size:0.88em; font-weight:800; color:#fff;">📖 সিলেবাস</span>
+                <span id="grammarCountBadge" style="font-size:0.7em; background:rgba(99,102,241,0.2); color:#a5b4fc; padding:2px 7px; border-radius:10px; font-weight:700;">16 TOPICS</span>
+            </div>
+            <button id="sidebarCollapseBtn" onclick="toggleGrammarSidebar()" title="সাইডবার সংকুচিত/প্রসারিত করুন" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:#94a3b8; cursor:pointer; font-size:0.78em; padding:4px 8px; border-radius:6px; transition:0.2s;">
+                <i class="fas fa-chevron-left" id="sidebarCollapseIcon"></i>
+            </button>
+        </div>
+
+        <div class="sidebar-hide-on-collapse">
+            <input type="text" id="grammarSearchInput" class="grammar-search-input" placeholder="🔍 Search / বাংলায় খুঁজুন..." oninput="filterGrammarList(this.value)">
+        </div>
+
+        <div class="grammar-topics-list" id="grammarTopicsContainer">
+            <!-- Populated dynamically via JS -->
+        </div>
+
+        <div id="grammar-search-empty" class="sidebar-hide-on-collapse" style="display:none; text-align:center; padding:24px 10px; color:#94a3b8; font-size:0.82em;">
+            <i class="fas fa-search" style="font-size:1.4em; margin-bottom:8px; opacity:0.4; display:block;"></i>
+            কোনো টপিক পাওয়া যায়নি
+        </div>
+    </aside>
+
+    <!-- RIGHT MAIN LEARNING ENGINE -->
+    <main class="grammar-main-content">
+        <!-- HEADER -->
+        <div class="grammar-header-banner">
+            <div style="display:flex; align-items:center; gap:12px;">
+                <a href="/dashboard" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:#cbd5e1; font-size:0.8em; font-weight:700; padding:6px 14px; border-radius:8px; text-decoration:none; display:inline-flex; align-items:center; gap:6px; transition:0.2s; white-space:nowrap;">
+                    ← Dashboard
+                </a>
+                <div>
+                    <span id="topic-level-tag" style="font-size:0.72em; background:rgba(255,255,255,0.15); color:#a5b4fc; padding:3px 10px; border-radius:12px; font-weight:700; text-transform:uppercase;">FOUNDATIONAL</span>
+                    <h2 id="topic-main-title" style="font-size:1.35em; font-weight:800; color:#fff; margin-top:4px;">Subject-Verb Agreement</h2>
+                    <div id="topic-bengali-title" style="font-size:0.85em; color:#cbd5e1;">কর্তা ও ক্রিয়ার মিল (Subject-Verb Agreement)</div>
+                </div>
+            </div>
+            <!-- 3-STAGE TABS -->
+            <div style="display:flex; gap:8px;">
+                <button class="stage-tab-btn active" id="tab-btn-1" onclick="switchStage(1)">
+                    <i class="fas fa-book-open"></i> 1. Master Rules & Guide
+                </button>
+                <button class="stage-tab-btn" id="tab-btn-2" onclick="switchStage(2)">
+                    <i class="fas fa-bolt"></i> 2. Practice Drills
+                </button>
+                <button class="stage-tab-btn" id="tab-btn-3" onclick="switchStage(3)">
+                    <i class="fas fa-award"></i> 3. Exam Challenge
+                </button>
+            </div>
+        </div>
+
+        <!-- SCROLLABLE STAGE VIEWPORT -->
+        <div class="grammar-scroll-area" id="stageContentArea">
+            <!-- Content injected dynamically via JS -->
+        </div>
+    </main>
+</div>
+
+<!-- Hidden audio element for rule narration -->
+<audio id="rule-audio-player" style="display:none;"></audio>
+
+<script>
+var grammarCatalog = {{ grammar_catalog | tojson | safe }};
+var currentTopicIndex = 0;
+var currentStage = 1;
+var isAudioPlaying = false;
+var currentGrammarQuestions = [];
+var grammarCorrectCount = 0;
+var grammarTotalAnswered = 0;
+var currentExamQuestions = [];
+var examCorrectCount = 0;
+var examTotalAnswered = 0;
+
+function initGrammarHub() {
+    renderSidebarList();
+    loadTopic(0);
+}
+
+function renderSidebarList() {
+    var container = document.getElementById('grammarTopicsContainer');
+    if (!container) return;
+    container.innerHTML = '';
+
+    var badge = document.getElementById('grammarCountBadge');
+    if (badge) badge.textContent = grammarCatalog.length + ' TOPICS';
+
+    var categories = {
+        'core': '📌 Core Fundamentals (মৌলিক ব্যাকরণ)',
+        'tense': '⏱️ Tense & Time (কাল ও সময়)',
+        'sentence': '🏗️ Sentence Building (বাক্য কাঠামো)',
+        'master': '👑 Band 9.0 Master (উন্নত কাঠামো)'
+    };
+
+    var grouped = {};
+    grammarCatalog.forEach(function(item, idx) {
+        var cat = item.category || 'core';
+        if (!grouped[cat]) grouped[cat] = [];
+        grouped[cat].push({ item: item, index: idx });
+    });
+
+    for (var catKey in categories) {
+        if (grouped[catKey] && grouped[catKey].length > 0) {
+            var groupEl = document.createElement('div');
+            groupEl.className = 'grammar-cat-group';
+            groupEl.id = 'cat-group-' + catKey;
+
+            var hdr = document.createElement('div');
+            hdr.className = 'grammar-cat-hdr';
+            hdr.innerHTML = '<span>' + categories[catKey] + '</span><span style="opacity:0.75; font-size:0.9em;">' + grouped[catKey].length + '</span>';
+            groupEl.appendChild(hdr);
+
+            grouped[catKey].forEach(function(entry) {
+                var el = document.createElement('div');
+                el.className = 'grammar-topic-item' + (entry.index === currentTopicIndex ? ' active' : '');
+                el.id = 'topic-item-' + entry.index;
+                el.setAttribute('data-topic-en', entry.item.topic);
+                el.setAttribute('data-topic-bn', entry.item.bengali_title || '');
+                el.setAttribute('title', entry.item.topic + ' (' + (entry.item.bengali_title || '') + ')');
+
+                el.innerHTML = '<span class="topic-item-icon">' + (entry.item.icon || '📝') + '</span>' +
+                    '<div class="topic-title-stack">' +
+                        '<div class="topic-name-en">' + entry.item.topic + '</div>' +
+                        '<div class="topic-name-bn">' + (entry.item.bengali_title || '') + '</div>' +
+                    '</div>';
+
+                el.onclick = function() { loadTopic(entry.index); };
+                groupEl.appendChild(el);
+            });
+
+            container.appendChild(groupEl);
+        }
+    }
+}
+
+function toggleGrammarSidebar() {
+    var sidebar = document.getElementById('grammarSidebar');
+    var icon = document.getElementById('sidebarCollapseIcon');
+    if (!sidebar) return;
+
+    var isCollapsed = sidebar.classList.toggle('collapsed');
+    if (icon) {
+        icon.className = isCollapsed ? 'fas fa-chevron-right' : 'fas fa-chevron-left';
+    }
+}
+
+function filterGrammarList(q) {
+    var query = (q || '').toLowerCase().trim();
+    var totalVisible = 0;
+
+    document.querySelectorAll('.grammar-topic-item').forEach(function(item) {
+        var en = (item.getAttribute('data-topic-en') || '').toLowerCase();
+        var bn = (item.getAttribute('data-topic-bn') || '').toLowerCase();
+        var match = !query || en.indexOf(query) >= 0 || bn.indexOf(query) >= 0;
+        item.style.display = match ? 'flex' : 'none';
+        if (match) totalVisible++;
+    });
+
+    document.querySelectorAll('.grammar-cat-group').forEach(function(group) {
+        var visibleItems = group.querySelectorAll('.grammar-topic-item:not([style*="display: none"])');
+        group.style.display = visibleItems.length > 0 ? 'block' : 'none';
+    });
+
+    var emptyEl = document.getElementById('grammar-search-empty');
+    if (emptyEl) {
+        emptyEl.style.display = (totalVisible === 0 && query) ? 'block' : 'none';
+    }
+}
+
+function filterRules(type) {
+    document.querySelectorAll('.rule-filter-chip').forEach(function(c) { c.classList.remove('active'); });
+    var activeChip = document.getElementById('chip-' + type);
+    if (activeChip) activeChip.classList.add('active');
+
+    document.querySelectorAll('#rulesListContainer .rule-card').forEach(function(card) {
+        if (type === 'all' || card.getAttribute('data-rule-type') === type) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+
+function loadTopic(idx) {
+    currentTopicIndex = idx;
+    currentGrammarQuestions = [];
+    grammarCorrectCount = 0;
+    grammarTotalAnswered = 0;
+    currentExamQuestions = [];
+    examCorrectCount = 0;
+    examTotalAnswered = 0;
+
+    document.querySelectorAll('.grammar-topic-item').forEach(function(el) { el.classList.remove('active'); });
+    var activeEl = document.getElementById('topic-item-' + idx);
+    if (activeEl) {
+        activeEl.classList.add('active');
+        if (typeof activeEl.scrollIntoView === 'function') {
+            activeEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    }
+
+    var topic = grammarCatalog[idx];
+    document.getElementById('topic-main-title').textContent = (topic.icon || '📝') + ' ' + topic.topic;
+    document.getElementById('topic-bengali-title').textContent = topic.bengali_title || '';
+    document.getElementById('topic-level-tag').textContent = topic.level || 'IELTS GRAMMAR';
+
+    renderCurrentStage();
+}
+
+function switchStage(stageNum) {
+    currentStage = stageNum;
+    for (var i = 1; i <= 3; i++) {
+        var b = document.getElementById('tab-btn-' + i);
+        if (b) {
+            if (i === stageNum) b.classList.add('active');
+            else b.classList.remove('active');
+        }
+    }
+    renderCurrentStage();
+}
+
+function openTeacherForTopic(skill, topicName) {
+    window.location.href = '/ai-teacher?skill=' + encodeURIComponent(skill) + '&topic=' + encodeURIComponent(topicName);
+}
+
+function playRuleAudio() {
+    var topic = grammarCatalog[currentTopicIndex];
+    var textToSpeak = topic.topic + ". " + topic.concept_story;
+    var audio = document.getElementById('rule-audio-player');
+    var btn = document.getElementById('audio-play-btn');
+
+    if (isAudioPlaying && audio) {
+        audio.pause();
+        isAudioPlaying = false;
+        if (btn) btn.innerHTML = '🔊 নিয়মটি ARIA-র কণ্ঠে শুনুন';
+        return;
+    }
+
+    if (btn) btn.innerHTML = '⏳ লোড হচ্ছে...';
+
+    fetch('/api/v1/ai/tts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: textToSpeak, lang_pref: 'both' })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+        if (data.audio_url && audio) {
+            audio.src = data.audio_url;
+            audio.play();
+            isAudioPlaying = true;
+            if (btn) btn.innerHTML = '⏹️ ভয়েস বন্ধ করুন';
+            audio.onended = function() {
+                isAudioPlaying = false;
+                if (btn) btn.innerHTML = '🔊 নিয়মটি ARIA-র কণ্ঠে শুনুন';
+            };
+        }
+    })
+    .catch(function(e) {
+        console.error('Audio playback error:', e);
+        if (btn) btn.innerHTML = '🔊 নিয়মটি ARIA-র কণ্ঠে শুনুন';
+    });
+}
+
+function renderCurrentStage() {
+    var topic = grammarCatalog[currentTopicIndex];
+    var area = document.getElementById('stageContentArea');
+    if (!area) return;
+
+    if (currentStage === 1) {
+        // STAGE 1: MASTER RULES & DETAILED EXPLANATIONS
+
+        // 1. Parse rules into categories & structured components
+        var rawRules = topic.kid_rules || [];
+        var basicCount = 0;
+        var exceptionCount = 0;
+        var trapCount = 0;
+
+        var parsedRules = rawRules.map(function(r, idx) {
+            var isTrap = r.indexOf('IELTS ট্র্যাপ') !== -1 || r.indexOf('ট্র্যাপ') !== -1;
+            var isException = r.indexOf('বিশেষ ক্ষেত্র') !== -1 || r.indexOf('ব্যতিক্রম') !== -1 || r.indexOf('Exception') !== -1;
+            
+            var type = isTrap ? 'trap' : (isException ? 'exception' : 'basic');
+            if (isTrap) trapCount++;
+            else if (isException) exceptionCount++;
+            else basicCount++;
+
+            var typeIcon = isTrap ? '<i class="fas fa-bullseye"></i>' : (isException ? '<i class="fas fa-exclamation-triangle"></i>' : '<i class="fas fa-check-circle"></i>');
+            var typeLabel = isTrap ? 'IELTS ট্র্যাপ' : (isException ? 'ব্যতিক্রম ও বিশেষ নিয়ম' : 'মৌলিক নিয়ম');
+
+            // Strip the leading category tag and number
+            var clean = r.replace(/^(📌|⚠️|🎯)?\s*(বেসিক নিয়ম|বেসিক নিয়ম|বিশেষ ক্ষেত্র|IELTS ট্র্যাপ|ব্যতিক্রম)[^:]*:\s*/i, '');
+            clean = clean.replace(/^[০-৯0-9]+[\.\)]\s*/, '').trim();
+
+            // Extract inline examples like (e.g., ...) or (যেমন: ...)
+            var exampleText = '';
+            var exMatch = clean.match(/\((e\.g\.[^)]+|যেমন:[^)]+|for example[^)]+)\)/i);
+            if (exMatch) {
+                exampleText = exMatch[1].replace(/^(e\.g\.,?|যেমন:)\s*/i, '').trim();
+                clean = clean.replace(exMatch[0], '').trim();
+            }
+
+            // Extract rule title if there is a colon in the first 45 chars
+            var title = '';
+            var colonIdx = clean.indexOf(':');
+            if (colonIdx > 0 && colonIdx < 45) {
+                title = clean.substring(0, colonIdx).trim();
+                clean = clean.substring(colonIdx + 1).trim();
+            }
+
+            // Clean trailing spaces before punctuation
+            clean = clean.replace(/\s+([।\.])/g, '$1');
+
+            // Highlight terms inside parentheses like (He, She, It)
+            clean = clean.replace(/\(([^)]+)\)/g, '<span class="rule-term-tag">$1</span>');
+
+            // Highlight quoted keywords like 's', 'es', 'work'
+            clean = clean.replace(/'([^']+)'/g, '<span class="rule-keyword">\'$1\'</span>');
+
+            return {
+                num: idx + 1,
+                type: type,
+                typeIcon: typeIcon,
+                typeLabel: typeLabel,
+                title: title,
+                desc: clean,
+                example: exampleText
+            };
+        });
+
+        // 2. Build Rules Cards HTML
+        var rulesHtml = '';
+        parsedRules.forEach(function(item) {
+            var titleHtml = item.title ? '<div class="rule-title-text">' + item.title + '</div>' : '';
+            var exHtml = item.example ? 
+                '<div class="rule-ex-box">' +
+                    '<span class="rule-ex-badge"><i class="fas fa-lightbulb"></i> উদাহরণ</span>' +
+                    '<span class="rule-ex-content">' + item.example + '</span>' +
+                '</div>' : '';
+
+            rulesHtml += '<div class="rule-card type-' + item.type + '" data-rule-type="' + item.type + '">' +
+                '<div class="rule-card-header">' +
+                    '<span class="rule-type-badge ' + item.type + '">' + item.typeIcon + ' ' + item.typeLabel + '</span>' +
+                    '<span class="rule-num-pill">নিয়ম #' + item.num + '</span>' +
+                '</div>' +
+                titleHtml +
+                '<div class="rule-desc-text">' + item.desc + '</div>' +
+                exHtml +
+            '</div>';
+        });
+
+        // 3. Examples Grid HTML
+        var examplesHtml = '';
+        if (topic.examples && topic.examples.length > 0) {
+            examplesHtml += '<div class="example-grid">';
+            topic.examples.forEach(function(ex) {
+                examplesHtml += '<div class="example-box">' +
+                    '<div class="example-box-text">' + ex.text + '</div>' +
+                    '<div class="example-box-note"><i class="fas fa-search" style="color:#38bdf8; margin-right:4px;"></i> ' + ex.note + '</div>' +
+                '</div>';
+            });
+            examplesHtml += '</div>';
+        }
+
+        // 4. Mistakes Side-by-Side HTML
+        var mistakesHtml = '';
+        if (topic.common_mistakes && topic.common_mistakes.length > 0) {
+            topic.common_mistakes.forEach(function(m, idx) {
+                mistakesHtml += '<div class="mistake-box" style="margin-bottom:12px;">' +
+                    '<div class="mistake-col wrong">' +
+                        '<div style="margin-bottom:6px;color:#fca5a5;font-weight:700;font-size:0.85em;text-transform:uppercase;"><i class="fas fa-times-circle" style="margin-right:4px;"></i> সাধারণ ভুল #' + (idx + 1) + '</div>' +
+                        '<div style="font-size:0.96em;font-weight:600;">' + m.wrong + '</div>' +
+                    '</div>' +
+                    '<div class="mistake-col correct">' +
+                        '<div style="margin-bottom:6px;color:#86efac;font-weight:700;font-size:0.85em;text-transform:uppercase;"><i class="fas fa-check-circle" style="margin-right:4px;"></i> সঠিক IELTS রূপ</div>' +
+                        '<div style="font-size:0.96em;font-weight:600;">' + m.correct + '</div>' +
+                        '<div style="color:#6ee7b7;font-size:0.86em;margin-top:8px;border-top:1px dashed rgba(16,185,129,0.3);padding-top:6px;"><i class="fas fa-info-circle" style="margin-right:4px;"></i> <b>কারণ:</b> ' + m.reason + '</div>' +
+                    '</div>' +
+                '</div>';
+            });
+        }
+
+        area.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 16px; flex-wrap:wrap; gap:10px;">
+                <button id="audio-play-btn" onclick="playRuleAudio()" class="btn btn-outline" style="font-size:0.85em; color:#a5b4fc; border-color:rgba(99,102,241,0.4); background:rgba(99,102,241,0.15); border-radius:20px; padding:7px 18px; font-weight:600;">
+                    <i class="fas fa-volume-up" style="margin-right:6px;"></i> নিয়মটি ARIA-র কণ্ঠে শুনুন
+                </button>
+                <button onclick="openTeacherForTopic('Grammar', grammarCatalog[currentTopicIndex].topic)" class="btn btn-outline" style="font-size:0.84em; color:#34d399; border-color:rgba(16,185,129,0.3); background:rgba(16,185,129,0.1); border-radius:20px; padding:7px 16px; cursor:pointer; font-weight:600;">
+                    <i class="fas fa-comments" style="margin-right:6px;"></i> AI শিক্ষকের সাথে সরাসরি প্র্যাকটিস &rarr;
+                </button>
+            </div>
+
+            <!-- 1. CORE CONCEPT STORY -->
+            <div class="concept-card">
+                <div class="section-hdr blue">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>মৌলিক ধারণা ও সহজ বিশ্লেষণ (Core Concept & Logic)</span>
+                </div>
+                <div style="font-size:1.02em; line-height:1.75; color:#f8fafc;">${topic.concept_story}</div>
+            </div>
+
+            <!-- 2. GOLDEN FORMULA -->
+            <div class="formula-highlight">
+                <div class="formula-label">
+                    <i class="fas fa-atom"></i> বাক্য কাঠামো ও গোল্ডেন ফর্মুলা (Sentence Blueprint & Formula)
+                </div>
+                <div class="formula-text">${topic.golden_formula}</div>
+            </div>
+
+            <!-- 3. DETAILED RULES & EXCEPTIONS -->
+            <div class="concept-card">
+                <div class="section-hdr yellow">
+                    <i class="fas fa-layer-group"></i>
+                    <span>অফিসিয়াল ব্যাকরণ বিধি ও ব্যতিক্রমসমূহ (${parsedRules.length}টি নিয়ম)</span>
+                </div>
+
+                <!-- Category Filter Chips -->
+                <div class="rule-filter-bar">
+                    <button class="rule-filter-chip active" id="chip-all" onclick="filterRules('all')">
+                        <i class="fas fa-list-ul"></i> সকল নিয়ম (${parsedRules.length})
+                    </button>
+                    <button class="rule-filter-chip" id="chip-basic" onclick="filterRules('basic')">
+                        <i class="fas fa-check-circle"></i> মৌলিক নিয়ম (${basicCount})
+                    </button>
+                    <button class="rule-filter-chip" id="chip-exception" onclick="filterRules('exception')">
+                        <i class="fas fa-exclamation-triangle"></i> ব্যতিক্রম ও বিশেষ ক্ষেত্র (${exceptionCount})
+                    </button>
+                    <button class="rule-filter-chip" id="chip-trap" onclick="filterRules('trap')">
+                        <i class="fas fa-bullseye"></i> IELTS ট্র্যাপ (${trapCount})
+                    </button>
+                </div>
+
+                <div id="rulesListContainer" style="display:flex; flex-direction:column;">
+                    ${rulesHtml}
+                </div>
+            </div>
+
+            <!-- 4. REAL IELTS EXAMPLES -->
+            <div class="concept-card">
+                <div class="section-hdr green">
+                    <i class="fas fa-quote-left"></i>
+                    <span>বাস্তব IELTS একাডেমিক বাক্যে প্রয়োগ (${topic.examples ? topic.examples.length : 0}টি)</span>
+                </div>
+                ${examplesHtml}
+            </div>
+
+            <!-- 5. COMMON TRAPS & MISTAKES -->
+            <div class="concept-card">
+                <div class="section-hdr red">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>পরীক্ষকের ফাঁদ ও সচরাচর ভুল (Examiner Traps & Common Pitfalls)</span>
+                </div>
+                <div style="display:flex; flex-direction:column; margin-top:10px;">
+                    ${mistakesHtml}
+                </div>
+            </div>
+
+            <!-- NEXT STAGE CTA -->
+            <div style="text-align:right; margin:16px 0 8px;">
+                <button onclick="switchStage(2)" class="btn btn-primary" style="background:#4f46e5; border-color:#6366f1; font-size:0.95em; padding:12px 26px; border-radius:10px; font-weight:700; cursor:pointer; box-shadow:0 4px 14px rgba(79,70,229,0.35);">
+                    <i class="fas fa-bolt" style="margin-right:6px;"></i> নিয়ম আয়ত্ত হয়েছে? প্র্যাকটিস ড্রিল শুরু করুন &rarr;
+                </button>
+            </div>
+        `;
+    } else if (currentStage === 2) {
+        // STAGE 2: EASY PRACTICE (INFINITE QUESTIONS SUPPORT)
+        if (!currentGrammarQuestions || currentGrammarQuestions.length === 0) {
+            currentGrammarQuestions = JSON.parse(JSON.stringify(topic.easy_practice || []));
+        }
+
+        area.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(56, 189, 248, 0.1); border:1px solid rgba(56, 189, 248, 0.3); padding:12px 16px; border-radius:10px;">
+                <span style="color:#38bdf8; font-size:0.88em; font-weight:600;">
+                    ⚡ রুলসের সাথে সাথেই বেসিক প্র্যাকটিস: নিচের অপশনগুলোতে ক্লিক করে উত্তর দিন।
+                </span>
+                <span id="g-score-tracker" style="font-size:0.85em; background:rgba(56,189,248,0.2); color:#38bdf8; padding:3px 10px; border-radius:12px; font-weight:700;">
+                    Score: ${grammarCorrectCount} / ${grammarTotalAnswered}
+                </span>
+            </div>
+
+            <div id="grammarQuestionsContainer" style="display:flex; flex-direction:column; gap:12px;"></div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-top:8px;">
+                <button id="g-generate-more-btn" onclick="generateMoreGrammarQuestions()" class="btn btn-outline" style="background:rgba(99,102,241,0.15); border-color:#6366f1; color:#a5b4fc; font-size:0.9em; padding:10px 20px; border-radius:8px; cursor:pointer;">
+                    ✨ আরও ৩টি নতুন প্রশ্ন প্র্যাকটিস করুন (Endless AI Practice)
+                </button>
+                <button onclick="switchStage(3)" class="btn btn-accent" style="background:#10b981; border-color:#34d399; color:#fff; font-size:0.9em; padding:10px 20px; border-radius:8px;">
+                    🏆 এবার রিয়েল IELTS এক্সাম টেস্ট দিন →
+                </button>
+            </div>
+        `;
+
+        renderGrammarStage2Cards();
+    } else if (currentStage === 3) {
+        // STAGE 3: REAL IELTS EXAM TEST WITH BAND MARKING
+        var challenge = topic.ielts_exam_challenge;
+        if (!challenge) {
+            area.innerHTML = '<div style="color:#94a3b8;padding:20px;">Exam challenge loading...</div>';
+            return;
+        }
+
+        if (!currentExamQuestions || currentExamQuestions.length === 0) {
+            currentExamQuestions = JSON.parse(JSON.stringify(challenge.questions || []));
+        }
+
+        area.innerHTML = `
+            <div class="score-badge-card">
+                <div>
+                    <span style="font-size:0.75em; font-weight:700; text-transform:uppercase; color:#34d399; letter-spacing:0.5px;">
+                        <i class="fas fa-clipboard-check"></i> LIVE EXAM SCORING CRITERIA
+                    </span>
+                    <h3 id="exam-challenge-title" style="font-size:1.15em; font-weight:800; color:#fff; margin-top:2px;">${challenge.title}</h3>
+                </div>
+                <div style="text-align:right;">
+                    <div style="font-size:0.7em; color:#a7f3d0; text-transform:uppercase; font-weight:700;">TARGET GRA BAND</div>
+                    <div style="font-size:1.3em; font-weight:800; color:#34d399;">BAND 8.5+</div>
+                    <div id="exam-score-tracker" style="font-size:0.82em; color:#a5b4fc; font-weight:700; margin-top:2px;">
+                        Score: ${examCorrectCount} / ${examTotalAnswered}
+                    </div>
+                </div>
+            </div>
+
+            <div class="concept-card">
+                <div style="font-size:0.85em; font-weight:800; color:#fbbf24; text-transform:uppercase; margin-bottom:8px; display:flex; align-items:center; gap:6px;">
+                    <i class="fas fa-file-alt"></i> <span>Academic Writing / Speaking Passage Context:</span>
+                </div>
+                <div id="exam-challenge-passage" style="font-size:0.98em; line-height:1.7; color:#f1f5f9; font-style:italic; background:rgba(0,0,0,0.35); padding:14px 16px; border-radius:10px; border-left:4px solid #fbbf24;">
+                    "${challenge.passage || challenge.context_prompt}"
+                </div>
+            </div>
+
+            <div id="grammarExamQuestionsContainer" style="display:flex; flex-direction:column; gap:12px;"></div>
+
+            <div id="exam-summary-box" style="display:none; background:rgba(16,185,129,0.15); border:1.5px solid #10b981; border-radius:10px; padding:16px; margin-top:10px;">
+                <h4 style="font-size:1.05em; font-weight:800; color:#34d399; margin-bottom:4px;">🎉 Challenge Completed!</h4>
+                <p id="exam-summary-text" style="font-size:0.9em; color:#e2e8f0;"></p>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-top:18px;">
+                <button id="g-exam-generate-more-btn" onclick="generateMoreExamChallengeQuestions()" class="btn btn-outline" style="background:rgba(99,102,241,0.18); border-color:#6366f1; color:#a5b4fc; font-size:0.92em; padding:12px 24px; border-radius:10px; cursor:pointer; font-weight:700; display:inline-flex; align-items:center; gap:8px;">
+                    <i class="fas fa-magic"></i> ✨ AI দিয়ে আরও ৩টি নতুন Exam Challenge প্রশ্ন তৈরি করুন (Endless AI Exam Generator)
+                </button>
+                <button onclick="switchStage(1)" class="btn btn-outline" style="background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.15); color:#cbd5e1; font-size:0.88em; padding:12px 18px; border-radius:10px; cursor:pointer;">
+                    <i class="fas fa-undo"></i> 📖 নিয়মাবলী আরেকবার পড়ুন
+                </button>
+            </div>
+        `;
+
+        renderGrammarStage3Cards();
+    }
+}
+
+function renderGrammarStage2Cards() {
+    var container = document.getElementById('grammarQuestionsContainer');
+    if (!container) return;
+    container.innerHTML = '';
+
+    currentGrammarQuestions.forEach(function(q, qIdx) {
+        var card = document.createElement('div');
+        card.className = 'quiz-card';
+        card.id = 'g-card-' + qIdx;
+
+        var qTitle = document.createElement('div');
+        qTitle.style.cssText = 'font-size:0.94em; font-weight:700; color:#fff;';
+        qTitle.textContent = 'Q' + (qIdx + 1) + '. ' + q.question;
+        card.appendChild(qTitle);
+
+        var grid = document.createElement('div');
+        grid.style.cssText = 'display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-top:6px;';
+
+        q.options.forEach(function(opt, oIdx) {
+            var btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.id = 'g-opt-' + qIdx + '-' + oIdx;
+            btn.textContent = opt;
+            btn.onclick = function() {
+                handleGrammarOptionClick(qIdx, oIdx);
+            };
+            if (q.answered) {
+                btn.disabled = true;
+                if (oIdx === q.selectedIdx) {
+                    btn.classList.add(q.isCorrect ? 'selected-correct' : 'selected-wrong');
+                }
+                if (!q.isCorrect && opt.trim() === q.answer.trim()) {
+                    btn.classList.add('selected-correct');
+                }
+            }
+            grid.appendChild(btn);
+        });
+        card.appendChild(grid);
+
+        var fb = document.createElement('div');
+        fb.id = 'g-fb-' + qIdx;
+        if (q.answered) {
+            fb.style.display = 'block';
+            fb.style.background = q.isCorrect ? 'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)';
+            fb.style.border = '1px solid ' + (q.isCorrect ? '#10b981' : '#ef4444');
+            fb.style.color = q.isCorrect ? '#34d399' : '#fca5a5';
+            fb.style.padding = '10px 14px';
+            fb.style.borderRadius = '8px';
+            fb.style.fontSize = '0.86em';
+            fb.style.marginTop = '6px';
+            fb.innerHTML = (q.isCorrect ? '<b>✅ একদম সঠিক!</b> ' : '<b>❌ ভুল হয়েছে!</b> সঠিক উত্তর: <b>' + q.answer + '</b>। ') + (q.explanation || '');
+        } else {
+            fb.style.display = 'none';
+        }
+        card.appendChild(fb);
+
+        container.appendChild(card);
+    });
+}
+
+function handleGrammarOptionClick(qIdx, oIdx) {
+    var q = currentGrammarQuestions[qIdx];
+    if (!q || q.answered) return;
+
+    q.answered = true;
+    q.selectedIdx = oIdx;
+    grammarTotalAnswered++;
+
+    var selectedOpt = q.options[oIdx];
+    var isCorrect = (selectedOpt.trim() === q.answer.trim());
+    q.isCorrect = isCorrect;
+    if (isCorrect) grammarCorrectCount++;
+
+    // Disable buttons
+    document.querySelectorAll('#g-card-' + qIdx + ' .option-btn').forEach(function(btn) {
+        btn.disabled = true;
+    });
+
+    var selectedBtn = document.getElementById('g-opt-' + qIdx + '-' + oIdx);
+    if (selectedBtn) {
+        selectedBtn.classList.add(isCorrect ? 'selected-correct' : 'selected-wrong');
+    }
+
+    if (!isCorrect) {
+        q.options.forEach(function(opt, idx) {
+            if (opt.trim() === q.answer.trim()) {
+                var cBtn = document.getElementById('g-opt-' + qIdx + '-' + idx);
+                if (cBtn) cBtn.classList.add('selected-correct');
+            }
+        });
+    }
+
+    var fb = document.getElementById('g-fb-' + qIdx);
+    if (fb) {
+        fb.style.display = 'block';
+        fb.style.background = isCorrect ? 'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)';
+        fb.style.border = '1px solid ' + (isCorrect ? '#10b981' : '#ef4444');
+        fb.style.color = isCorrect ? '#34d399' : '#fca5a5';
+        fb.style.padding = '10px 14px';
+        fb.style.borderRadius = '8px';
+        fb.style.fontSize = '0.86em';
+        fb.style.marginTop = '6px';
+        fb.innerHTML = (isCorrect ? '<b>✅ একদম সঠিক!</b> ' : '<b>❌ ভুল হয়েছে!</b> সঠিক উত্তর: <b>' + q.answer + '</b>। ') + (q.explanation || '');
+    }
+
+    var tracker = document.getElementById('g-score-tracker');
+    if (tracker) tracker.textContent = 'Score: ' + grammarCorrectCount + ' / ' + grammarTotalAnswered;
+}
+
+function generateMoreGrammarQuestions() {
+    var topic = grammarCatalog[currentTopicIndex].topic;
+    var btn = document.getElementById('g-generate-more-btn');
+    if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '⏳ নতুন প্রশ্ন তৈরি হচ্ছে...';
+    }
+
+    fetch('/api/v1/practice/generate-more', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            skill: 'Grammar',
+            topic: topic,
+            count: 3,
+            existing_count: currentGrammarQuestions.length
+        })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+        if (data.questions && data.questions.length > 0) {
+            var prevLen = currentGrammarQuestions.length;
+            data.questions.forEach(function(nq) {
+                currentGrammarQuestions.push(nq);
+            });
+            renderGrammarStage2Cards();
+            var newCard = document.getElementById('g-card-' + prevLen);
+            if (newCard) newCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = '✨ আরও ৩টি নতুন প্রশ্ন প্র্যাকটিস করুন (Endless AI Practice)';
+        }
+    })
+    .catch(function(e) {
+        console.error('Error generating questions:', e);
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = '✨ আরও ৩টি নতুন প্রশ্ন প্র্যাকটিস করুন (Endless AI Practice)';
+        }
+    });
+}
+
+function renderGrammarStage3Cards() {
+    var container = document.getElementById('grammarExamQuestionsContainer');
+    if (!container) return;
+    container.innerHTML = '';
+
+    currentExamQuestions.forEach(function(q, qIdx) {
+        var card = document.createElement('div');
+        card.className = 'quiz-card';
+        card.id = 'g-exam-card-' + qIdx;
+
+        var qTitle = document.createElement('div');
+        qTitle.style.cssText = 'font-size:0.96em; font-weight:800; color:#fff; display:flex; align-items:center; gap:8px;';
+        qTitle.innerHTML = '<span style="background:linear-gradient(135deg, #6366f1, #4f46e5); color:#fff; font-size:0.75em; padding:3px 9px; border-radius:5px; font-weight:700;">Task ' + (qIdx + 1) + '</span> ' + q.label;
+        card.appendChild(qTitle);
+
+        var list = document.createElement('div');
+        list.style.cssText = 'display:flex; flex-direction:column; gap:8px; margin-top:8px;';
+
+        q.options.forEach(function(opt, oIdx) {
+            var btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.id = 'g-exam-opt-' + qIdx + '-' + oIdx;
+            btn.textContent = opt;
+            btn.onclick = function() {
+                handleGrammarExamOptionClick(qIdx, oIdx);
+            };
+            if (q.answered) {
+                btn.disabled = true;
+                if (oIdx === q.selectedIdx) {
+                    btn.classList.add(q.isCorrect ? 'selected-correct' : 'selected-wrong');
+                }
+                if (!q.isCorrect && opt.trim() === q.answer.trim()) {
+                    btn.classList.add('selected-correct');
+                }
+            }
+            list.appendChild(btn);
+        });
+        card.appendChild(list);
+
+        var fb = document.createElement('div');
+        fb.id = 'g-exam-fb-' + qIdx;
+        if (q.answered) {
+            fb.style.display = 'block';
+            fb.style.background = q.isCorrect ? 'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)';
+            fb.style.border = '1px solid ' + (q.isCorrect ? '#10b981' : '#ef4444');
+            fb.style.color = q.isCorrect ? '#34d399' : '#fca5a5';
+            fb.style.padding = '12px 14px';
+            fb.style.borderRadius = '8px';
+            fb.style.fontSize = '0.88em';
+            fb.style.marginTop = '8px';
+            fb.style.lineHeight = '1.6';
+            fb.innerHTML = (q.isCorrect ? '<b>🎯 Band 8.5 Master:</b> ' : '<b>⚠️ Examiner Note:</b> সঠিক উত্তর: <b>' + q.answer + '</b>। ') + (q.explanation || '');
+        } else {
+            fb.style.display = 'none';
+        }
+        card.appendChild(fb);
+
+        container.appendChild(card);
+    });
+}
+
+function handleGrammarExamOptionClick(qIdx, oIdx) {
+    var q = currentExamQuestions[qIdx];
+    if (!q || q.answered) return;
+
+    q.answered = true;
+    q.selectedIdx = oIdx;
+    examTotalAnswered++;
+
+    var selectedOpt = q.options[oIdx];
+    var isCorrect = (selectedOpt.trim() === q.answer.trim());
+    q.isCorrect = isCorrect;
+    if (isCorrect) examCorrectCount++;
+
+    document.querySelectorAll('#g-exam-card-' + qIdx + ' .option-btn').forEach(function(btn) {
+        btn.disabled = true;
+    });
+
+    var selectedBtn = document.getElementById('g-exam-opt-' + qIdx + '-' + oIdx);
+    if (selectedBtn) {
+        selectedBtn.classList.add(isCorrect ? 'selected-correct' : 'selected-wrong');
+    }
+
+    if (!isCorrect) {
+        q.options.forEach(function(opt, idx) {
+            if (opt.trim() === q.answer.trim()) {
+                var cBtn = document.getElementById('g-exam-opt-' + qIdx + '-' + idx);
+                if (cBtn) cBtn.classList.add('selected-correct');
+            }
+        });
+    }
+
+    var fb = document.getElementById('g-exam-fb-' + qIdx);
+    if (fb) {
+        fb.style.display = 'block';
+        fb.style.background = isCorrect ? 'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)';
+        fb.style.border = '1px solid ' + (isCorrect ? '#10b981' : '#ef4444');
+        fb.style.color = isCorrect ? '#34d399' : '#fca5a5';
+        fb.style.padding = '12px 14px';
+        fb.style.borderRadius = '8px';
+        fb.style.fontSize = '0.88em';
+        fb.style.marginTop = '8px';
+        fb.style.lineHeight = '1.6';
+        fb.innerHTML = (isCorrect ? '<b>🎯 Band 8.5 Master:</b> ' : '<b>⚠️ Examiner Note:</b> সঠিক উত্তর: <b>' + q.answer + '</b>। ') + (q.explanation || '');
+    }
+
+    var tracker = document.getElementById('exam-score-tracker');
+    if (tracker) tracker.textContent = 'Score: ' + examCorrectCount + ' / ' + examTotalAnswered;
+
+    var summaryBox = document.getElementById('exam-summary-box');
+    var summaryText = document.getElementById('exam-summary-text');
+    if (summaryBox && summaryText) {
+        summaryBox.style.display = 'block';
+        var pct = Math.round((examCorrectCount / examTotalAnswered) * 100);
+        summaryText.innerHTML = `মোট ${examTotalAnswered}টি প্রশ্নের মধ্যে <b>${examCorrectCount}টি</b> সঠিক উত্তর দিয়েছেন (সঠিকতার হার: <b>${pct}%</b>)। আপনার GRA ব্যান্ড লক্ষ্যমাত্রার দিকে অগ্রগতি সফলভাবে সংরক্ষিত হয়েছে।`;
+    }
+}
+
+function generateMoreExamChallengeQuestions() {
+    var topic = grammarCatalog[currentTopicIndex].topic;
+    var btn = document.getElementById('g-exam-generate-more-btn');
+    if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ⏳ AI নতুন Cambridge Exam Challenge তৈরি করছে...';
+    }
+
+    fetch('/api/v1/grammar/generate-exam-challenge', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            topic: topic,
+            count: 3,
+            existing_count: currentExamQuestions.length
+        })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+        if (data.challenge && data.challenge.questions && data.challenge.questions.length > 0) {
+            var prevLen = currentExamQuestions.length;
+
+            if (data.challenge.passage) {
+                var passageEl = document.getElementById('exam-challenge-passage');
+                if (passageEl) {
+                    passageEl.innerHTML += '<br><br><span style="color:#a5b4fc; font-weight:700; text-transform:uppercase; font-size:0.8em;"><i class="fas fa-plus-circle"></i> অতিরিক্ত সিনারিও প্রেক্ষাপট (Additional Context):</span><br>' + data.challenge.passage;
+                }
+            }
+
+            data.challenge.questions.forEach(function(nq) {
+                currentExamQuestions.push(nq);
+            });
+            renderGrammarStage3Cards();
+
+            var newCard = document.getElementById('g-exam-card-' + prevLen);
+            if (newCard) newCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-magic"></i> ✨ AI দিয়ে আরও ৩টি নতুন Exam Challenge প্রশ্ন তৈরি করুন (Endless AI Exam Generator)';
+        }
+    })
+    .catch(function(e) {
+        console.error('Error generating exam questions:', e);
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-magic"></i> ✨ AI দিয়ে আরও ৩টি নতুন Exam Challenge প্রশ্ন তৈরি করুন (Endless AI Exam Generator)';
+        }
+    });
+}
+
+window.onload = initGrammarHub;
+</script>
+{% endblock %}

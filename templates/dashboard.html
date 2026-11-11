@@ -1,0 +1,1173 @@
+{% extends "base.html" %}
+{% set active_page = "dashboard" %}
+
+{% block title %}IELTS Learning Command Center — AI IELTS Official Prep{% endblock %}
+
+{% block extra_head %}
+<!-- Google Fonts: Plus Jakarta Sans & Hind Siliguri -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+/* MODERN COMMAND CENTER STYLES */
+:root {
+    --dash-bg: #0b0d14;
+    --dash-card: #121520;
+    --dash-card-hover: #171c2b;
+    --dash-border: rgba(255, 255, 255, 0.08);
+    --dash-border-hover: rgba(99, 102, 241, 0.4);
+    --dash-text: #f8fafc;
+    --dash-text-muted: #94a3b8;
+    --dash-primary: #6366f1;
+    --dash-primary-glow: rgba(99, 102, 241, 0.25);
+}
+
+.dashboard-wrapper {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--dash-text);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-bottom: 30px;
+}
+
+/* 1. HERO COMMAND BANNER */
+.hero-command-card {
+    background: linear-gradient(135deg, #161a29 0%, #10131f 60%, #1e1b4b 100%);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    border-radius: 16px;
+    padding: 24px 28px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+.hero-glow-blob {
+    position: absolute;
+    right: -40px;
+    top: -40px;
+    width: 260px;
+    height: 260px;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.25) 0%, rgba(139, 92, 246, 0.05) 70%, transparent 100%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+.hero-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.hero-badge-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+.hero-pill {
+    background: rgba(99, 102, 241, 0.18);
+    border: 1px solid rgba(99, 102, 241, 0.35);
+    color: #a5b4fc;
+    font-size: 0.76em;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.hero-streak-pill {
+    background: rgba(245, 158, 11, 0.15);
+    border: 1px solid rgba(245, 158, 11, 0.35);
+    color: #fbbf24;
+    font-size: 0.76em;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.hero-title {
+    font-size: 1.85em;
+    font-weight: 800;
+    color: #fff;
+    margin: 0 0 6px 0;
+    letter-spacing: -0.02em;
+}
+.hero-subtitle {
+    font-family: 'Hind Siliguri', sans-serif;
+    color: #cbd5e1;
+    font-size: 0.96em;
+    margin: 0 0 14px 0;
+}
+.hero-stats-chips {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.hero-stat-item {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 6px 14px;
+    border-radius: 10px;
+    font-size: 0.86em;
+    color: #e2e8f0;
+}
+.hero-stat-item strong {
+    color: #fef08a;
+    font-weight: 800;
+}
+.hero-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.btn-hero-primary {
+    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.9em;
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 14px rgba(79, 70, 229, 0.4);
+}
+.btn-hero-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(79, 70, 229, 0.6);
+    color: #fff;
+}
+.btn-hero-secondary {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #cbd5e1;
+    font-weight: 600;
+    font-size: 0.9em;
+    padding: 10px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    transition: all 0.2s ease;
+}
+.btn-hero-secondary:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* 2. SKILL CARDS GRID (4 MODULES) */
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+}
+@media (max-width: 1024px) {
+    .skills-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media (max-width: 600px) {
+    .skills-grid {
+        grid-template-columns: 1fr;
+    }
+}
+.skill-card {
+    background: var(--dash-card);
+    border: 1px solid var(--dash-border);
+    border-radius: 14px;
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+}
+.skill-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--dash-border-hover);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    background: var(--dash-card-hover);
+}
+.skill-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+.skill-icon-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.skill-icon-badge {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25em;
+    flex-shrink: 0;
+}
+.skill-title-text {
+    font-size: 0.95em;
+    font-weight: 800;
+    color: #fff;
+}
+.skill-sub-bengali {
+    font-family: 'Hind Siliguri', sans-serif;
+    font-size: 0.75em;
+    color: #94a3b8;
+}
+.skill-tag {
+    font-size: 0.7em;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 12px;
+    text-transform: uppercase;
+}
+.skill-band-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin: 8px 0 10px 0;
+}
+.skill-band-val {
+    font-size: 2.2em;
+    font-weight: 800;
+    line-height: 1;
+}
+.skill-band-lbl {
+    font-size: 0.8em;
+    font-weight: 600;
+    color: #94a3b8;
+}
+.skill-meta {
+    font-size: 0.82em;
+    color: #94a3b8;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.skill-card-btn {
+    width: 100%;
+    text-align: center;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.84em;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+/* Specific Skill Colors */
+.skill-reading .skill-icon-badge { background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.3); }
+.skill-reading .skill-band-val { color: #818cf8; }
+.skill-reading .skill-tag { background: rgba(99, 102, 241, 0.18); color: #a5b4fc; }
+.skill-reading .skill-card-btn { background: rgba(99, 102, 241, 0.12); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.3); }
+.skill-reading .skill-card-btn:hover { background: #4f46e5; color: #fff; }
+
+.skill-listening .skill-icon-badge { background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); }
+.skill-listening .skill-band-val { color: #34d399; }
+.skill-listening .skill-tag { background: rgba(16, 185, 129, 0.18); color: #6ee7b7; }
+.skill-listening .skill-card-btn { background: rgba(16, 185, 129, 0.12); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.3); }
+.skill-listening .skill-card-btn:hover { background: #059669; color: #fff; }
+
+.skill-writing .skill-icon-badge { background: rgba(244, 63, 94, 0.15); border: 1px solid rgba(244, 63, 94, 0.3); }
+.skill-writing .skill-band-val { color: #fb7185; }
+.skill-writing .skill-tag { background: rgba(244, 63, 94, 0.18); color: #fda4af; }
+.skill-writing .skill-card-btn { background: rgba(244, 63, 94, 0.12); color: #fda4af; border: 1px solid rgba(244, 63, 94, 0.3); }
+.skill-writing .skill-card-btn:hover { background: #e11d48; color: #fff; }
+
+.skill-speaking .skill-icon-badge { background: rgba(6, 182, 212, 0.15); border: 1px solid rgba(6, 182, 212, 0.3); }
+.skill-speaking .skill-band-val { color: #22d3ee; }
+.skill-speaking .skill-tag { background: rgba(6, 182, 212, 0.18); color: #67e8f9; }
+.skill-speaking .skill-card-btn { background: rgba(6, 182, 212, 0.12); color: #67e8f9; border: 1px solid rgba(6, 182, 212, 0.3); }
+.skill-speaking .skill-card-btn:hover { background: #0891b2; color: #fff; }
+
+/* 3. CORE POWER CENTERS (2X2 GRID) */
+.section-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 6px;
+    margin-bottom: 2px;
+}
+.section-main-heading {
+    font-size: 1.25em;
+    font-weight: 800;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.section-subtext {
+    font-family: 'Hind Siliguri', sans-serif;
+    color: #94a3b8;
+    font-size: 0.85em;
+}
+
+.power-centers-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+@media (max-width: 900px) {
+    .power-centers-grid {
+        grid-template-columns: 1fr;
+    }
+}
+.power-card {
+    background: var(--dash-card);
+    border: 1px solid var(--dash-border);
+    border-radius: 16px;
+    padding: 22px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+}
+.power-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--dash-border-hover);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    background: var(--dash-card-hover);
+}
+.power-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+.power-icon-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.power-icon-box {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4em;
+    flex-shrink: 0;
+}
+.power-card-h3 {
+    font-size: 1.15em;
+    font-weight: 800;
+    color: #fff;
+    margin: 0;
+}
+.power-card-bengali {
+    font-family: 'Hind Siliguri', sans-serif;
+    font-size: 0.82em;
+    color: #94a3b8;
+    margin-top: 2px;
+}
+.power-card-badge {
+    font-size: 0.72em;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+}
+.power-card-desc {
+    font-size: 0.9em;
+    color: #cbd5e1;
+    line-height: 1.55;
+    margin-bottom: 18px;
+}
+.power-card-features {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+.power-feature-chip {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 0.76em;
+    color: #94a3b8;
+    padding: 3px 9px;
+    border-radius: 6px;
+}
+.power-card-footer {
+    display: flex;
+    justify-content: flex-end;
+}
+.power-btn {
+    padding: 9px 18px;
+    border-radius: 9px;
+    font-weight: 700;
+    font-size: 0.88em;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    transition: all 0.2s ease;
+}
+
+/* Power Card Variants */
+.power-aria {
+    background: linear-gradient(135deg, rgba(30, 27, 75, 0.6) 0%, rgba(18, 21, 32, 0.9) 100%);
+    border-color: rgba(99, 102, 241, 0.35);
+}
+.power-aria .power-icon-box { background: rgba(99, 102, 241, 0.2); border: 1px solid rgba(99, 102, 241, 0.4); }
+.power-aria .power-card-badge { background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.4); color: #34d399; }
+.power-aria .power-btn { background: #4f46e5; color: #fff; box-shadow: 0 4px 14px rgba(79, 70, 229, 0.4); }
+.power-aria .power-btn:hover { background: #6366f1; color: #fff; }
+
+.power-grammar {
+    background: linear-gradient(135deg, rgba(6, 78, 59, 0.35) 0%, rgba(18, 21, 32, 0.9) 100%);
+    border-color: rgba(16, 185, 129, 0.35);
+}
+.power-grammar .power-icon-box { background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.4); }
+.power-grammar .power-card-badge { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.3); }
+.power-grammar .power-btn { background: #059669; color: #fff; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35); }
+.power-grammar .power-btn:hover { background: #10b981; color: #fff; }
+
+.power-vocab {
+    background: linear-gradient(135deg, rgba(8, 51, 68, 0.4) 0%, rgba(18, 21, 32, 0.9) 100%);
+    border-color: rgba(6, 182, 212, 0.35);
+}
+.power-vocab .power-icon-box { background: rgba(6, 182, 212, 0.2); border: 1px solid rgba(6, 182, 212, 0.4); }
+.power-vocab .power-card-badge { background: rgba(6, 182, 212, 0.15); color: #67e8f9; border: 1px solid rgba(6, 182, 212, 0.3); }
+.power-vocab .power-btn { background: #0891b2; color: #fff; box-shadow: 0 4px 14px rgba(6, 182, 212, 0.35); }
+.power-vocab .power-btn:hover { background: #06b6d4; color: #fff; }
+
+.power-mock {
+    background: linear-gradient(135deg, rgba(76, 5, 25, 0.35) 0%, rgba(18, 21, 32, 0.9) 100%);
+    border-color: rgba(244, 63, 94, 0.35);
+}
+.power-mock .power-icon-box { background: rgba(244, 63, 94, 0.2); border: 1px solid rgba(244, 63, 94, 0.4); }
+.power-mock .power-card-badge { background: rgba(244, 63, 94, 0.15); color: #fda4af; border: 1px solid rgba(244, 63, 94, 0.3); }
+.power-mock .power-btn { background: #e11d48; color: #fff; box-shadow: 0 4px 14px rgba(244, 63, 94, 0.35); }
+.power-mock .power-btn:hover { background: #f43f5e; color: #fff; }
+
+/* 4. TODAY'S PLAN & WEAKNESS RADAR (2 COLUMNS) */
+.plan-radar-grid {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 16px;
+}
+@media (max-width: 900px) {
+    .plan-radar-grid {
+        grid-template-columns: 1fr;
+    }
+}
+.plan-container-card {
+    background: var(--dash-card);
+    border: 1px solid var(--dash-border);
+    border-radius: 16px;
+    padding: 22px 24px;
+}
+.plan-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+.plan-title-block h3 {
+    font-size: 1.15em;
+    font-weight: 800;
+    color: #fff;
+    margin: 0 0 3px 0;
+}
+.plan-title-block p {
+    font-family: 'Hind Siliguri', sans-serif;
+    font-size: 0.84em;
+    color: #94a3b8;
+    margin: 0;
+}
+.plan-time-badge {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #cbd5e1;
+    font-size: 0.78em;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+}
+.plan-tasks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.plan-task-row {
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+.plan-task-row:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(99, 102, 241, 0.3);
+}
+.plan-task-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.task-num-circle {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(99, 102, 241, 0.2);
+    border: 1px solid rgba(99, 102, 241, 0.4);
+    color: #a5b4fc;
+    font-size: 0.82em;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.task-info-title {
+    font-size: 0.92em;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 2px;
+}
+.task-info-sub {
+    font-size: 0.78em;
+    color: #94a3b8;
+}
+.task-btn {
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 0.8em;
+    font-weight: 700;
+    text-decoration: none;
+    transition: 0.2s;
+    white-space: nowrap;
+}
+.task-btn-primary {
+    background: #4f46e5;
+    color: #fff;
+}
+.task-btn-primary:hover {
+    background: #6366f1;
+    color: #fff;
+}
+.task-btn-secondary {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #cbd5e1;
+}
+.task-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+}
+
+/* Radar & Diagnostic Card */
+.radar-card {
+    background: var(--dash-card);
+    border: 1px solid var(--dash-border);
+    border-radius: 16px;
+    padding: 22px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.radar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+.radar-title-block h3 {
+    font-size: 1.15em;
+    font-weight: 800;
+    color: #fff;
+    margin: 0 0 3px 0;
+}
+.radar-alert-box {
+    background: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 16px;
+}
+.radar-alert-title {
+    font-size: 0.88em;
+    font-weight: 700;
+    color: #f87171;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.radar-alert-desc {
+    font-family: 'Hind Siliguri', sans-serif;
+    font-size: 0.88em;
+    color: #cbd5e1;
+    line-height: 1.5;
+    margin: 0;
+}
+.radar-stats-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+.radar-stat-line {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.84em;
+    color: #94a3b8;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+.radar-stat-line strong {
+    color: #fff;
+}
+.btn-radar-fix {
+    width: 100%;
+    text-align: center;
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.86em;
+    padding: 10px 16px;
+    border-radius: 9px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    box-shadow: 0 4px 14px rgba(217, 119, 6, 0.35);
+    transition: all 0.2s ease;
+}
+.btn-radar-fix:hover {
+    background: #f59e0b;
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+/* MODAL STYLES */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+.modal-card {
+    background: #141724;
+    border: 1px solid rgba(99, 102, 241, 0.35);
+    border-radius: 16px;
+    padding: 26px;
+    max-width: 440px;
+    width: 100%;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+}
+.modal-card h3 {
+    font-size: 1.3em;
+    font-weight: 800;
+    color: #fff;
+    margin: 0 0 6px 0;
+}
+.modal-card p {
+    font-size: 0.85em;
+    color: #94a3b8;
+    margin: 0 0 18px 0;
+}
+.modal-form-group {
+    margin-bottom: 14px;
+}
+.modal-form-label {
+    display: block;
+    font-size: 0.8em;
+    font-weight: 700;
+    color: #cbd5e1;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+.modal-select, .modal-input {
+    width: 100%;
+    background: #1c2033;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 0.95em;
+    padding: 9px 12px;
+    outline: none;
+    transition: 0.2s;
+}
+.modal-select:focus, .modal-input:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+}
+.modal-actions-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-wrapper">
+
+    <!-- 1. HERO COMMAND BANNER -->
+    <div class="hero-command-card">
+        <div class="hero-glow-blob"></div>
+        <div class="hero-content">
+            <div>
+                <div class="hero-badge-row">
+                    <span class="hero-pill">Official IELTS Suite</span>
+                    <span class="hero-streak-pill">🔥 5-Day Active Streak</span>
+                </div>
+                <h1 class="hero-title">Welcome back, {{ profile.name if profile and profile.name else 'IELTS Scholar' }}! 👋</h1>
+                <p class="hero-subtitle">আপনার আজকের ব্যক্তিগত আইইএলটিএস প্রস্তুতি ও প্র্যাকটিস কমান্ড সেন্টার</p>
+
+                <div class="hero-stats-chips">
+                    <div class="hero-stat-item">
+                        🎯 Target Goal: <strong id="dash-target-band">Band {{ profile.target_band if profile and profile.target_band else 7.5 }}</strong>
+                    </div>
+                    <div class="hero-stat-item">
+                        📈 Current Level: <strong id="dash-current-band" style="color:#34d399;">Band {{ profile.current_level if profile and profile.current_level and profile.current_level > 0 else 6.5 }}</strong>
+                    </div>
+                    <div class="hero-stat-item">
+                        ⚡ Practiced: <strong>{{ total_q_solved }} Qs</strong> ({{ overall_accuracy }}% Accuracy)
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-actions">
+                <button onclick="openTargetModal()" class="btn-hero-secondary">
+                    ✏️ Set Goal
+                </button>
+                <a href="/practice" class="btn-hero-primary">
+                    🚀 Start Practice
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. FOUR CORE SKILL CARDS (NO CRYPTIC JARGON) -->
+    <div class="skills-grid">
+        <!-- READING -->
+        <div class="skill-card skill-reading">
+            <div>
+                <div class="skill-header">
+                    <div class="skill-icon-title">
+                        <div class="skill-icon-badge">📖</div>
+                        <div>
+                            <div class="skill-title-text">Reading</div>
+                            <div class="skill-sub-bengali">পড়া ও তথ্য যাচাই</div>
+                        </div>
+                    </div>
+                    <span class="skill-tag">{% if priority_weakness in ['True / False / Not Given', 'Matching Headings'] %}FOCUS AREA{% else %}ACTIVE{% endif %}</span>
+                </div>
+                <div class="skill-band-row">
+                    <span class="skill-band-val">{{ (mastery_by_skill['Reading']['avg_mastery'] / 15)|round(1) if mastery_by_skill.get('Reading') and mastery_by_skill['Reading'].get('avg_mastery') else '6.5' }}</span>
+                    <span class="skill-band-lbl">/ Band 9.0</span>
+                </div>
+                <div class="skill-meta">
+                    <span>📊 {{ mastery_by_skill.get('Reading', {}).get('total_q', 0) }} Questions Attempted</span>
+                </div>
+            </div>
+            <a href="/practice?skill=Reading" class="skill-card-btn">Practice Reading →</a>
+        </div>
+
+        <!-- LISTENING -->
+        <div class="skill-card skill-listening">
+            <div>
+                <div class="skill-header">
+                    <div class="skill-icon-title">
+                        <div class="skill-icon-badge">🎧</div>
+                        <div>
+                            <div class="skill-title-text">Listening</div>
+                            <div class="skill-sub-bengali">শ্রবণ ও বোধগম্যতা</div>
+                        </div>
+                    </div>
+                    <span class="skill-tag">ON TRACK</span>
+                </div>
+                <div class="skill-band-row">
+                    <span class="skill-band-val">{{ (mastery_by_skill['Listening']['avg_mastery'] / 15)|round(1) if mastery_by_skill.get('Listening') and mastery_by_skill['Listening'].get('avg_mastery') else '7.0' }}</span>
+                    <span class="skill-band-lbl">/ Band 9.0</span>
+                </div>
+                <div class="skill-meta">
+                    <span>📊 {{ mastery_by_skill.get('Listening', {}).get('total_q', 0) }} Questions Attempted</span>
+                </div>
+            </div>
+            <a href="/practice?skill=Listening" class="skill-card-btn">Practice Listening →</a>
+        </div>
+
+        <!-- WRITING -->
+        <div class="skill-card skill-writing">
+            <div>
+                <div class="skill-header">
+                    <div class="skill-icon-title">
+                        <div class="skill-icon-badge">✍️</div>
+                        <div>
+                            <div class="skill-title-text">Writing</div>
+                            <div class="skill-sub-bengali">প্রবন্ধ ও টাস্ক ১/২</div>
+                        </div>
+                    </div>
+                    <span class="skill-tag">AI ASSESSED</span>
+                </div>
+                <div class="skill-band-row">
+                    <span class="skill-band-val">{{ writing_scores.overall_band if writing_scores and writing_scores.overall_band else '6.5' }}</span>
+                    <span class="skill-band-lbl">/ Band 9.0</span>
+                </div>
+                <div class="skill-meta">
+                    <span>📝 {{ wrt_count }} Essays Evaluated by AI</span>
+                </div>
+            </div>
+            <a href="/practice?skill=Writing" class="skill-card-btn">Evaluate Essay →</a>
+        </div>
+
+        <!-- SPEAKING -->
+        <div class="skill-card skill-speaking">
+            <div>
+                <div class="skill-header">
+                    <div class="skill-icon-title">
+                        <div class="skill-icon-badge">🗣️</div>
+                        <div>
+                            <div class="skill-title-text">Speaking</div>
+                            <div class="skill-sub-bengali">মৌখিক সাক্ষাৎকার</div>
+                        </div>
+                    </div>
+                    <span class="skill-tag">LIVE MOCK</span>
+                </div>
+                <div class="skill-band-row">
+                    <span class="skill-band-val">{{ speaking_scores.overall_band if speaking_scores and speaking_scores.overall_band else '7.0' }}</span>
+                    <span class="skill-band-lbl">/ Band 9.0</span>
+                </div>
+                <div class="skill-meta">
+                    <span>🎙️ {{ spk_count }} Mock Sessions Done</span>
+                </div>
+            </div>
+            <a href="/practice?skill=Speaking" class="skill-card-btn">Speaking Mock →</a>
+        </div>
+    </div>
+
+    <!-- 3. POWER LEARNING CENTERS (4 EXPANSIVE WORKSPACES) -->
+    <div class="section-title-row">
+        <div class="section-main-heading">
+            <span>⚡ Core Learning & Practice Centers</span>
+        </div>
+        <div class="section-subtext">আইইএলটিএস সর্বোচ্চ স্কোরের জন্য বিশেষায়িত হাবসমূহ</div>
+    </div>
+
+    <div class="power-centers-grid">
+        <!-- 1. ARIA AI CLASSROOM -->
+        <div class="power-card power-aria">
+            <div>
+                <div class="power-card-top">
+                    <div class="power-icon-title">
+                        <div class="power-icon-box">🎓</div>
+                        <div>
+                            <h3 class="power-card-h3">ARIA AI Classroom</h3>
+                            <div class="power-card-bengali">১-অন-১ লাইভ এআই শিক্ষক ও এক্সামিনার</div>
+                        </div>
+                    </div>
+                    <span class="power-card-badge">🟢 LIVE TUTOR</span>
+                </div>
+                <p class="power-card-desc">
+                    কেমব্রিজ সিনিয়র এক্সামিনারের সাথে লাইভ কথোপকথন করুন। যেকোনো প্রশ্ন জিজ্ঞাসা করুন, স্পিকিং কিউ কার্ড প্র্যাকটিস করুন অথবা রিডিং-এর ফাঁদগুলো রিয়েল-টাইমে সমাধান করুন।
+                </p>
+                <div class="power-card-features">
+                    <span class="power-feature-chip">🎙️ Voice & Spoken Chat</span>
+                    <span class="power-feature-chip">🧠 Active Memory</span>
+                    <span class="power-feature-chip">🇧🇩 Banglish / বাংলা</span>
+                </div>
+            </div>
+            <div class="power-card-footer">
+                <a href="/ai-teacher" class="power-btn">Enter AI Classroom →</a>
+            </div>
+        </div>
+
+        <!-- 2. GRAMMAR MASTER HUB -->
+        <div class="power-card power-grammar">
+            <div>
+                <div class="power-card-top">
+                    <div class="power-icon-title">
+                        <div class="power-icon-box">📝</div>
+                        <div>
+                            <h3 class="power-card-h3">Grammar Master Hub</h3>
+                            <div class="power-card-bengali">১৬টি গোল্ডেন রুলস ও এক্সাম চ্যালেঞ্জ</div>
+                        </div>
+                    </div>
+                    <span class="power-card-badge">16 TOPICS</span>
+                </div>
+                <p class="power-card-desc">
+                    সাবজেক্ট-ভার্ব এগ্রিমেন্ট, কন্ডিশনালস, কমপ্লেক্স সেন্টেন্স এবং নমিনালাইজেশনের মতো জটিল ব্যাকরণ খুব সহজে বাংলায় শিখুন এবং Band 8+ অ্যাকাডেমিক নির্ভুলতা অর্জন করুন।
+                </p>
+                <div class="power-card-features">
+                    <span class="power-feature-chip">📖 3-Stage Learning</span>
+                    <span class="power-feature-chip">⚠️ Exam Traps</span>
+                    <span class="power-feature-chip">🏆 Instant Scoring</span>
+                </div>
+            </div>
+            <div class="power-card-footer">
+                <a href="/grammar" class="power-btn">Master Grammar →</a>
+            </div>
+        </div>
+
+        <!-- 3. VOCABULARY MASTER HUB -->
+        <div class="power-card power-vocab">
+            <div>
+                <div class="power-card-top">
+                    <div class="power-icon-title">
+                        <div class="power-icon-box">🔤</div>
+                        <div>
+                            <h3 class="power-card-h3">Vocabulary Master Hub</h3>
+                            <div class="power-card-bengali">১৬টি হাই-ইল্ড অ্যাকাডেমিক থিম ও লেক্সিকন</div>
+                        </div>
+                    </div>
+                    <span class="power-card-badge">C1/C2 LEXICON</span>
+                </div>
+                <p class="power-card-desc">
+                    শিক্ষা, প্রযুক্তি, পরিবেশ ও অর্থনীতির মতো গুরুত্বপূর্ণ বিষয়ের উচ্চমানের শব্দভাণ্ডার, কলোকেশন ও ব্যান্ড ৮.৫+ আপগ্রেড শিখুন। রয়েছে আনলিমিটেড এআই এক্সাম জেনারেটর।
+                </p>
+                <div class="power-card-features">
+                    <span class="power-feature-chip">✨ AI Exam Generator</span>
+                    <span class="power-feature-chip">📚 Smart Collocations</span>
+                    <span class="power-feature-chip">🔊 Audio Flashcards</span>
+                </div>
+            </div>
+            <div class="power-card-footer">
+                <a href="/vocabulary" class="power-btn">Master Vocabulary →</a>
+            </div>
+        </div>
+
+        <!-- 4. FULL MOCK CBT EXAM -->
+        <div class="power-card power-mock">
+            <div>
+                <div class="power-card-top">
+                    <div class="power-icon-title">
+                        <div class="power-icon-box">🏆</div>
+                        <div>
+                            <h3 class="power-card-h3">Mock CBT Exam Simulator</h3>
+                            <div class="power-card-bengali">অফিসিয়াল কেমব্রিজ কম্পিউটার টেস্ট সিমুলেটর</div>
+                        </div>
+                    </div>
+                    <span class="power-card-badge">FULL EXAM</span>
+                </div>
+                <p class="power-card-desc">
+                    আসল পরীক্ষার মতো টাইমড কম্পিউটার টেস্ট দিন। রিডিং, লিসেনিং, রাইটিং ও স্পিকিং টেস্ট শেষে সাথে সাথে ইনস্ট্যান্ট ব্যান্ড স্কোর এবং চুলচেরা এক্সামিনার মূল্যায়ন পান।
+                </p>
+                <div class="power-card-features">
+                    <span class="power-feature-chip">⏱️ Official Exam Timer</span>
+                    <span class="power-feature-chip">📊 Instant Band Breakdown</span>
+                    <span class="power-feature-chip">🎯 CBT Interface</span>
+                </div>
+            </div>
+            <div class="power-card-footer">
+                <a href="/mock-exam" class="power-btn">Take Full Mock Test →</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. TODAY'S ACTIONABLE STUDY PLAN & WEAKNESS RADAR -->
+    <div class="plan-radar-grid">
+        <!-- DAILY 3-STEP ROADMAP -->
+        <div class="plan-container-card">
+            <div class="plan-header">
+                <div class="plan-title-block">
+                    <h3>📅 Today's Actionable Study Plan</h3>
+                    <p>দৈনিক ৪৫ মিনিটের ফোকাসড রুটিন — ৩টি সুনির্দিষ্ট পদক্ষেপ</p>
+                </div>
+                <span class="plan-time-badge">⏱️ {{ profile.daily_study_mins if profile and profile.daily_study_mins else 45 }} Mins Daily</span>
+            </div>
+
+            <div class="plan-tasks-list">
+                <!-- STEP 1 -->
+                <div class="plan-task-row">
+                    <div class="plan-task-left">
+                        <div class="task-num-circle">1</div>
+                        <div>
+                            <div class="task-info-title">Reading: {{ priority_weakness }} Drill</div>
+                            <div class="task-info-sub">⏱️ 15 Mins • দুর্বল অংশ মেরামত ও ৫টি প্রশ্ন সমাধান</div>
+                        </div>
+                    </div>
+                    <a href="/practice?skill=Reading&q_type={{ priority_weakness|replace(' ', '+') }}" class="task-btn task-btn-primary">Start Drill</a>
+                </div>
+
+                <!-- STEP 2 -->
+                <div class="plan-task-row">
+                    <div class="plan-task-left">
+                        <div class="task-num-circle">2</div>
+                        <div>
+                            <div class="task-info-title">Grammar: Complex Sentences & Hedging</div>
+                            <div class="task-info-sub">⏱️ 15 Mins • রাইটিং ব্যান্ড ৭.৫+ বাক্য গঠন অনুশীলন</div>
+                        </div>
+                    </div>
+                    <a href="/grammar" class="task-btn task-btn-secondary">Open Rules</a>
+                </div>
+
+                <!-- STEP 3 -->
+                <div class="plan-task-row">
+                    <div class="plan-task-left">
+                        <div class="task-num-circle">3</div>
+                        <div>
+                            <div class="task-info-title">Speaking: Part 2 Cue Card Speech</div>
+                            <div class="task-info-sub">⏱️ 15 Mins • ২ মিনিটের বক্তব্য রেকর্ড ও লাইভ মূল্যায়ন</div>
+                        </div>
+                    </div>
+                    <a href="/practice?skill=Speaking" class="task-btn task-btn-primary">Record Speech</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- WEAKNESS RADAR & MISTAKE LOG -->
+        <div class="radar-card">
+            <div>
+                <div class="radar-header">
+                    <div class="radar-title-block">
+                        <h3>🎯 Weakness Radar</h3>
+                    </div>
+                    <span style="font-size:0.75em; background:rgba(245, 158, 11, 0.15); color:#fbbf24; padding:3px 8px; border-radius:6px; font-weight:700;">AI DETECTED</span>
+                </div>
+
+                <div class="radar-alert-box">
+                    <div class="radar-alert-title">⚠️ প্রধান ভুলের জায়গা: {{ priority_weakness }}</div>
+                    <p class="radar-alert-desc">
+                        আপনার সাম্প্রতিক প্র্যাকটিসে এই ধরণের প্রশ্নে সবচেয়ে বেশি ভুল হয়েছে। নিয়মিত ভুলের প্যাটার্ন পর্যবেক্ষণ করে সংশোধন করলে ব্যান্ড স্কোর দ্রুত বৃদ্ধি পাবে।
+                    </p>
+                </div>
+
+                <div class="radar-stats-list">
+                    <div class="radar-stat-line">
+                        <span>Notebook Flagged Errors</span>
+                        <strong>{{ mistake_count }} Mistakes</strong>
+                    </div>
+                    <div class="radar-stat-line">
+                        <span>Total Question Bank</span>
+                        <strong>{{ total_bank_questions }} Authentic Qs</strong>
+                    </div>
+                    <div class="radar-stat-line">
+                        <span>Grammar & Vocab Topics</span>
+                        <strong>32 Master Modules</strong>
+                    </div>
+                </div>
+            </div>
+
+            <a href="/mistake-notebook" class="btn-radar-fix">
+                📒 Review Mistake Notebook ({{ mistake_count }})
+            </a>
+        </div>
+    </div>
+
+</div>
+
+<!-- SET TARGET BAND MODAL -->
+<div id="target-modal" class="modal-overlay" style="display:none;">
+    <div class="modal-card">
+        <h3>🎯 Set Your IELTS Target Goal</h3>
+        <p>আপনার লক্ষ্য অনুযায়ী ARIA এবং প্ল্যাটফর্মের প্রশ্ন ও ফিডব্যাক কাস্টমাইজ হবে।</p>
+        
+        <form id="target-form" onsubmit="saveTargetProfile(event)">
+            <div class="modal-form-group">
+                <label class="modal-form-label">Target Band Score</label>
+                <select id="modal-target-band-select" class="modal-select">
+                    <option value="6.0">Band 6.0 (Competent User)</option>
+                    <option value="6.5">Band 6.5 (Good / University Standard)</option>
+                    <option value="7.0">Band 7.0 (Good User)</option>
+                    <option value="7.5" selected>Band 7.5 (Very Good User - Recommended)</option>
+                    <option value="8.0">Band 8.0 (Very Good User)</option>
+                    <option value="8.5">Band 8.5 (Expert User)</option>
+                    <option value="9.0">Band 9.0 (Elite / Perfect Score)</option>
+                </select>
+            </div>
+
+            <div class="modal-form-group">
+                <label class="modal-form-label">Daily Study Time</label>
+                <select id="modal-study-time-select" class="modal-select">
+                    <option value="30">30 Minutes / Day</option>
+                    <option value="45" selected>45 Minutes / Day (Recommended)</option>
+                    <option value="60">60 Minutes / Day (Intensive)</option>
+                    <option value="90">90 Minutes / Day (Fast-Track)</option>
+                </select>
+            </div>
+
+            <div class="modal-actions-row">
+                <button type="button" onclick="closeTargetModal()" class="btn-hero-secondary" style="padding:8px 16px;">Cancel</button>
+                <button type="submit" class="btn-hero-primary" style="padding:8px 18px;">Save Goal</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+function openTargetModal() {
+    var targetBand = parseFloat(document.getElementById('dash-target-band').textContent.replace('Band', '').trim()) || 7.5;
+    var sel = document.getElementById('modal-target-band-select');
+    if (sel) {
+        for (var i = 0; i < sel.options.length; i++) {
+            if (parseFloat(sel.options[i].value) === targetBand) {
+                sel.selectedIndex = i;
+                break;
+            }
+        }
+    }
+    document.getElementById('target-modal').style.display = 'flex';
+}
+
+function closeTargetModal() {
+    document.getElementById('target-modal').style.display = 'none';
+}
+
+async function saveTargetProfile(e) {
+    e.preventDefault();
+    var band = parseFloat(document.getElementById('modal-target-band-select').value) || 7.5;
+    var mins = parseInt(document.getElementById('modal-study-time-select').value) || 45;
+
+    try {
+        var res = await fetch('/api/v1/user/update-band-profile', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user_id: 1, target_band: band, current_level: 6.5, daily_study_mins: mins })
+        });
+        if (res.ok) {
+            document.getElementById('dash-target-band').textContent = 'Band ' + band;
+            closeTargetModal();
+        } else {
+            closeTargetModal();
+        }
+    } catch(err) {
+        console.error(err);
+        closeTargetModal();
+    }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,133 @@
+/* Responsive Admin Dashboard & AI Key Card Styles (XComic Style) */
+.admin-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--neutral-200);
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.admin-table th {
+  background-color: var(--neutral-100);
+  color: var(--neutral-700);
+  padding: var(--space-md);
+  font-weight: 600;
+  border-bottom: 1px solid var(--neutral-200);
+}
+
+.admin-table td {
+  padding: var(--space-md);
+  border-bottom: 1px solid var(--neutral-200);
+  color: var(--neutral-800);
+}
+
+.admin-table tr:hover {
+  background-color: var(--neutral-50);
+}
+
+.health-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  margin-right: 6px;
+}
+
+.health-active { background-color: var(--success-500); }
+.health-rate-limited { background-color: var(--warning-500); }
+.health-error { background-color: var(--danger-500); }
+
+/* XComic Style AI Settings Card Layout */
+.ai-settings-banner {
+  background-color: #fff7ed;
+  border: 1px solid #ffedd5;
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-lg);
+}
+
+.ai-provider-card {
+  background-color: #fff;
+  border: 1px solid var(--neutral-200);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-md);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s;
+}
+
+.ai-provider-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.ai-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md);
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.ai-card-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--neutral-900);
+}
+
+.ai-key-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.ai-key-input {
+  width: 100%;
+  min-height: 48px;
+  padding: var(--space-sm) 45px var(--space-sm) var(--space-md);
+  border: 1px solid var(--neutral-300);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  background-color: #f8fafc;
+}
+
+.ai-key-input:focus {
+  outline: none;
+  border-color: var(--primary-600);
+  background-color: #fff;
+}
+
+.eye-toggle-btn {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--neutral-600);
+  font-size: 1.1rem;
+  padding: 4px;
+}
+
+.get-key-link {
+  color: var(--primary-600);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.get-key-link:hover {
+  text-decoration: underline;
+}

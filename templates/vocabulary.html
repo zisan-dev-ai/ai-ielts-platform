@@ -1,0 +1,1124 @@
+{% extends "base.html" %}
+{% set active_page = "vocabulary" %}
+
+{% block title %}Vocabulary Master Hub — Official Academic Word Banks & Tests{% endblock %}
+
+{% block extra_head %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* FULL PAGE BLEED LAYOUT OVERRIDES (LIKE AI TEACHER) */
+.desktop-sidebar {
+    display: none !important;
+}
+
+.main-content {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 10px 14px !important;
+    height: 100vh !important;
+    overflow: hidden !important;
+}
+
+.vocab-container {
+    display: flex;
+    gap: 14px;
+    height: calc(100vh - 20px) !important;
+    overflow: hidden;
+    font-family: 'Hind Siliguri', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* SIDEBAR */
+.vocab-sidebar {
+    width: 285px;
+    background: #11141c;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    flex-shrink: 0;
+    gap: 8px;
+    transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1), padding 0.25s ease;
+    position: relative;
+}
+
+.vocab-sidebar.collapsed {
+    width: 58px;
+    padding: 12px 6px;
+}
+
+.vocab-sidebar.collapsed .sidebar-hide-on-collapse {
+    display: none !important;
+}
+
+.vocab-sidebar.collapsed .vocab-cat-hdr {
+    display: none !important;
+}
+
+.vocab-sidebar.collapsed .vocab-topic-item {
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.vocab-sidebar.collapsed .topic-title-stack {
+    display: none !important;
+}
+
+.vocab-sidebar.collapsed .topic-item-icon {
+    font-size: 1.25em;
+    margin: 0;
+}
+
+.vocab-search-input {
+    width: 100%;
+    background: #171b24;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: #fff;
+    font-size: 0.84em;
+    outline: none;
+    font-family: inherit;
+    transition: 0.2s;
+}
+.vocab-search-input:focus {
+    border-color: #10b981;
+    background: #1c212c;
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.3);
+}
+
+.vocab-topics-list {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-right: 6px;
+}
+.vocab-topics-list::-webkit-scrollbar { width: 5px; }
+.vocab-topics-list::-webkit-scrollbar-thumb { background: rgba(16, 185, 129, 0.35); border-radius: 4px; }
+.vocab-topics-list::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); }
+
+.vocab-cat-group {
+    margin-bottom: 8px;
+}
+
+.vocab-cat-hdr {
+    font-size: 0.72em;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #6ee7b7;
+    margin: 8px 0 4px;
+    padding: 4px 8px;
+    border-radius: 5px;
+    background: rgba(16, 185, 129, 0.1);
+    border-left: 3px solid #10b981;
+    letter-spacing: 0.5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.vocab-topic-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: 9px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: #cbd5e1;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    gap: 10px;
+}
+.vocab-topic-item:hover {
+    background: rgba(16, 185, 129, 0.12);
+    border-color: rgba(16, 185, 129, 0.25);
+    color: #fff;
+    transform: translateX(2px);
+}
+.vocab-topic-item.active {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(5, 150, 105, 0.15));
+    border: 1px solid rgba(16, 185, 129, 0.6);
+    border-left: 3.5px solid #10b981;
+    color: #fff;
+    font-weight: 700;
+}
+
+.topic-item-icon {
+    font-size: 1.15em;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.topic-title-stack {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1;
+    gap: 2px;
+}
+
+.topic-name-en {
+    font-size: 0.86em;
+    font-weight: 700;
+    color: #e2e8f0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.35;
+}
+.vocab-topic-item.active .topic-name-en {
+    color: #fff;
+}
+
+.topic-name-bn {
+    font-size: 0.74em;
+    color: #94a3b8;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3;
+    font-weight: 500;
+}
+.vocab-topic-item.active .topic-name-bn {
+    color: #6ee7b7;
+}
+
+/* MAIN CONTENT */
+.vocab-main-content {
+    flex: 1;
+    background: #0f1219;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.vocab-header-banner {
+    padding: 16px 22px;
+    background: linear-gradient(135deg, rgba(6, 78, 59, 0.95), rgba(16, 185, 129, 0.85));
+    border-bottom: 1px solid rgba(16, 185, 129, 0.3);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.stage-tab-btn {
+    padding: 8px 18px;
+    font-size: 0.84em;
+    font-weight: 700;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #cbd5e1;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    cursor: pointer;
+    transition: 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+.stage-tab-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+}
+.stage-tab-btn.active {
+    background: #10b981;
+    border-color: #34d399;
+    color: #fff;
+    box-shadow: 0 0 14px rgba(16, 185, 129, 0.4);
+}
+
+.vocab-scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.vocab-scroll-area::-webkit-scrollbar { width: 6px; }
+.vocab-scroll-area::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.12); border-radius: 4px; }
+
+/* WORD CARDS */
+.word-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 16px;
+}
+
+.word-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-left: 4px solid #10b981;
+    border-radius: 12px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: all 0.2s ease;
+}
+.word-card:hover {
+    border-color: rgba(16, 185, 129, 0.4);
+    background: rgba(255, 255, 255, 0.045);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.word-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 8px;
+}
+.word-title {
+    font-size: 1.25em;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 0.3px;
+}
+.word-ipa {
+    font-size: 0.78em;
+    color: #94a3b8;
+    margin-left: 8px;
+    font-family: 'JetBrains Mono', monospace;
+}
+.word-pos {
+    font-size: 0.72em;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 12px;
+    background: rgba(56, 189, 248, 0.14);
+    color: #38bdf8;
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.word-bengali {
+    font-size: 0.95em;
+    font-weight: 700;
+    color: #fde047;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.word-def {
+    font-size: 0.88em;
+    color: #cbd5e1;
+    line-height: 1.5;
+}
+
+.colloc-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+.colloc-pill {
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: #6ee7b7;
+    border-radius: 6px;
+    padding: 4px 9px;
+    font-size: 0.78em;
+    font-weight: 600;
+}
+
+.example-box {
+    background: rgba(0, 0, 0, 0.3);
+    border-left: 3px solid #10b981;
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: 0.88em;
+    color: #e2e8f0;
+    line-height: 1.45;
+}
+
+.upgrade-box {
+    background: rgba(168, 85, 247, 0.12);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    color: #d8b4fe;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.84em;
+    line-height: 1.45;
+}
+
+/* QUIZ STYLES */
+.quiz-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.option-btn {
+    text-align: left;
+    padding: 12px 16px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #e2e8f0;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+    font-family: inherit;
+}
+.option-btn:hover:not(:disabled) {
+    background: rgba(16, 185, 129, 0.25);
+    border-color: #10b981;
+    transform: translateY(-1px);
+}
+.option-btn:disabled {
+    cursor: default;
+}
+.option-btn.selected-correct {
+    background: rgba(16, 185, 129, 0.3) !important;
+    border-color: #10b981 !important;
+    color: #34d399 !important;
+    font-weight: 700;
+}
+.option-btn.selected-wrong {
+    background: rgba(239, 68, 68, 0.3) !important;
+    border-color: #ef4444 !important;
+    color: #f87171 !important;
+}
+
+.score-badge-card {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.1));
+    border: 1.5px solid #10b981;
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="vocab-container">
+    <!-- LEFT SIDEBAR -->
+    <aside class="vocab-sidebar" id="vocabSidebar">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+            <div class="sidebar-hide-on-collapse" style="display:flex; align-items:center; gap:6px;">
+                <span style="font-size:0.88em; font-weight:800; color:#fff;">🔤 থিমস ও শব্দভাণ্ডার</span>
+                <span id="vocabCountBadge" style="font-size:0.7em; background:rgba(16,185,129,0.2); color:#6ee7b7; padding:2px 7px; border-radius:10px; font-weight:700;">16 THEMES</span>
+            </div>
+            <button id="vocabCollapseBtn" onclick="toggleVocabSidebar()" title="সাইডবার সংকুচিত/প্রসারিত করুন" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:#94a3b8; cursor:pointer; font-size:0.78em; padding:4px 8px; border-radius:6px; transition:0.2s;">
+                <i class="fas fa-chevron-left" id="vocabCollapseIcon"></i>
+            </button>
+        </div>
+
+        <div class="sidebar-hide-on-collapse">
+            <input type="text" id="vocabSearchInput" class="vocab-search-input" placeholder="🔍 Search / বাংলায় খুঁজুন..." oninput="filterVocabList(this.value)">
+        </div>
+
+        <div class="vocab-topics-list" id="vocabTopicsContainer">
+            <!-- Populated via JS -->
+        </div>
+
+        <div id="vocab-search-empty" class="sidebar-hide-on-collapse" style="display:none; text-align:center; padding:24px 10px; color:#94a3b8; font-size:0.82em;">
+            <i class="fas fa-search" style="font-size:1.4em; margin-bottom:8px; opacity:0.4; display:block;"></i>
+            কোনো থিম পাওয়া যায়নি
+        </div>
+    </aside>
+
+    <!-- RIGHT MAIN LEARNING ENGINE -->
+    <main class="vocab-main-content">
+        <!-- HEADER -->
+        <div class="vocab-header-banner">
+            <div style="display:flex; align-items:center; gap:12px;">
+                <a href="/dashboard" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:#cbd5e1; font-size:0.8em; font-weight:700; padding:6px 14px; border-radius:8px; text-decoration:none; display:inline-flex; align-items:center; gap:6px; transition:0.2s; white-space:nowrap;">
+                    ← Dashboard
+                </a>
+                <div>
+                    <span id="topic-cat-tag" style="font-size:0.72em; background:rgba(255,255,255,0.15); color:#a7f3d0; padding:3px 10px; border-radius:12px; font-weight:700; text-transform:uppercase;">ACADEMIC IELTS VOCABULARY</span>
+                    <h2 id="topic-main-title" style="font-size:1.35em; font-weight:800; color:#fff; margin-top:4px;">Education & Academic Learning</h2>
+                    <div id="topic-bengali-title" style="font-size:0.85em; color:#e2e8f0;">শিক্ষা ও শিক্ষাব্যবস্থা (Education & Academia)</div>
+                </div>
+            </div>
+            <!-- 3-STAGE TABS -->
+            <div style="display:flex; gap:8px;">
+                <button class="stage-tab-btn active" id="tab-btn-1" onclick="switchStage(1)">
+                    <i class="fas fa-book-reader"></i> 1. Academic Lexicon & Cards
+                </button>
+                <button class="stage-tab-btn" id="tab-btn-2" onclick="switchStage(2)">
+                    <i class="fas fa-bolt"></i> 2. Practice Drills
+                </button>
+                <button class="stage-tab-btn" id="tab-btn-3" onclick="switchStage(3)">
+                    <i class="fas fa-award"></i> 3. Exam Challenge
+                </button>
+            </div>
+        </div>
+
+        <!-- SCROLLABLE STAGE VIEWPORT -->
+        <div class="vocab-scroll-area" id="stageContentArea">
+            <!-- Injected via JS -->
+        </div>
+    </main>
+</div>
+
+<!-- Hidden audio element for vocab pronunciation -->
+<audio id="vocab-audio-player" style="display:none;"></audio>
+
+<script>
+var vocabCatalog = {{ vocab_catalog | tojson | safe }};
+var currentTopicIndex = 0;
+var currentStage = 1;
+var isVocabAudioPlaying = false;
+var currentVocabQuestions = [];
+var vocabCorrectCount = 0;
+var vocabTotalAnswered = 0;
+
+// Stage 3 Exam State
+var currentVocabExamQuestions = [];
+var vocabExamCorrectCount = 0;
+var vocabExamTotalAnswered = 0;
+
+function initVocabHub() {
+    renderSidebarList();
+    loadTopic(0);
+}
+
+function renderSidebarList() {
+    var container = document.getElementById('vocabTopicsContainer');
+    if (!container) return;
+    container.innerHTML = '';
+
+    var badge = document.getElementById('vocabCountBadge');
+    if (badge) badge.textContent = vocabCatalog.length + ' THEMES';
+
+    var categories = {
+        'society': '🏛️ Society & Global Affairs (সমাজ ও বিশ্ব)',
+        'science': '🔬 Science & Environment (বিজ্ঞান ও পরিবেশ)',
+        'lifestyle': '🏙️ Living, Health & Economy (স্বাস্থ্য ও জীবনধারা)',
+        'master': '👑 Band 8.5+ Academic Master (উচ্চমানের লেক্সিস)'
+    };
+
+    var grouped = {};
+    vocabCatalog.forEach(function(item, idx) {
+        var cat = item.category || 'society';
+        if (!grouped[cat]) grouped[cat] = [];
+        grouped[cat].push({ item: item, index: idx });
+    });
+
+    for (var catKey in categories) {
+        if (grouped[catKey] && grouped[catKey].length > 0) {
+            var groupEl = document.createElement('div');
+            groupEl.className = 'vocab-cat-group';
+            groupEl.id = 'cat-group-' + catKey;
+
+            var hdr = document.createElement('div');
+            hdr.className = 'vocab-cat-hdr';
+            hdr.innerHTML = '<span>' + categories[catKey] + '</span><span style="opacity:0.75; font-size:0.9em;">' + grouped[catKey].length + '</span>';
+            groupEl.appendChild(hdr);
+
+            grouped[catKey].forEach(function(entry) {
+                var el = document.createElement('div');
+                el.className = 'vocab-topic-item' + (entry.index === currentTopicIndex ? ' active' : '');
+                el.id = 'vocab-topic-' + entry.index;
+                el.setAttribute('data-topic-en', entry.item.topic);
+                el.setAttribute('data-topic-bn', entry.item.bengali_title || '');
+                el.setAttribute('title', entry.item.topic + ' (' + (entry.item.bengali_title || '') + ')');
+
+                el.innerHTML = '<span class="topic-item-icon">' + (entry.item.icon || '📚') + '</span>' +
+                    '<div class="topic-title-stack">' +
+                        '<div class="topic-name-en">' + entry.item.topic + '</div>' +
+                        '<div class="topic-name-bn">' + (entry.item.bengali_title || '') + '</div>' +
+                    '</div>';
+
+                el.onclick = function() { loadTopic(entry.index); };
+                groupEl.appendChild(el);
+            });
+
+            container.appendChild(groupEl);
+        }
+    }
+}
+
+function toggleVocabSidebar() {
+    var sidebar = document.getElementById('vocabSidebar');
+    var icon = document.getElementById('vocabCollapseIcon');
+    if (!sidebar) return;
+
+    var isCollapsed = sidebar.classList.toggle('collapsed');
+    if (icon) {
+        icon.className = isCollapsed ? 'fas fa-chevron-right' : 'fas fa-chevron-left';
+    }
+}
+
+function filterVocabList(q) {
+    var query = (q || '').toLowerCase().trim();
+    var totalVisible = 0;
+
+    document.querySelectorAll('.vocab-topic-item').forEach(function(item) {
+        var en = (item.getAttribute('data-topic-en') || '').toLowerCase();
+        var bn = (item.getAttribute('data-topic-bn') || '').toLowerCase();
+        var match = !query || en.indexOf(query) >= 0 || bn.indexOf(query) >= 0;
+        item.style.display = match ? 'flex' : 'none';
+        if (match) totalVisible++;
+    });
+
+    document.querySelectorAll('.vocab-cat-group').forEach(function(group) {
+        var visibleItems = group.querySelectorAll('.vocab-topic-item:not([style*="display: none"])');
+        group.style.display = visibleItems.length > 0 ? 'block' : 'none';
+    });
+
+    var emptyEl = document.getElementById('vocab-search-empty');
+    if (emptyEl) {
+        emptyEl.style.display = (totalVisible === 0 && query) ? 'block' : 'none';
+    }
+}
+
+function loadTopic(idx) {
+    currentTopicIndex = idx;
+    currentVocabQuestions = [];
+    vocabCorrectCount = 0;
+    vocabTotalAnswered = 0;
+    currentVocabExamQuestions = [];
+    vocabExamCorrectCount = 0;
+    vocabExamTotalAnswered = 0;
+
+    document.querySelectorAll('.vocab-topic-item').forEach(function(el) { el.classList.remove('active'); });
+    var activeEl = document.getElementById('vocab-topic-' + idx);
+    if (activeEl) {
+        activeEl.classList.add('active');
+        if (typeof activeEl.scrollIntoView === 'function') {
+            activeEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    }
+
+    var topic = vocabCatalog[idx];
+    document.getElementById('topic-main-title').textContent = (topic.icon || '📚') + ' ' + topic.topic;
+    document.getElementById('topic-bengali-title').textContent = topic.bengali_title || '';
+
+    renderCurrentStage();
+}
+
+function switchStage(stageNum) {
+    currentStage = stageNum;
+    for (var i = 1; i <= 3; i++) {
+        var b = document.getElementById('tab-btn-' + i);
+        if (b) {
+            if (i === stageNum) b.classList.add('active');
+            else b.classList.remove('active');
+        }
+    }
+    renderCurrentStage();
+}
+
+function openTeacherForTopic(skill, topicName) {
+    window.location.href = '/ai-teacher?skill=' + encodeURIComponent(skill) + '&topic=' + encodeURIComponent(topicName);
+}
+
+function playVocabAudio() {
+    var topic = vocabCatalog[currentTopicIndex];
+    var textToSpeak = topic.topic + ". " + topic.concept_story;
+    var audio = document.getElementById('vocab-audio-player');
+    var btn = document.getElementById('vocab-audio-btn');
+
+    if (isVocabAudioPlaying && audio) {
+        audio.pause();
+        isVocabAudioPlaying = false;
+        if (btn) btn.innerHTML = '🔊 ARIA-র কণ্ঠে শব্দার্থ ও উচ্চারণ শুনুন';
+        return;
+    }
+
+    if (btn) btn.innerHTML = '⏳ লোড হচ্ছে...';
+
+    fetch('/api/v1/ai/tts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: textToSpeak, lang_pref: 'both' })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+        if (data.audio_url && audio) {
+            audio.src = data.audio_url;
+            audio.play();
+            isVocabAudioPlaying = true;
+            if (btn) btn.innerHTML = '⏹️ উচ্চারণ বন্ধ করুন';
+            audio.onended = function() {
+                isVocabAudioPlaying = false;
+                if (btn) btn.innerHTML = '🔊 ARIA-র কণ্ঠে শব্দার্থ ও উচ্চারণ শুনুন';
+            };
+        }
+    })
+    .catch(function(e) {
+        console.error('Audio playback error:', e);
+        if (btn) btn.innerHTML = '🔊 ARIA-র কণ্ঠে শব্দার্থ ও উচ্চারণ শুনুন';
+    });
+}
+
+function renderCurrentStage() {
+    var topic = vocabCatalog[currentTopicIndex];
+    var area = document.getElementById('stageContentArea');
+    if (!area) return;
+
+    if (currentStage === 1) {
+        // STAGE 1: ACADEMIC LEXICON & CARDS
+        var cardsHtml = '';
+        (topic.words || []).forEach(function(w) {
+            var collocationsHtml = '';
+            if (w.collocation) {
+                var items = w.collocation.split(',');
+                items.forEach(function(c) {
+                    var trimmed = c.trim();
+                    if (trimmed) collocationsHtml += '<span class="colloc-pill">🔗 ' + trimmed + '</span>';
+                });
+            }
+
+            cardsHtml += `
+                <div class="word-card">
+                    <div class="word-head">
+                        <div>
+                            <span class="word-title">${w.word}</span>
+                            <span class="word-ipa">${w.ipa || ''}</span>
+                        </div>
+                        <span class="word-pos">${w.pos || 'Noun'}</span>
+                    </div>
+                    <div class="word-bengali">🇧🇩 অর্থ: ${w.bengali}</div>
+                    <div class="word-def">💡 <b>সহজ সংজ্ঞা:</b> ${w.simple_def}</div>
+                    <div class="colloc-container">
+                        ${collocationsHtml || '<span class="colloc-pill">🔗 ' + (w.collocation || 'Academic') + '</span>'}
+                    </div>
+                    <div class="example-box">
+                        📝 <b>IELTS Example:</b> ${w.ielts_example}
+                    </div>
+                    <div class="upgrade-box">
+                        🚀 <b>Band 8.5+ Upgrade:</b> ${w.band_upgrade}
+                    </div>
+                </div>
+            `;
+        });
+
+        area.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                <button id="vocab-audio-btn" onclick="playVocabAudio()" class="btn btn-outline" style="font-size:0.85em; color:#6ee7b7; border-color:rgba(16,185,129,0.4); background:rgba(16,185,129,0.15); border-radius:20px; padding:6px 16px; cursor:pointer;">
+                    🔊 ARIA-র কণ্ঠে শব্দার্থ ও উচ্চারণ শুনুন
+                </button>
+                <button onclick="openTeacherForTopic('Vocabulary', vocabCatalog[currentTopicIndex].topic)" class="btn btn-outline" style="font-size:0.82em; color:#60a5fa; border-color:rgba(59,130,246,0.3); background:rgba(59,130,246,0.1); border-radius:20px; padding:6px 14px; cursor:pointer;">
+                    💬 টিচারের সাথে সরাসরি স্পিকিং প্র্যাকটিস →
+                </button>
+            </div>
+
+            <div style="background:rgba(16, 185, 129, 0.1); border:1px solid rgba(16, 185, 129, 0.25); border-radius:10px; padding:14px 18px; color:#f8fafc; font-size:0.92em; line-height:1.6;">
+                <b style="color:#6ee7b7;">💡 টপিক কনসেপ্ট ও কৌশল:</b> ${topic.concept_story}
+            </div>
+
+            <div class="word-card-grid">
+                ${cardsHtml}
+            </div>
+
+            <div style="text-align:right; margin-top:8px;">
+                <button onclick="switchStage(2)" class="btn btn-primary" style="background:#059669; border-color:#10b981; font-size:0.9em; padding:10px 22px; border-radius:8px; cursor:pointer; font-weight:700;">
+                    ⚡ শব্দার্থ শেখা শেষ? সহজ প্র্যাকটিস শুরু করুন →
+                </button>
+            </div>
+        `;
+    } else if (currentStage === 2) {
+        // STAGE 2: EASY PRACTICE (INFINITE AI QUESTIONS SUPPORT)
+        if (!currentVocabQuestions || currentVocabQuestions.length === 0) {
+            currentVocabQuestions = JSON.parse(JSON.stringify(topic.easy_practice || []));
+        }
+
+        area.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(56, 189, 248, 0.1); border:1px solid rgba(56, 189, 248, 0.3); padding:12px 18px; border-radius:10px;">
+                <span style="color:#38bdf8; font-size:0.88em; font-weight:600;">
+                    ⚡ রুলসের সাথে সাথেই সহজ ভোকেবুলারি কুইজ: সঠিক অপশনে ক্লিক করে উত্তর দিন।
+                </span>
+                <span id="v-score-tracker" style="font-size:0.85em; background:rgba(56,189,248,0.2); color:#38bdf8; padding:3px 12px; border-radius:12px; font-weight:700;">
+                    Score: ${vocabCorrectCount} / ${vocabTotalAnswered}
+                </span>
+            </div>
+
+            <div id="vocabQuestionsContainer" style="display:flex; flex-direction:column; gap:12px;"></div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-top:8px;">
+                <button id="v-generate-more-btn" onclick="generateMoreVocabQuestions()" class="btn btn-outline" style="background:rgba(16,185,129,0.15); border-color:#10b981; color:#6ee7b7; font-size:0.9em; padding:10px 20px; border-radius:8px; cursor:pointer; font-weight:700;">
+                    ✨ আরও ৩টি নতুন প্রশ্ন প্র্যাকটিস করুন (Endless AI Practice)
+                </button>
+                <button onclick="switchStage(3)" class="btn btn-accent" style="background:#3b82f6; border-color:#60a5fa; color:#fff; font-size:0.9em; padding:10px 22px; border-radius:8px; cursor:pointer; font-weight:700;">
+                    🏆 এবার রিয়েল IELTS লেক্সিক্যাল চ্যালেঞ্জ টেস্ট দিন →
+                </button>
+            </div>
+        `;
+
+        renderVocabStage2Cards();
+    } else if (currentStage === 3) {
+        // STAGE 3: REAL IELTS EXAM TEST
+        var challenge = topic.ielts_exam_challenge;
+        if (!challenge) {
+            area.innerHTML = '<div style="color:#94a3b8;padding:20px;">Exam challenge loading...</div>';
+            return;
+        }
+
+        if (!currentVocabExamQuestions || currentVocabExamQuestions.length === 0) {
+            currentVocabExamQuestions = JSON.parse(JSON.stringify(challenge.questions || []));
+        }
+
+        area.innerHTML = `
+            <div class="score-badge-card">
+                <div>
+                    <span style="font-size:0.75em; font-weight:700; text-transform:uppercase; color:#6ee7b7; letter-spacing:0.5px;">LIVE LEXICAL RESOURCE SCORING</span>
+                    <h3 style="font-size:1.15em; font-weight:800; color:#fff; margin-top:2px;">${challenge.title}</h3>
+                </div>
+                <div style="text-align:right;">
+                    <div style="font-size:0.7em; color:#a7f3d0; text-transform:uppercase; font-weight:700;">LIVE EXAM SCORE</div>
+                    <div id="v-exam-score-tracker" style="font-size:1.25em; font-weight:800; color:#34d399;">Score: ${vocabExamCorrectCount} / ${vocabExamTotalAnswered}</div>
+                </div>
+            </div>
+
+            <div class="concept-card" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:16px;">
+                <div style="font-size:0.85em; font-weight:700; color:#fbbf24; text-transform:uppercase; margin-bottom:6px;">📜 Student Draft to Upgrade (সাধারণ প্যারাগ্রাফ রূপান্তর):</div>
+                <div style="font-size:0.95em; line-height:1.6; color:#e2e8f0; font-style:italic; background:rgba(0,0,0,0.3); padding:12px 14px; border-radius:8px; border-left:3px solid #fbbf24;">
+                    "${challenge.passage || challenge.context_prompt}"
+                </div>
+            </div>
+
+            <div id="vocabExamQuestionsContainer" style="display:flex; flex-direction:column; gap:12px;"></div>
+
+            <div style="margin-top:10px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                <button id="v-exam-generate-more-btn" onclick="generateMoreVocabExamChallengeQuestions()" class="btn btn-outline" style="background:rgba(16,185,129,0.15); border:1.5px solid #10b981; color:#6ee7b7; font-size:0.9em; padding:10px 20px; border-radius:8px; cursor:pointer; font-weight:700;">
+                    ✨ AI দিয়ে আরও ৩টি নতুন Exam Challenge প্রশ্ন তৈরি করুন (Endless AI Exam Generator)
+                </button>
+            </div>
+
+            <div id="v-exam-summary-box" style="display:none; background:rgba(16,185,129,0.15); border:1.5px solid #10b981; border-radius:10px; padding:16px; margin-top:10px;">
+                <h4 style="font-size:1.05em; font-weight:800; color:#34d399; margin-bottom:4px;">🎉 Lexical Challenge Completed!</h4>
+                <p id="v-exam-summary-text" style="font-size:0.9em; color:#e2e8f0;"></p>
+            </div>
+        `;
+
+        renderVocabStage3Cards();
+    }
+}
+
+function renderVocabStage2Cards() {
+    var container = document.getElementById('vocabQuestionsContainer');
+    if (!container) return;
+    container.innerHTML = '';
+
+    currentVocabQuestions.forEach(function(q, qIdx) {
+        var card = document.createElement('div');
+        card.className = 'quiz-card';
+        card.id = 'v-card-' + qIdx;
+
+        var qTitle = document.createElement('div');
+        qTitle.style.cssText = 'font-size:0.94em; font-weight:700; color:#fff;';
+        qTitle.textContent = 'Q' + (qIdx + 1) + '. ' + q.question;
+        card.appendChild(qTitle);
+
+        var grid = document.createElement('div');
+        grid.style.cssText = 'display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-top:6px;';
+
+        q.options.forEach(function(opt, oIdx) {
+            var btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.id = 'v-opt-' + qIdx + '-' + oIdx;
+            btn.textContent = opt;
+            btn.onclick = function() {
+                handleVocabOptionClick(qIdx, oIdx);
+            };
+            if (q.answered) {
+                btn.disabled = true;
+                if (oIdx === q.selectedIdx) {
+                    btn.classList.add(q.isCorrect ? 'selected-correct' : 'selected-wrong');
+                }
+                if (!q.isCorrect && opt.trim() === q.answer.trim()) {
+                    btn.classList.add('selected-correct');
+                }
+            }
+            grid.appendChild(btn);
+        });
+        card.appendChild(grid);
+
+        var fb = document.createElement('div');
+        fb.id = 'v-fb-' + qIdx;
+        if (q.answered) {
+            fb.style.display = 'block';
+            fb.style.background = q.isCorrect ? 'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)';
+            fb.style.border = '1px solid ' + (q.isCorrect ? '#10b981' : '#ef4444');
+            fb.style.color = q.isCorrect ? '#34d399' : '#fca5a5';
+            fb.style.padding = '10px 14px';
+            fb.style.borderRadius = '8px';
+            fb.style.fontSize = '0.86em';
+            fb.style.marginTop = '6px';
+            fb.innerHTML = (q.isCorrect ? '<b>✅ একদম সঠিক!</b> ' : '<b>❌ ভুল হয়েছে!</b> সঠিক উত্তর: <b>' + q.answer + '</b>। ') + (q.explanation || '');
+        } else {
+            fb.style.display = 'none';
+        }
+        card.appendChild(fb);
+
+        container.appendChild(card);
+    });
+}
+
+function handleVocabOptionClick(qIdx, oIdx) {
+    var q = currentVocabQuestions[qIdx];
+    if (!q || q.answered) return;
+
+    q.answered = true;
+    q.selectedIdx = oIdx;
+    vocabTotalAnswered++;
+
+    var selectedOpt = q.options[oIdx];
+    var isCorrect = (selectedOpt.trim() === q.answer.trim());
+    q.isCorrect = isCorrect;
+    if (isCorrect) vocabCorrectCount++;
+
+    document.querySelectorAll('#v-card-' + qIdx + ' .option-btn').forEach(function(btn) {
+        btn.disabled = true;
+    });
+
+    var selectedBtn = document.getElementById('v-opt-' + qIdx + '-' + oIdx);
+    if (selectedBtn) {
+        selectedBtn.classList.add(isCorrect ? 'selected-correct' : 'selected-wrong');
+    }
+
+    if (!isCorrect) {
+        q.options.forEach(function(opt, idx) {
+            if (opt.trim() === q.answer.trim()) {
+                var cBtn = document.getElementById('v-opt-' + qIdx + '-' + idx);
+                if (cBtn) cBtn.classList.add('selected-correct');
+            }
+        });
+    }
+
+    var fb = document.getElementById('v-fb-' + qIdx);
+    if (fb) {
+        fb.style.display = 'block';
+        fb.style.background = isCorrect ? 'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)';
+        fb.style.border = '1px solid ' + (isCorrect ? '#10b981' : '#ef4444');
+        fb.style.color = isCorrect ? '#34d399' : '#fca5a5';
+        fb.style.padding = '10px 14px';
+        fb.style.borderRadius = '8px';
+        fb.style.fontSize = '0.86em';
+        fb.style.marginTop = '6px';
+        fb.innerHTML = (isCorrect ? '<b>✅ একদম সঠিক উত্তর!</b> ' : '<b>❌ ভুল হয়েছে!</b> সঠিক উত্তর: <b>' + q.answer + '</b>। ') + (q.explanation || '');
+    }
+
+    var tracker = document.getElementById('v-score-tracker');
+    if (tracker) tracker.textContent = 'Score: ' + vocabCorrectCount + ' / ' + vocabTotalAnswered;
+}
+
+function generateMoreVocabQuestions() {
+    var topic = vocabCatalog[currentTopicIndex].topic;
+    var btn = document.getElementById('v-generate-more-btn');
+    if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '⏳ নতুন প্রশ্ন তৈরি হচ্ছে...';
+    }
+
+    fetch('/api/v1/practice/generate-more', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            skill: 'Vocabulary',
+            topic: topic,
+            count: 3,
+            existing_count: currentVocabQuestions.length
+        })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+        if (data.questions && data.questions.length > 0) {
+            var prevLen = currentVocabQuestions.length;
+            data.questions.forEach(function(nq) {
+                currentVocabQuestions.push(nq);
+            });
+            renderVocabStage2Cards();
+            var newCard = document.getElementById('v-card-' + prevLen);
+            if (newCard && typeof newCard.scrollIntoView === 'function') {
+                newCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = '✨ আরও ৩টি নতুন প্রশ্ন প্র্যাকটিস করুন (Endless AI Practice)';
+        }
+    })
+    .catch(function(e) {
+        console.error('Error generating questions:', e);
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = '✨ আরও ৩টি নতুন প্রশ্ন প্র্যাকটিস করুন (Endless AI Practice)';
+        }
+    });
+}
+
+function renderVocabStage3Cards() {
+    var container = document.getElementById('vocabExamQuestionsContainer');
+    if (!container) return;
+    container.innerHTML = '';
+
+    currentVocabExamQuestions.forEach(function(q, qIdx) {
+        var card = document.createElement('div');
+        card.className = 'quiz-card';
+        card.id = 'v-exam-card-' + qIdx;
+
+        var qTitle = document.createElement('div');
+        qTitle.style.cssText = 'font-size:0.94em; font-weight:700; color:#fff;';
+        qTitle.textContent = 'Task ' + (qIdx + 1) + ': ' + (q.label || q.question || 'Academic Upgrade');
+        card.appendChild(qTitle);
+
+        var list = document.createElement('div');
+        list.style.cssText = 'display:flex; flex-direction:column; gap:6px; margin-top:6px;';
+
+        (q.options || []).forEach(function(opt, oIdx) {
+            var btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.id = 'v-exam-opt-' + qIdx + '-' + oIdx;
+            btn.textContent = opt;
+            btn.onclick = function() {
+                handleVocabExamOptionClick(qIdx, oIdx);
+            };
+            if (q.answered) {
+                btn.disabled = true;
+                if (oIdx === q.selectedIdx) {
+                    btn.classList.add(q.isCorrect ? 'selected-correct' : 'selected-wrong');
+                }
+                if (!q.isCorrect && opt.trim() === q.answer.trim()) {
+                    btn.classList.add('selected-correct');
+                }
+            }
+            list.appendChild(btn);
+        });
+        card.appendChild(list);
+
+        var fb = document.createElement('div');
+        fb.id = 'v-exam-fb-' + qIdx;
+        if (q.answered) {
+            fb.style.display = 'block';
+            fb.style.background = q.isCorrect ? 'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)';
+            fb.style.border = '1px solid ' + (q.isCorrect ? '#10b981' : '#ef4444');
+            fb.style.color = q.isCorrect ? '#34d399' : '#fca5a5';
+            fb.style.padding = '10px 14px';
+            fb.style.borderRadius = '8px';
+            fb.style.fontSize = '0.86em';
+            fb.style.marginTop = '6px';
+            fb.innerHTML = (q.isCorrect ? '<b>🎯 Band 8.5 Academic Lexis:</b> ' : '<b>⚠️ Examiner Feedback:</b> সঠিক উত্তর: <b>' + q.answer + '</b>। ') + (q.explanation || '');
+        } else {
+            fb.style.display = 'none';
+        }
+        card.appendChild(fb);
+
+        container.appendChild(card);
+    });
+}
+
+function handleVocabExamOptionClick(qIdx, oIdx) {
+    var q = currentVocabExamQuestions[qIdx];
+    if (!q || q.answered) return;
+
+    q.answered = true;
+    q.selectedIdx = oIdx;
+    vocabExamTotalAnswered++;
+
+    var selectedOpt = q.options[oIdx];
+    var isCorrect = (selectedOpt.trim() === q.answer.trim());
+    q.isCorrect = isCorrect;
+    if (isCorrect) vocabExamCorrectCount++;
+
+    document.querySelectorAll('#v-exam-card-' + qIdx + ' .option-btn').forEach(function(btn) {
+        btn.disabled = true;
+    });
+
+    var selectedBtn = document.getElementById('v-exam-opt-' + qIdx + '-' + oIdx);
+    if (selectedBtn) {
+        selectedBtn.classList.add(isCorrect ? 'selected-correct' : 'selected-wrong');
+    }
+
+    if (!isCorrect) {
+        q.options.forEach(function(opt, idx) {
+            if (opt.trim() === q.answer.trim()) {
+                var cBtn = document.getElementById('v-exam-opt-' + qIdx + '-' + idx);
+                if (cBtn) cBtn.classList.add('selected-correct');
+            }
+        });
+    }
+
+    var fb = document.getElementById('v-exam-fb-' + qIdx);
+    if (fb) {
+        fb.style.display = 'block';
+        fb.style.background = isCorrect ? 'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)';
+        fb.style.border = '1px solid ' + (isCorrect ? '#10b981' : '#ef4444');
+        fb.style.color = isCorrect ? '#34d399' : '#fca5a5';
+        fb.style.padding = '10px 14px';
+        fb.style.borderRadius = '8px';
+        fb.style.fontSize = '0.86em';
+        fb.style.marginTop = '6px';
+        fb.innerHTML = (isCorrect ? '<b>🎯 Band 8.5 Academic Lexis:</b> ' : '<b>⚠️ Examiner Feedback:</b> সঠিক উত্তর: <b>' + q.answer + '</b>। ') + (q.explanation || '');
+    }
+
+    var tracker = document.getElementById('v-exam-score-tracker');
+    if (tracker) tracker.textContent = 'Score: ' + vocabExamCorrectCount + ' / ' + vocabExamTotalAnswered;
+
+    var summaryBox = document.getElementById('v-exam-summary-box');
+    var summaryText = document.getElementById('v-exam-summary-text');
+    if (summaryBox && summaryText) {
+        summaryBox.style.display = 'block';
+        summaryText.innerHTML = isCorrect ? 
+            'চমৎকার! আপনি সাধারণ শব্দের বদলে উচ্চমানের অ্যাকাডেমিক শব্দ সফলভাবে প্রতিস্থাপন করতে পেরেছেন। আপনার Lexical Resource (LR) স্কোর আপডেট হয়েছে।' :
+            'ভালো প্রচেষ্টা! এক্সামিনার নোট অনুযায়ী হাই-ব্যান্ড অ্যাকাডেমিক কলকেশনগুলো আরেকবার রিভিশন দিন।';
+    }
+}
+
+function generateMoreVocabExamChallengeQuestions() {
+    var topicTitle = (currentTopicIndex >= 0 && vocabCatalog[currentTopicIndex]) ? vocabCatalog[currentTopicIndex].topic : 'Academic IELTS Master Vocabulary';
+    var btn = document.getElementById('v-exam-generate-more-btn');
+    if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '⏳ AI নতুন Exam Challenge তৈরি করছে...';
+    }
+
+    fetch('/api/v1/vocabulary/generate-exam-challenge', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            topic: topicTitle,
+            count: 3,
+            existing_count: currentVocabExamQuestions.length
+        })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+        if (data.challenge && data.challenge.questions && data.challenge.questions.length > 0) {
+            var prevLen = currentVocabExamQuestions.length;
+            data.challenge.questions.forEach(function(nq) {
+                currentVocabExamQuestions.push(nq);
+            });
+            renderVocabStage3Cards();
+            var newCard = document.getElementById('v-exam-card-' + prevLen);
+            if (newCard && typeof newCard.scrollIntoView === 'function') {
+                newCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = '✨ AI দিয়ে আরও ৩টি নতুন Exam Challenge প্রশ্ন তৈরি করুন (Endless AI Exam Generator)';
+        }
+    })
+    .catch(function(e) {
+        console.error('Error generating vocab exam questions:', e);
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = '✨ AI দিয়ে আরও ৩টি নতুন Exam Challenge প্রশ্ন তৈরি করুন (Endless AI Exam Generator)';
+        }
+    });
+}
+
+window.onload = initVocabHub;
+</script>
+{% endblock %}

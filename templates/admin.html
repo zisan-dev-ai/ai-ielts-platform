@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛡️ AI Provider Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f1115;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-hover: rgba(255, 255, 255, 0.06);
+            --card-radius: 16px;
+            --btn-radius: 8px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* Provider Gradients */
+            --grad-gemini: linear-gradient(135deg, #4285F4, #7B1FA2);
+            --grad-openai: linear-gradient(135deg, #10A37F, #1A7F5A);
+            --grad-anthropic: linear-gradient(135deg, #FF6B35, #F5A623);
+            --grad-deepseek: linear-gradient(135deg, #00BCD4, #0288D1);
+            --grad-grok: linear-gradient(135deg, #E91E63, #FF5722);
+            --grad-ollama: linear-gradient(135deg, #10B981, #059669);
+
+            /* Status Colors */
+            --status-active-bg: rgba(16, 185, 129, 0.2);
+            --status-active-text: #34d399;
+            --status-disabled-bg: rgba(245, 158, 11, 0.2);
+            --status-disabled-text: #fbbf24;
+            --status-error-bg: rgba(239, 68, 68, 0.2);
+            --status-error-text: #f87171;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(66, 133, 244, 0.05), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(233, 30, 99, 0.05), transparent 25%);
+            background-attachment: fixed;
+        }
+
+        .header {
+            max-width: 1200px;
+            margin: 0 auto 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .back-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            align-self: flex-start;
+        }
+
+        .back-link:hover {
+            color: var(--text-primary);
+        }
+
+        .title-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #fff, #a5b4fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .summary-bar {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--card-radius);
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            margin-bottom: 2rem;
+        }
+        
+        .summary-stat {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .summary-stat .label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .summary-stat .value {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--card-radius);
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Specific Glow effects based on Provider ID */
+        .card[data-provider="gemini"]:hover { box-shadow: 0 10px 40px -10px rgba(66, 133, 244, 0.3); border-color: rgba(66, 133, 244, 0.3); }
+        .card[data-provider="openai"]:hover { box-shadow: 0 10px 40px -10px rgba(16, 163, 127, 0.3); border-color: rgba(16, 163, 127, 0.3); }
+        .card[data-provider="anthropic"]:hover { box-shadow: 0 10px 40px -10px rgba(255, 107, 53, 0.3); border-color: rgba(255, 107, 53, 0.3); }
+        .card[data-provider="deepseek"]:hover { box-shadow: 0 10px 40px -10px rgba(0, 188, 212, 0.3); border-color: rgba(0, 188, 212, 0.3); }
+        .card[data-provider="grok"]:hover { box-shadow: 0 10px 40px -10px rgba(233, 30, 99, 0.3); border-color: rgba(233, 30, 99, 0.3); }
+
+        .card-header {
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .card[data-provider="gemini"] .card-header { background: var(--grad-gemini); }
+        .card[data-provider="openai"] .card-header { background: var(--grad-openai); }
+        .card[data-provider="anthropic"] .card-header { background: var(--grad-anthropic); }
+        .card[data-provider="deepseek"] .card-header { background: var(--grad-deepseek); }
+        .card[data-provider="grok"] .card-header { background: var(--grad-grok); }
+        .card[data-provider="ollama"] .card-header { background: var(--grad-ollama); }
+
+        .provider-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .badge {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #fff;
+            backdrop-filter: blur(4px);
+        }
+
+        .key-list {
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            max-height: 300px;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        /* Custom Scrollbar */
+        .key-list::-webkit-scrollbar { width: 6px; }
+        .key-list::-webkit-scrollbar-track { background: transparent; }
+        .key-list::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 10px; }
+        .key-list::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+        .key-row {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 1rem;
+            border-radius: var(--btn-radius);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .key-row:hover {
+            background: var(--glass-hover);
+            transform: translateY(-2px);
+        }
+
+        .key-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .key-label-row {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+
+        .key-label-tag {
+            font-size: 0.76rem;
+            font-weight: 600;
+            color: #a5b4fc;
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.35);
+            padding: 0.15rem 0.5rem;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            max-width: 210px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .edit-label-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 0.78rem;
+            opacity: 0.65;
+            transition: var(--transition);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+        .edit-label-btn:hover {
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.12);
+            transform: scale(1.15);
+        }
+
+        .add-label-link {
+            font-size: 0.72rem;
+            color: var(--text-secondary);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px dashed rgba(255, 255, 255, 0.18);
+            border-radius: 5px;
+            padding: 0.18rem 0.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .add-label-link:hover {
+            color: #a5b4fc;
+            border-color: #6366f1;
+            background: rgba(99, 102, 241, 0.12);
+            border-style: solid;
+        }
+
+        .key-string {
+            font-family: monospace;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-badge.active { background: var(--status-active-bg); color: var(--status-active-text); }
+        .status-badge.disabled { background: var(--status-disabled-bg); color: var(--status-disabled-text); }
+        .status-badge.error { background: var(--status-error-bg); color: var(--status-error-text); }
+        .status-badge.rate-limited, .status-badge[class*="rate"] { background: rgba(168, 85, 247, 0.25); color: #c084fc; }
+
+
+        .key-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .action-btn.delete:hover {
+            background: var(--status-error-bg);
+            color: var(--status-error-text);
+            border-color: var(--status-error-text);
+        }
+
+        .card-footer {
+            padding: 1rem;
+            border-top: 1px solid var(--glass-border);
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .add-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: transparent;
+            border: 1px dashed var(--glass-border);
+            color: var(--text-secondary);
+            border-radius: var(--btn-radius);
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .add-btn:hover {
+            background: var(--glass-hover);
+            color: var(--text-primary);
+            border-color: var(--text-secondary);
+        }
+
+        .add-key-form {
+            display: none;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .add-key-form.active {
+            display: flex;
+        }
+
+        .key-input {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            border-radius: var(--btn-radius);
+            outline: none;
+            font-family: monospace;
+            transition: var(--transition);
+        }
+        
+        .key-input:focus {
+            border-color: var(--text-secondary);
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .save-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: #fff;
+            color: #000;
+            border: none;
+            border-radius: var(--btn-radius);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .save-btn:hover {
+            background: #e2e8f0;
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 1000;
+        }
+
+        .toast {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            padding: 1rem 1.5rem;
+            border-radius: var(--btn-radius);
+            color: #fff;
+            font-weight: 500;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transform: translateX(120%);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success { border-left: 4px solid #34d399; }
+        .toast.error { border-left: 4px solid #f87171; }
+
+        .card-meta {
+            padding: 0.6rem 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--glass-border);
+            background: rgba(0,0,0,0.15);
+        }
+
+        .model-tag {
+            font-size: 0.72rem;
+            color: var(--text-secondary);
+            font-family: monospace;
+            background: rgba(255,255,255,0.05);
+            padding: 0.2rem 0.55rem;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .get-key-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #34d399;
+            text-decoration: none;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            border: 1px solid rgba(52,211,153,0.3);
+            background: rgba(52,211,153,0.08);
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .get-key-link:hover {
+            background: rgba(52,211,153,0.18);
+            border-color: rgba(52,211,153,0.6);
+            color: #6ee7b7;
+            transform: translateY(-1px);
+        }
+
+        .get-key-link.paid {
+            color: #fbbf24;
+            border-color: rgba(251,191,36,0.3);
+            background: rgba(251,191,36,0.08);
+        }
+
+        .get-key-link.paid:hover {
+            background: rgba(251,191,36,0.18);
+            border-color: rgba(251,191,36,0.6);
+            color: #fde68a;
+        }
+
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; }
+            body { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <a href="/dashboard" class="back-link">← Back to Dashboard</a>
+        <div class="title-container">
+            <h1>🛡️ AI Provider Management</h1>
+            <p class="subtitle">Manage unlimited API keys across all AI providers</p>
+        </div>
+        
+        <div class="summary-bar">
+            <div class="summary-stat">
+                <span class="label">Total Providers</span>
+                <span class="value">{{ providers|length }}</span>
+            </div>
+            <div class="summary-stat">
+                <span class="label">Total Active Keys</span>
+                <span class="value">
+                    {% set total_active = namespace(value=0) %}
+                    {% for provider in providers %}
+                        {% for key in provider.api_keys %}
+                            {% if key.status|lower == 'active' %}
+                                {% set total_active.value = total_active.value + 1 %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                    {{ total_active.value }}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid">
+        {% for provider in providers %}
+
+        {# — icons — #}
+        {% set icon = '💎' %}
+        {% if provider.id == 'openai' %}{% set icon = '🤖' %}{% endif %}
+        {% if provider.id == 'anthropic' or provider.id == 'claude' %}{% set icon = '🧠' %}{% endif %}
+        {% if provider.id == 'deepseek' %}{% set icon = '🔍' %}{% endif %}
+        {% if provider.id == 'grok' %}{% set icon = '⚡' %}{% endif %}
+        {% if provider.id == 'ollama' %}{% set icon = '🦙' %}{% endif %}
+
+        {# — latest models — #}
+        {% set model_label = 'gemini-3.7-flash / 2.5-flash (Free)' %}
+        {% set key_url = 'https://aistudio.google.com/apikey' %}
+        {% set is_free = true %}
+        {% if provider.id == 'openai' %}
+            {% set model_label = 'gpt-4o-mini / gpt-4o' %}
+            {% set key_url = 'https://platform.openai.com/api-keys' %}
+            {% set is_free = false %}
+        {% endif %}
+        {% if provider.id == 'anthropic' or provider.id == 'claude' %}
+            {% set model_label = 'claude-3-7-sonnet / 3-5-haiku' %}
+            {% set key_url = 'https://console.anthropic.com/settings/keys' %}
+            {% set is_free = false %}
+        {% endif %}
+        {% if provider.id == 'deepseek' %}
+            {% set model_label = 'deepseek-chat / reasoner (Free)' %}
+            {% set key_url = 'https://platform.deepseek.com/api_keys' %}
+            {% set is_free = true %}
+        {% endif %}
+        {% if provider.id == 'grok' %}
+            {% set model_label = 'grok-3-mini / grok-2' %}
+            {% set key_url = 'https://console.x.ai/' %}
+            {% set is_free = true %}
+        {% endif %}
+        {% if provider.id == 'ollama' %}
+            {% set model_label = 'llama3.2 / deepseek-r1 (Unlimited)' %}
+            {% set key_url = 'https://ollama.com/' %}
+            {% set is_free = true %}
+        {% endif %}
+
+        {# — active key count — #}
+        {% set card_active = namespace(value=0) %}
+        {% for key in provider.api_keys %}
+            {% if key.status|lower == 'active' or key.status|lower == 'rate limited' %}
+                {% set card_active.value = card_active.value + 1 %}
+            {% endif %}
+        {% endfor %}
+
+        <div class="card" data-provider="{{ provider.id }}">
+            <div class="card-header">
+                <div class="provider-info">
+                    <span>{{ icon }}</span>
+                    <span>{{ provider.name }}</span>
+                </div>
+                <div class="badge">{{ card_active.value }} / {{ provider.api_keys|length }} active</div>
+            </div>
+
+            {# — model + get key link — #}
+            <div class="card-meta">
+                <span class="model-tag">{{ model_label }}</span>
+                <a href="{{ key_url }}" target="_blank" class="get-key-link{% if not is_free %} paid{% endif %}">
+                    {% if is_free %}🆓{% else %}🔑{% endif %} Get {% if is_free %}Free {% endif %}Key →
+                </a>
+            </div>
+
+            <div class="key-list">
+                {% if provider.api_keys %}
+                    {% for key in provider.api_keys %}
+                    <div class="key-row" data-key-id="{{ key.id }}">
+                        <div class="key-details">
+                            <div class="key-label-row">
+                                {% if key.label %}
+                                    <span class="key-label-tag" title="Account / Source Email: {{ key.label }}">
+                                        📧 {{ key.label }}
+                                    </span>
+                                    <button class="edit-label-btn" onclick="promptEditLabel({{ key.id }}, '{{ key.label|replace('\'', '\\\'') }}')" title="Rename / change email">✏️</button>
+                                {% else %}
+                                    <button class="add-label-link" onclick="promptEditLabel({{ key.id }}, '')" title="Add email or label to recognize this key">
+                                        + 🏷️ Add email/name
+                                    </button>
+                                {% endif %}
+                            </div>
+                            <div style="display:flex; align-items:center; gap:0.5rem;">
+                                <span class="key-string">{{ key.api_key_masked }}</span>
+                                <span class="status-badge {{ key.status|lower }}">{{ key.status }}</span>
+                            </div>
+                        </div>
+                        <div class="key-actions">
+                            <button class="action-btn" title="Edit Name / Email" onclick="promptEditLabel({{ key.id }}, '{{ (key.label or '')|replace('\'', '\\\'') }}')">🏷️</button>
+                            <button class="action-btn" title="Test Key" onclick="testKey({{ key.id }})">🧪</button>
+                            <button class="action-btn" title="Toggle Enable/Disable" onclick="toggleKey({{ key.id }})">🔄</button>
+                            <button class="action-btn delete" title="Delete Key" onclick="deleteKey({{ key.id }})">🗑️</button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p style="color: var(--text-secondary); text-align: center; margin: auto; padding: 2rem 0; font-size: 0.9rem;">No keys added yet.<br><small style="opacity:0.6">Click 'Get Free Key →' above to get one.</small></p>
+                {% endif %}
+            </div>
+
+            <div class="card-footer">
+                <button class="add-btn" id="add-btn-{{ provider.id }}" onclick="showAddForm('{{ provider.id }}')">
+                    + Add New Key
+                </button>
+                <div class="add-key-form" id="form-{{ provider.id }}">
+                    <input type="text" class="key-input" id="label-{{ provider.id }}" placeholder="Account / Email (e.g. personal@gmail.com)..." style="margin-bottom: 0.5rem; font-family: inherit;">
+                    <input type="text" class="key-input" id="input-{{ provider.id }}" placeholder="Paste API Key here...">
+                    <button class="save-btn" onclick="saveKey('{{ provider.id }}')">Save Key</button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+
+    <script>
+        // UI Helpers
+        function showAddForm(providerId) {
+            document.getElementById(`add-btn-${providerId}`).style.display = 'none';
+            document.getElementById(`form-${providerId}`).classList.add('active');
+            const labelInput = document.getElementById(`label-${providerId}`);
+            if (labelInput) labelInput.focus();
+            else document.getElementById(`input-${providerId}`).focus();
+        }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const icon = type === 'success' ? '✅' : '❌';
+            toast.innerHTML = `<span>${icon}</span><span>${message}</span>`;
+            
+            container.appendChild(toast);
+            
+            // Trigger animation
+            setTimeout(() => toast.classList.add('show'), 10);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function reloadPageWithDelay() {
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+        }
+
+        // API Calls
+        async function saveKey(providerId) {
+            const input = document.getElementById(`input-${providerId}`);
+            const labelInput = document.getElementById(`label-${providerId}`);
+            const keyValue = input.value.trim();
+            const labelValue = labelInput ? labelInput.value.trim() : '';
+            
+            if (!keyValue) {
+                showToast('Please enter an API key', 'error');
+                return;
+            }
+
+            const btn = document.querySelector(`#form-${providerId} .save-btn`);
+            const originalText = btn.innerText;
+            btn.innerText = 'Saving...';
+            btn.disabled = true;
+
+            try {
+                const res = await fetch('/api/v1/admin/add-key', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({provider_id: providerId, api_key: keyValue, label: labelValue})
+                });
+
+                if (res.ok) {
+                    showToast('Key added successfully!');
+                    input.value = '';
+                    if (labelInput) labelInput.value = '';
+                    reloadPageWithDelay();
+                } else {
+                    const data = await res.json().catch(() => ({}));
+                    throw new Error(data.detail || 'Failed to add key');
+                }
+            } catch (err) {
+                showToast(err.message, 'error');
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        async function promptEditLabel(keyId, currentLabel) {
+            const newLabel = prompt('Enter email or name for this API Key (e.g. personal@gmail.com):', currentLabel || '');
+            if (newLabel === null) return; // User cancelled
+            
+            try {
+                const res = await fetch('/api/v1/admin/update-key-label/' + keyId, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ label: newLabel.trim() })
+                });
+                if (res.ok) {
+                    showToast('Key name / email updated!');
+                    reloadPageWithDelay();
+                } else {
+                    throw new Error('Failed to update label');
+                }
+            } catch (err) {
+                showToast(err.message, 'error');
+            }
+        }
+
+        async function deleteKey(keyId) {
+            if (!confirm('Are you sure you want to delete this key?')) return;
+            
+            try {
+                const res = await fetch('/api/v1/admin/delete-key/' + keyId, {method: 'DELETE'});
+                if (res.ok) {
+                    showToast('Key deleted successfully!');
+                    reloadPageWithDelay();
+                } else {
+                    throw new Error('Failed to delete key');
+                }
+            } catch (err) {
+                showToast(err.message, 'error');
+            }
+        }
+
+        async function toggleKey(keyId) {
+            try {
+                const res = await fetch('/api/v1/admin/toggle-key/' + keyId, {method: 'POST'});
+                if (res.ok) {
+                    showToast('Key status toggled!');
+                    reloadPageWithDelay();
+                } else {
+                    throw new Error('Failed to toggle key status');
+                }
+            } catch (err) {
+                showToast(err.message, 'error');
+            }
+        }
+
+        async function testKey(keyId) {
+            try {
+                showToast('Testing key connection...', 'success');
+                const res = await fetch('/api/v1/admin/test-key/' + keyId, {method: 'POST'});
+                const data = await res.json().catch(() => ({}));
+                if (res.ok && data.status === 'success') {
+                    if (data.new_status === 'Active') {
+                        showToast(`✅ Key Active! (${data.latency_ms}ms)`, 'success');
+                    } else if (data.new_status === 'Rate Limited') {
+                        showToast(`⚠️ Key Valid, but Rate Limited (429 Quota). (${data.latency_ms}ms)`, 'error');
+                    } else {
+                        showToast(`❌ Key Invalid: ${data.error || 'Test failed'}`, 'error');
+                    }
+                    reloadPageWithDelay();
+                } else {
+                    throw new Error(data.detail || 'Key test failed');
+                }
+            } catch (err) {
+                showToast(err.message, 'error');
+            }
+        }
+    </script>
+</body>
+</html>

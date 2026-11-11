@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Official British Council & IDP CD-IELTS Mock Examination</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Arial:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bc-top-bg: #1e293b;
+            --bc-top-text: #ffffff;
+            --bc-border: #cbd5e1;
+            --bc-passage-bg: #ffffff;
+            --bc-passage-text: #0f172a;
+            --bc-question-bg: #f8fafc;
+            --bc-bottom-bg: #0f172a;
+            --bc-bottom-text: #ffffff;
+            --bc-active-num: #2563eb;
+            --bc-font-scale: 16px;
+        }
+
+        body.theme-inverted {
+            --bc-passage-bg: #0f172a;
+            --bc-passage-text: #f8fafc;
+            --bc-question-bg: #1e293b;
+            --bc-border: #334155;
+        }
+        body.theme-yellow-on-black {
+            --bc-passage-bg: #000000;
+            --bc-passage-text: #fde047;
+            --bc-question-bg: #111111;
+            --bc-border: #444444;
+            --bc-top-bg: #000000;
+            --bc-bottom-bg: #000000;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; }
+        html, body { height: 100vh; width: 100vw; overflow: hidden; background: #e2e8f0; font-size: var(--bc-font-scale); }
+
+        .bc-top-bar {
+            height: 52px;
+            background: var(--bc-top-bg);
+            color: var(--bc-top-text);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 16px;
+            border-bottom: 2px solid #e11d48;
+            flex-shrink: 0;
+        }
+        .bc-brand-group { display: flex; align-items: center; gap: 12px; }
+        .bc-logo-text { font-size: 1.35em; font-weight: 900; color: #fff; }
+        .bc-logo-sub { font-size: 0.72em; font-weight: 700; background: #e11d48; color: #fff; padding: 2px 8px; border-radius: 3px; text-transform: uppercase; }
+
+        .bc-candidate-info { font-size: 0.82em; color: #cbd5e1; display: flex; gap: 14px; }
+        .bc-candidate-info b { color: #fff; }
+
+        .bc-top-controls { display: flex; align-items: center; gap: 10px; }
+        .bc-clock-display {
+            display: flex; align-items: center; gap: 8px;
+            background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2);
+            padding: 4px 12px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 1.05em; font-weight: 700; color: #38bdf8;
+        }
+
+        .bc-btn-small {
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+            color: #fff; padding: 4px 10px; border-radius: 4px; font-size: 0.78em; font-weight: 600; cursor: pointer;
+        }
+        .bc-btn-small:hover { background: rgba(255,255,255,0.2); }
+
+        .bc-split-container {
+            display: flex;
+            height: calc(100vh - 52px - 58px);
+            width: 100vw;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .bc-pane-left {
+            width: 50%;
+            background: var(--bc-passage-bg);
+            color: var(--bc-passage-text);
+            border-right: 1px solid var(--bc-border);
+            overflow-y: auto;
+            padding: 24px 32px;
+        }
+
+        .bc-drag-handle {
+            width: 8px;
+            background: #cbd5e1;
+            cursor: col-resize;
+            transition: background 0.2s;
+            position: relative;
+            z-index: 10;
+        }
+        .bc-drag-handle:hover, .bc-drag-handle.dragging { background: #3b82f6; }
+
+        .bc-pane-right {
+            flex: 1;
+            background: var(--bc-question-bg);
+            color: var(--bc-passage-text);
+            overflow-y: auto;
+            padding: 24px 32px;
+        }
+
+        .passage-title {
+            font-size: 1.35em; font-weight: 800; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid var(--bc-border);
+        }
+        .passage-body { font-size: 1.02em; line-height: 1.75; }
+        .passage-body p { margin-bottom: 16px; }
+
+        .bc-highlighter-popover {
+            position: absolute; display: none; background: #0f172a; color: #fff;
+            border: 1px solid #475569; border-radius: 6px; padding: 4px; gap: 4px; z-index: 1000;
+        }
+        .hl-btn { background: rgba(255,255,255,0.1); border: none; color: #fff; padding: 4px 8px; border-radius: 4px; font-size: 0.75em; font-weight: 700; cursor: pointer; }
+        .hl-btn:hover { background: #3b82f6; }
+        .bc-highlighted-text { background: #fef08a; color: #000; padding: 1px 2px; border-radius: 2px; }
+
+        .question-card {
+            background: var(--bc-passage-bg); border: 1px solid var(--bc-border);
+            border-radius: 8px; padding: 18px; margin-bottom: 18px;
+        }
+        .question-card.active-q { border: 2px solid #2563eb; box-shadow: 0 0 10px rgba(37,99,235,0.15); }
+        .q-header-row { display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px; }
+        .q-num-badge { background: #0f172a; color: #fff; font-size: 0.85em; font-weight: 800; padding: 2px 8px; border-radius: 4px; }
+
+        .q-option-label {
+            display: flex; align-items: center; gap: 10px; padding: 10px 14px; margin-bottom: 6px;
+            border: 1px solid var(--bc-border); border-radius: 6px; cursor: pointer; font-size: 0.92em;
+        }
+        .q-option-label:hover { background: rgba(37, 99, 235, 0.05); border-color: #3b82f6; }
+        .q-option-label input[type="radio"] { width: 16px; height: 16px; accent-color: #2563eb; }
+
+        .q-text-input { width: 100%; padding: 10px 12px; border: 1px solid var(--bc-border); border-radius: 6px; font-size: 0.95em; outline: none; }
+        .q-text-input:focus { border-color: #2563eb; }
+
+        .bc-bottom-bar {
+            height: 58px; background: var(--bc-bottom-bg); color: var(--bc-bottom-text);
+            display: flex; justify-content: space-between; align-items: center; padding: 0 16px;
+            border-top: 1px solid rgba(255,255,255,0.15); flex-shrink: 0;
+        }
+        .bc-part-tabs { display: flex; gap: 6px; align-items: center; }
+        .bc-part-btn {
+            background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2);
+            color: #94a3b8; padding: 6px 12px; border-radius: 4px; font-size: 0.78em; font-weight: 700; cursor: pointer;
+        }
+        .bc-part-btn.active { background: #2563eb; color: #fff; border-color: #3b82f6; }
+
+        .bc-palette-row { display: flex; gap: 4px; align-items: center; overflow-x: auto; max-width: 50vw; padding: 4px 0; }
+        .bc-pal-btn {
+            min-width: 28px; height: 28px; background: transparent; border: 1px solid rgba(255,255,255,0.3);
+            color: #fff; font-size: 0.78em; font-weight: 700; display: flex; align-items: center; justify-content: center;
+            border-radius: 3px; cursor: pointer; position: relative;
+        }
+        .bc-pal-btn:hover { background: rgba(255,255,255,0.15); }
+        .bc-pal-btn.answered { background: #ffffff; color: #0f172a; border-color: #ffffff; }
+        .bc-pal-btn.active { box-shadow: 0 0 0 2px #38bdf8; }
+        .bc-pal-btn.flagged::after {
+            content: ''; position: absolute; top: -2px; right: -2px; width: 8px; height: 8px; background: #ef4444; border-radius: 50%;
+        }
+
+        .bc-nav-actions { display: flex; align-items: center; gap: 10px; }
+        .bc-review-checkbox { display: flex; align-items: center; gap: 6px; font-size: 0.82em; color: #cbd5e1; cursor: pointer; }
+        .bc-review-checkbox input { accent-color: #ef4444; width: 14px; height: 14px; }
+
+        .bc-nav-btn {
+            background: #2563eb; color: #fff; border: none; padding: 7px 16px; border-radius: 4px;
+            font-size: 0.84em; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+        }
+        .bc-nav-btn:hover { background: #1d4ed8; }
+        .bc-nav-btn.secondary { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); }
+
+        .bc-modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 10000; align-items: center; justify-content: center; }
+        .bc-modal-content { background: #0f172a; color: #fff; border: 1px solid #334155; border-radius: 12px; padding: 24px; width: 90%; max-width: 550px; }
+    </style>
+</head>
+<body>
+
+    <header class="bc-top-bar">
+        <div class="bc-brand-group">
+            <span class="bc-logo-text">IELTS</span>
+            <span class="bc-logo-sub">Official CD Exam</span>
+            <span style="font-size:0.82em; font-weight:700; color:#e2e8f0; margin-left:6px;">Academic Reading (Passage 1–3)</span>
+        </div>
+
+        <div class="bc-candidate-info">
+            <span>Candidate: <b>STUDENT, ACADEMIC</b></span>
+            <span>No: <b>029481</b></span>
+            <span>Center: <b>BD001</b></span>
+        </div>
+
+        <div class="bc-top-controls">
+            <div class="bc-clock-display" id="examClock">
+                <i class="far fa-clock"></i>
+                <span id="timeRemainingDisplay">60:00</span>
+            </div>
+            <button class="bc-btn-small" onclick="cycleTheme()"><i class="fas fa-adjust"></i> Contrast</button>
+            <button class="bc-btn-small" onclick="cycleFontSize()"><i class="fas fa-font"></i> Size</button>
+            <button class="bc-btn-small" onclick="showHelpModal()"><i class="fas fa-question-circle"></i> Help</button>
+        </div>
+    </header>
+
+    <main class="bc-split-container" id="splitContainer">
+        <section class="bc-pane-left" id="passagePane">
+            {% if passages and passages|length > 0 %}
+                {% for p in passages %}
+                <div class="passage-block" id="passageBlock-{{ p.passage_index }}" style="{% if not loop.first %}display:none;{% endif %}">
+                    <div class="passage-title">Passage {{ p.passage_index }}: Academic Reading</div>
+                    <div class="passage-body">
+                        {{ p.passage_text | replace("\n", "<br><br>") | safe }}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="passage-title">Academic Reading Test Passage</div>
+                <div class="passage-body">Loading official Cambridge passages...</div>
+            {% endif %}
+        </section>
+
+        <div class="bc-drag-handle" id="dragHandle"></div>
+
+        <section class="bc-pane-right" id="questionPane">
+            <div style="background:rgba(59,130,246,0.08); border-left:4px solid #3b82f6; padding:10px 14px; margin-bottom:20px; font-size:0.9em; font-weight:600;">
+                <b>Instructions:</b> Read the passage on the left and answer the questions. Select your choices or type your answers into the input boxes provided.
+            </div>
+
+            <div id="questionsList">
+                {% if passages and passages|length > 0 %}
+                    {% for p in passages %}
+                        {% for q in p.questions %}
+                        <div class="question-card" id="qCard-{{ q.index }}" data-qid="{{ q.id }}" data-index="{{ q.index }}" data-passage="{{ p.passage_index }}">
+                            <div class="q-header-row">
+                                <span class="q-num-badge">Question {{ q.index }}</span>
+                                <span style="font-size:0.75em; color:#64748b; font-weight:700; text-transform:uppercase;">{{ q.question_type }}</span>
+                            </div>
+                            <p style="font-size:1.02em; font-weight:600; margin-bottom:14px;">{{ q.question_text }}</p>
+
+                            {% set opts = q.options_json | from_json %}
+                            {% if opts and opts|length > 0 %}
+                                <div>
+                                    {% for opt in opts %}
+                                    <label class="q-option-label">
+                                        <input type="radio" name="ans_{{ q.id }}" value="{{ opt }}" onchange="handleAnswerChange({{ q.index }}, this.value)">
+                                        <span>{{ opt }}</span>
+                                    </label>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div>
+                                    <input type="text" class="q-text-input" placeholder="Type your answer here..." oninput="handleAnswerChange({{ q.index }}, this.value)">
+                                </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </section>
+    </main>
+
+    <div class="bc-highlighter-popover" id="highlighterPopover">
+        <button class="hl-btn" onclick="applyHighlight()"><i class="fas fa-highlighter"></i> Highlight</button>
+        <button class="hl-btn" onclick="clearHighlight()"><i class="fas fa-eraser"></i> Clear</button>
+    </div>
+
+    <footer class="bc-bottom-bar">
+        <div class="bc-part-tabs">
+            <button class="bc-part-btn active" id="partTab1" onclick="switchPart(1)">Passage 1</button>
+            <button class="bc-part-btn" id="partTab2" onclick="switchPart(2)">Passage 2</button>
+            <button class="bc-part-btn" id="partTab3" onclick="switchPart(3)">Passage 3</button>
+        </div>
+
+        <div class="bc-palette-row" id="paletteContainer"></div>
+
+        <div class="bc-nav-actions">
+            <label class="bc-review-checkbox">
+                <input type="checkbox" id="reviewFlagCheckbox" onchange="toggleCurrentFlag(this.checked)">
+                <span>Review</span>
+            </label>
+            <button class="bc-nav-btn secondary" onclick="navigateQuestion(-1)"><i class="fas fa-chevron-left"></i> Back</button>
+            <button class="bc-nav-btn" onclick="navigateQuestion(1)">Next <i class="fas fa-chevron-right"></i></button>
+            <button class="bc-nav-btn" style="background:#e11d48;" onclick="openSubmitModal()">Finish Test</button>
+        </div>
+    </footer>
+
+    <div class="bc-modal-backdrop" id="submitModal">
+        <div class="bc-modal-content">
+            <h3 style="font-size:1.3em; font-weight:800; margin-bottom:8px; color:#f87171;">⚠️ Finish Full Reading Test?</h3>
+            <p style="color:#cbd5e1; font-size:0.92em; line-height:1.5; margin-bottom:16px;">
+                Are you sure you want to end this examination? Your answers will be submitted for official IELTS band evaluation.
+            </p>
+            <div style="background:rgba(255,255,255,0.05); padding:12px; border-radius:8px; margin-bottom:20px; font-size:0.85em;">
+                <div>Answered: <b id="modalAnsweredCount" style="color:#34d399;">0</b></div>
+                <div>Unanswered: <b id="modalUnansweredCount" style="color:#f87171;">0</b></div>
+                <div>Marked for Review: <b id="modalReviewCount" style="color:#fbbf24;">0</b></div>
+            </div>
+            <div style="display:flex; justify-content:flex-end; gap:10px;">
+                <button class="bc-btn-small" style="padding:8px 16px;" onclick="closeSubmitModal()">Cancel</button>
+                <button class="bc-nav-btn" style="background:#e11d48; padding:8px 18px;" onclick="confirmFinishExam()">Yes, Submit Exam</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    var totalQuestions = document.querySelectorAll('.question-card').length || 13;
+    var currentActiveIndex = 1;
+    var userAnswers = {};
+    var flaggedQuestions = {};
+    var timeRemaining = 3600;
+
+    var themes = ['theme-standard', 'theme-inverted', 'theme-yellow-on-black'];
+    var currentThemeIdx = 0;
+    var fontSizes = [16, 18, 20];
+    var currentFontIdx = 0;
+
+    function initFullMock() {
+        renderPalette();
+        startTimer();
+        initSplitPaneDrag();
+        initHighlighter();
+        activateQuestion(1);
+    }
+
+    function renderPalette() {
+        var container = document.getElementById('paletteContainer');
+        if (!container) return;
+        container.innerHTML = '';
+
+        for (var i = 1; i <= totalQuestions; i++) {
+            var btn = document.createElement('button');
+            btn.className = 'bc-pal-btn' + (i === currentActiveIndex ? ' active' : '') + (userAnswers[i] ? ' answered' : '') + (flaggedQuestions[i] ? ' flagged' : '');
+            btn.id = 'pal-btn-' + i;
+            btn.textContent = i;
+            (function(idx) {
+                btn.onclick = function() { activateQuestion(idx); };
+            })(i);
+            container.appendChild(btn);
+        }
+    }
+
+    function activateQuestion(idx) {
+        currentActiveIndex = idx;
+        document.querySelectorAll('.question-card').forEach(function(card) { card.classList.remove('active-q'); });
+        document.querySelectorAll('.bc-pal-btn').forEach(function(btn) { btn.classList.remove('active'); });
+
+        var targetCard = document.getElementById('qCard-' + idx);
+        if (targetCard) {
+            targetCard.classList.add('active-q');
+            targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            var pIdx = targetCard.getAttribute('data-passage') || 1;
+            switchPassageView(pIdx);
+        }
+
+        var palBtn = document.getElementById('pal-btn-' + idx);
+        if (palBtn) palBtn.classList.add('active');
+
+        var flagBox = document.getElementById('reviewFlagCheckbox');
+        if (flagBox) flagBox.checked = !!flaggedQuestions[idx];
+    }
+
+    function switchPassageView(pIdx) {
+        document.querySelectorAll('.passage-block').forEach(function(block) { block.style.display = 'none'; });
+        var target = document.getElementById('passageBlock-' + pIdx);
+        if (target) target.style.display = 'block';
+
+        document.querySelectorAll('.bc-part-btn').forEach(function(b) { b.classList.remove('active'); });
+        var partBtn = document.getElementById('partTab' + pIdx);
+        if (partBtn) partBtn.classList.add('active');
+    }
+
+    function switchPart(partNum) {
+        switchPassageView(partNum);
+        var firstQInPassage = document.querySelector('.question-card[data-passage="' + partNum + '"]');
+        if (firstQInPassage) {
+            var idx = parseInt(firstQInPassage.getAttribute('data-index'), 10);
+            activateQuestion(idx);
+        }
+    }
+
+    function handleAnswerChange(qIdx, val) {
+        if (val && val.trim().length > 0) userAnswers[qIdx] = val.trim();
+        else delete userAnswers[qIdx];
+
+        var palBtn = document.getElementById('pal-btn-' + qIdx);
+        if (palBtn) {
+            if (userAnswers[qIdx]) palBtn.classList.add('answered');
+            else palBtn.classList.remove('answered');
+        }
+    }
+
+    function toggleCurrentFlag(isFlagged) {
+        if (isFlagged) flaggedQuestions[currentActiveIndex] = true;
+        else delete flaggedQuestions[currentActiveIndex];
+
+        var palBtn = document.getElementById('pal-btn-' + currentActiveIndex);
+        if (palBtn) {
+            if (isFlagged) palBtn.classList.add('flagged');
+            else palBtn.classList.remove('flagged');
+        }
+    }
+
+    function navigateQuestion(delta) {
+        var target = currentActiveIndex + delta;
+        if (target >= 1 && target <= totalQuestions) activateQuestion(target);
+    }
+
+    function startTimer() {
+        var display = document.getElementById('timeRemainingDisplay');
+        setInterval(function() {
+            if (timeRemaining <= 0) { confirmFinishExam(); return; }
+            timeRemaining--;
+            var m = Math.floor(timeRemaining / 60);
+            var s = timeRemaining % 60;
+            if (display) display.textContent = (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s);
+        }, 1000);
+    }
+
+    function cycleTheme() {
+        currentThemeIdx = (currentThemeIdx + 1) % themes.length;
+        document.body.className = themes[currentThemeIdx];
+    }
+    function cycleFontSize() {
+        currentFontIdx = (currentFontIdx + 1) % fontSizes.length;
+        document.documentElement.style.setProperty('--bc-font-scale', fontSizes[currentFontIdx] + 'px');
+    }
+
+    function openSubmitModal() {
+        var answered = Object.keys(userAnswers).length;
+        var review = Object.keys(flaggedQuestions).length;
+        document.getElementById('modalAnsweredCount').textContent = answered;
+        document.getElementById('modalUnansweredCount').textContent = (totalQuestions - answered);
+        document.getElementById('modalReviewCount').textContent = review;
+        document.getElementById('submitModal').style.display = 'flex';
+    }
+    function closeSubmitModal() { document.getElementById('submitModal').style.display = 'none'; }
+
+    function confirmFinishExam() {
+        closeSubmitModal();
+        alert('Exam Completed! Submitting answers for official band grading...');
+        window.location.href = '/analytics';
+    }
+
+    function initSplitPaneDrag() {
+        var handle = document.getElementById('dragHandle');
+        var leftPane = document.getElementById('passagePane');
+        var container = document.getElementById('splitContainer');
+        if (!handle || !leftPane || !container) return;
+
+        var isDragging = false;
+        handle.onmousedown = function() { isDragging = true; handle.classList.add('dragging'); };
+        window.onmousemove = function(e) {
+            if (!isDragging) return;
+            var pct = (e.clientX / container.offsetWidth) * 100;
+            if (pct >= 25 && pct <= 75) leftPane.style.width = pct + '%';
+        };
+        window.onmouseup = function() { isDragging = false; handle.classList.remove('dragging'); };
+    }
+
+    function initHighlighter() {
+        var passageEl = document.getElementById('passagePane');
+        var popover = document.getElementById('highlighterPopover');
+        if (!passageEl || !popover) return;
+
+        document.addEventListener('mouseup', function() {
+            var sel = window.getSelection();
+            if (sel && sel.toString().trim().length > 0 && passageEl.contains(sel.anchorNode)) {
+                var range = sel.getRangeAt(0);
+                var rect = range.getBoundingClientRect();
+                popover.style.display = 'flex';
+                popover.style.top = (rect.top - 40) + 'px';
+                popover.style.left = rect.left + 'px';
+            } else if (!popover.contains(event.target)) {
+                popover.style.display = 'none';
+            }
+        });
+    }
+
+    function applyHighlight() {
+        var sel = window.getSelection();
+        if (!sel || sel.rangeCount === 0) return;
+        var range = sel.getRangeAt(0);
+        var span = document.createElement('span');
+        span.className = 'bc-highlighted-text';
+        span.textContent = sel.toString();
+        range.deleteContents();
+        range.insertNode(span);
+        document.getElementById('highlighterPopover').style.display = 'none';
+    }
+    function clearHighlight() { document.getElementById('highlighterPopover').style.display = 'none'; }
+
+    window.onload = initFullMock;
+    </script>
+</body>
+</html>

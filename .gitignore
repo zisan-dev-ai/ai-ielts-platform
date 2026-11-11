@@ -1,0 +1,47 @@
+# Environment variables and sensitive secrets
+.env
+.env.*
+!.env.example
+
+# SQLite Databases & logs
+*.db
+ielts_platform.db
+*.sqlite
+*.sqlite3
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Python cache & compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Testing & Scratch files
+scratch/
+test_tmp.txt
+test_write.txt
+*.log
+
+# Audio cache generated at runtime
+static/audio/cache/
+
+# IDE & OS files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+ehthumbs.db

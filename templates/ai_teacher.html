@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Classroom — Official IELTS ARIA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #0c0d12;
+            --header-bg: #11131a;
+            --card-bg: #141620;
+            --card-inner: #191c28;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-highlight: rgba(99, 102, 241, 0.4);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --primary-accent: #6366f1;
+            --primary-hover: #4f46e5;
+            --accent-green: #10b981;
+            --user-bubble-bg: linear-gradient(135deg, #1e3a5f, #1e293b);
+            --teacher-bubble-bg: linear-gradient(135deg, #181926, #141520);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* ── TOP HEADER (No outer sidebar, clean bar) ───────── */
+        .top-header {
+            height: 56px;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--header-bg);
+            flex-shrink: 0;
+            z-index: 50;
+        }
+
+        .back-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.88em;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+        .back-link:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.05em;
+            font-weight: 700;
+            letter-spacing: -0.2px;
+        }
+
+        .live-badge {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.72em;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .live-dot {
+            width: 7px;
+            height: 7px;
+            background: #10b981;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #10b981;
+            animation: pulse-dot 1.5s infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.85); }
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-select {
+            background: #1a1d28;
+            color: #e2e8f0;
+            border: 1px solid var(--border-color);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.85em;
+            outline: none;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        .header-select:focus {
+            border-color: var(--primary-accent);
+        }
+
+        .btn-header {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.85em;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+        .btn-header:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        .btn-header.active {
+            background: rgba(99, 102, 241, 0.15);
+            border-color: var(--primary-accent);
+            color: #a5b4fc;
+        }
+
+        /* ── MAIN WORKSPACE CONTAINER ──────────────────────── */
+        .main-container {
+            display: flex;
+            flex: 1;
+            padding: 16px 20px;
+            gap: 18px;
+            overflow: hidden;
+            width: 100vw;
+            height: calc(100vh - 56px);
+        }
+
+        /* ── LEFT COLUMN (Video & Syllabus) ────────────────── */
+        .left-panel {
+            flex: 3.4;
+            min-width: 330px;
+            max-width: 440px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        /* 1. VIDEO CALL CARD */
+        .video-card {
+            background: #08090d;
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            height: 220px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .video-card.speaking-active {
+            border-color: rgba(16, 185, 129, 0.6);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.25);
+        }
+
+        #teacher-idle-img, #teacher-video-player {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 20%;
+        }
+
+        .video-overlay-top {
+            position: absolute;
+            top: 10px;
+            left: 12px;
+            right: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+            pointer-events: none;
+        }
+        .video-overlay-top * {
+            pointer-events: auto;
+        }
+
+        .call-badge {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #cbd5e1;
+            font-size: 0.72em;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 16px;
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .call-badge.speaking {
+            border-color: rgba(16, 185, 129, 0.5);
+            color: #34d399;
+            background: rgba(6, 78, 59, 0.8);
+        }
+
+        .call-timer {
+            background: rgba(0, 0, 0, 0.65);
+            color: #f1f5f9;
+            font-family: 'JetBrains Mono', monospace;
+            padding: 3px 8px;
+            border-radius: 8px;
+            font-size: 0.74em;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* 2. SYLLABUS & LESSON CARD */
+        .syllabus-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .card-header-row {
+            font-size: 0.88em;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .study-plan-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex-shrink: 0;
+            max-height: 140px;
+            overflow-y: auto;
+            padding-right: 2px;
+        }
+        .study-plan-list::-webkit-scrollbar { width: 4px; }
+        .study-plan-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+
+        .plan-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 7px 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .plan-item:hover {
+            border-color: var(--primary-accent);
+            background: rgba(99, 102, 241, 0.08);
+        }
+        .plan-item.active {
+            border-color: rgba(99, 102, 241, 0.5);
+            background: rgba(99, 102, 241, 0.12);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            flex-shrink: 0;
+        }
+        .stat-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 6px 4px;
+            text-align: center;
+        }
+        .stat-box .v {
+            font-size: 0.95em;
+            font-weight: 700;
+            color: var(--primary-accent);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .stat-box .l {
+            font-size: 0.62em;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            margin-top: 2px;
+            font-weight: 600;
+        }
+
+        .module-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 4px;
+            flex-shrink: 0;
+        }
+        .mod-tab {
+            flex: 1;
+            text-align: center;
+            padding: 6px 2px;
+            font-size: 0.76em;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+        .mod-tab:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.04);
+        }
+        .mod-tab.active {
+            color: #a5b4fc;
+            background: rgba(99, 102, 241, 0.15);
+        }
+
+        #qt-search-input {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 6px 10px;
+            color: #fff;
+            font-size: 0.8em;
+            width: 100%;
+            outline: none;
+            flex-shrink: 0;
+            transition: border-color 0.2s;
+        }
+        #qt-search-input:focus {
+            border-color: var(--primary-accent);
+        }
+
+        #syllabus-content-area {
+            overflow-y: auto;
+            flex: 1;
+            min-height: 0;
+            padding-right: 4px;
+        }
+        #syllabus-content-area::-webkit-scrollbar { width: 4px; }
+        #syllabus-content-area::-webkit-scrollbar-thumb { background: rgba(99, 102, 241, 0.3); border-radius: 4px; }
+
+        .section-hdr {
+            font-size: 0.7em;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin: 8px 0 4px;
+            padding: 3px 6px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.03);
+            letter-spacing: 0.3px;
+        }
+        .section-hdr.lis { color: #a78bfa; border-left: 2px solid #a78bfa; }
+        .section-hdr.rea { color: #38bdf8; border-left: 2px solid #38bdf8; }
+        .section-hdr.wri { color: #f59e0b; border-left: 2px solid #f59e0b; }
+        .section-hdr.spe { color: #34d399; border-left: 2px solid #34d399; }
+
+        .qtype-chip {
+            display: inline-block;
+            padding: 4px 8px;
+            font-size: 0.74em;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: #cbd5e1;
+            margin: 2px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .qtype-chip:hover {
+            border-color: var(--primary-accent);
+            background: rgba(99, 102, 241, 0.12);
+            color: #fff;
+        }
+        .qtype-chip.active {
+            background: rgba(99, 102, 241, 0.25);
+            border-color: var(--primary-accent);
+            color: #c7d2fe;
+            font-weight: 600;
+        }
+
+        /* ── RIGHT COLUMN (Huge Interactive Classroom Chat) ── */
+        .right-panel {
+            flex: 8.6;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .chat-header {
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0, 0, 0, 0.2);
+            flex-shrink: 0;
+        }
+
+        .chat-title {
+            font-size: 0.96em;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chat-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .control-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            padding: 6px 12px;
+            font-size: 0.82em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .control-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.08);
+        }
+        .control-btn.active {
+            background: rgba(99, 102, 241, 0.15);
+            border-color: var(--primary-accent);
+            color: #a5b4fc;
+        }
+
+        /* ── CHAT MESSAGES CONTAINER ── */
+        #chat-container, #chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        #chat-container::-webkit-scrollbar, #chat-messages::-webkit-scrollbar { width: 6px; }
+        #chat-container::-webkit-scrollbar-thumb, #chat-messages::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+        }
+
+        .msg-row {
+            display: flex;
+            gap: 12px;
+            max-width: 88%;
+            align-items: flex-start;
+        }
+        .msg-row.ai {
+            align-self: flex-start;
+        }
+        .msg-row.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .msg-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+        .msg-avatar.ai {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #fff;
+            box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
+        }
+        .msg-avatar.user {
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            color: #fff;
+        }
+
+        .msg-bubble {
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-size: 0.94em;
+            line-height: 1.65;
+            color: #e2e8f0;
+        }
+        .msg-row.ai .msg-bubble {
+            background: var(--teacher-bubble-bg);
+            border: 1px solid var(--border-color);
+            border-left: 3px solid var(--primary-accent);
+            border-radius: 4px 16px 16px 16px;
+        }
+        .msg-row.user .msg-bubble {
+            background: var(--user-bubble-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px 4px 16px 16px;
+            color: #fff;
+        }
+
+        .msg-bubble h1, .msg-bubble h2, .msg-bubble h3 {
+            color: #a5b4fc;
+            margin: 10px 0 4px;
+        }
+        .msg-bubble blockquote {
+            border-left: 3px solid var(--primary-accent);
+            background: rgba(0, 0, 0, 0.25);
+            margin: 8px 0;
+            padding: 8px 12px;
+            font-style: italic;
+            border-radius: 0 6px 6px 0;
+        }
+        .msg-bubble code {
+            background: rgba(0, 0, 0, 0.4);
+            color: #f472b6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.88em;
+        }
+
+        /* TRANSLATION & ACTION BUTTONS IN CHAT */
+        .translate-bn-btn, .play-audio-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 10px;
+            margin-right: 8px;
+            font-size: 0.78em;
+            padding: 4px 10px;
+            border-radius: 16px;
+            border: 1px solid rgba(99, 179, 237, 0.3);
+            background: rgba(99, 179, 237, 0.08);
+            color: #90cdf4;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .translate-bn-btn:hover, .play-audio-btn:hover {
+            background: rgba(99, 179, 237, 0.2);
+            color: #fff;
+        }
+
+        .bn-text-box {
+            display: none;
+            margin-top: 10px;
+            padding: 12px 14px;
+            border-radius: 8px;
+            background: rgba(99, 179, 237, 0.06);
+            border-left: 3px solid #38bdf8;
+            font-size: 0.92em;
+            color: #e2e8f0;
+            line-height: 1.6;
+        }
+
+        #typing-indicator, #typing-dots {
+            display: none;
+            align-self: flex-start;
+            padding: 10px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 4px 16px 16px 16px;
+            border: 1px solid var(--border-color);
+        }
+        .dots { display: flex; gap: 5px; }
+        .dots span {
+            width: 6px;
+            height: 6px;
+            background: var(--text-secondary);
+            border-radius: 50%;
+            animation: typing 1s infinite ease-in-out;
+        }
+        .dots span:nth-child(2) { animation-delay: 0.2s; }
+        .dots span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+            30% { transform: translateY(-5px); opacity: 1; }
+        }
+
+        /* ── ACTION AREAS (Options & Text Answers) ──────────── */
+        #options-area {
+            display: none;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 12px 24px;
+            border-top: 1px solid var(--border-color);
+            background: rgba(0, 0, 0, 0.15);
+            flex-shrink: 0;
+        }
+        .option-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px 16px;
+            cursor: pointer;
+            flex: 1;
+            min-width: 180px;
+            text-align: center;
+            font-size: 0.9em;
+            transition: all 0.2s;
+        }
+        .option-card:hover {
+            border-color: var(--primary-accent);
+            background: rgba(99, 102, 241, 0.12);
+        }
+        .option-card.selected {
+            border-color: var(--primary-accent);
+            background: rgba(99, 102, 241, 0.25);
+            color: #fff;
+            font-weight: 600;
+        }
+
+        #text-input-area {
+            display: none;
+            padding: 12px 24px;
+            border-top: 1px solid var(--border-color);
+            background: rgba(0, 0, 0, 0.15);
+            flex-shrink: 0;
+        }
+        #text-answer {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            color: #fff;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 70px;
+            outline: none;
+        }
+        #text-answer:focus {
+            border-color: var(--primary-accent);
+        }
+
+        #action-row {
+            padding: 8px 24px 12px;
+            display: none;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.15);
+            flex-shrink: 0;
+        }
+        .action-btn {
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.88em;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+        #submit-btn {
+            background: var(--primary-accent);
+            color: #fff;
+        }
+        #submit-btn:hover {
+            background: var(--primary-hover);
+        }
+        #retry-btn {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        /* ── CHAT BOTTOM INPUT BAR ─────────────────────────── */
+        .chat-bottom-bar {
+            padding: 14px 20px 16px;
+            border-top: 1px solid var(--border-color);
+            background: rgba(0, 0, 0, 0.25);
+            flex-shrink: 0;
+        }
+
+        .input-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 8px 14px;
+            margin-bottom: 10px;
+            transition: border-color 0.2s;
+        }
+        .input-row:focus-within {
+            border-color: var(--primary-accent);
+            box-shadow: 0 0 12px rgba(99, 102, 241, 0.15);
+        }
+
+        #chat-input, #main-chat-input {
+            flex: 1;
+            background: none;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-size: 0.94em;
+            resize: none;
+            min-height: 24px;
+            max-height: 100px;
+            font-family: inherit;
+            line-height: 1.5;
+        }
+        #chat-input::placeholder, #main-chat-input::placeholder {
+            color: #64748b;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .icon-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.08);
+        }
+        .icon-btn.active {
+            color: #ef4444;
+            background: rgba(239, 68, 68, 0.15);
+            animation: pulse-mic 1.2s infinite;
+        }
+        @keyframes pulse-mic {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        #chat-send-btn {
+            background: var(--primary-accent);
+            color: #fff;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95em;
+            transition: all 0.2s;
+        }
+        #chat-send-btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .quick-pills-row {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 2px;
+        }
+        .quick-pills-row::-webkit-scrollbar { height: 3px; }
+        .quick-pills-row::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); }
+
+        .pill-btn {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.78em;
+            border: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--text-secondary);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+        .pill-btn:hover {
+            background: rgba(99, 102, 241, 0.12);
+            border-color: var(--primary-accent);
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ── TOP HEADER (Clean Full-Width Header) ───────────── -->
+    <div class="top-header">
+        <a href="/dashboard" class="back-link">
+            <i class="fas fa-arrow-left"></i>
+            <span>Back to Dashboard</span>
+        </a>
+
+        <div class="header-title">
+            <span>AI Classroom</span>
+            <div class="live-badge">
+                <div class="live-dot"></div>
+                <span>Live Session</span>
+            </div>
+        </div>
+
+        <div class="header-controls">
+            <!-- Language Selector -->
+            <select id="lang-pref-select" class="header-select" onchange="changeLangPref(this.value)">
+                <option value="both" selected>Eng + Native (Banglish)</option>
+                <option value="english">English Only</option>
+                <option value="mother">Native Only (বাংলা)</option>
+            </select>
+
+            <!-- Target Band Selector -->
+            <select id="target-band-select" class="header-select" onchange="changeTargetBand(this.value)">
+                <option value="6.0" {% if profile and profile.target_band == 6.0 %}selected{% endif %}>Target: Band 6.0</option>
+                <option value="6.5" {% if profile and profile.target_band == 6.5 %}selected{% endif %}>Target: Band 6.5</option>
+                <option value="7.0" {% if profile and profile.target_band == 7.0 %}selected{% endif %}>Target: Band 7.0</option>
+                <option value="7.5" {% if profile and profile.target_band == 7.5 or not profile %}selected{% endif %}>Target: Band 7.5</option>
+                <option value="8.0" {% if profile and profile.target_band == 8.0 %}selected{% endif %}>Target: Band 8.0</option>
+                <option value="9.0" {% if profile and profile.target_band == 9.0 %}selected{% endif %}>Target: Band 9.0</option>
+            </select>
+
+            <!-- Fullscreen Button -->
+            <button id="fullscreen-toggle-btn" class="btn-header" onclick="toggleFullScreen()" title="Toggle Fullscreen">
+                <i class="fas fa-expand"></i>
+                <span>Fullscreen</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ── MAIN WORKSPACE CONTAINER ──────────────────────── -->
+    <div class="main-container">
+
+        <!-- ── LEFT COLUMN: Video & Syllabus ─────────────── -->
+        <div class="left-panel">
+            
+            <!-- 1. VIDEO CALL CARD -->
+            <div class="video-card" id="video-card-container">
+                <div class="video-overlay-top">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <span style="font-size:0.82em; font-weight:700; color:#fff; text-shadow:0 2px 4px rgba(0,0,0,0.8);">ARIA</span>
+                        <span id="call-status-badge" class="call-badge">
+                            <span class="live-dot" style="background:#94a3b8; box-shadow:none;"></span>
+                            <span id="status-badge-text">ARIA READY (STANDBY)</span>
+                        </span>
+                    </div>
+                    <div class="call-timer" id="call-timer-display">04:12 HD</div>
+                </div>
+
+                <!-- Still Photo: Displayed when teacher is NOT speaking -->
+                <img id="teacher-idle-img" src="/static/images/ayra_idle.jpg" alt="ARIA Examiner" style="display:block;">
+
+                <!-- Synchronized Video: Displayed and played ONLY when teacher is speaking -->
+                <video id="teacher-video-player" loop muted playsinline poster="/static/images/ayra_idle.jpg" style="display:none;">
+                    <source src="/static/videos/ayra_teacher.mp4" type="video/mp4">
+                </video>
+            </div>
+
+            <!-- 2. STUDY PLAN & SYLLABUS -->
+            <div class="syllabus-card">
+                <div class="card-header-row">
+                    <span>📅 Today's Teaching Plan</span>
+                    <span id="phase-badge" style="color:#34d399; font-size:0.85em; font-weight:700;">TEACHING</span>
+                </div>
+                
+                <!-- Dynamic Interactive Study Plan List -->
+                <div class="study-plan-list" id="study-plan-list">
+                    <div class="plan-item active" onclick="activatePlanItem(this, 'Reading', 'True / False / Not Given')">
+                        <div>
+                            <div style="font-size:0.75em; color:#a5b4fc; font-weight:600;">Active Module</div>
+                            <div style="font-weight:600; font-size:0.88em;">Reading: True / False / Not Given</div>
+                        </div>
+                        <div style="color:#94a3b8; font-size:0.78em;">30m</div>
+                    </div>
+                    <div class="plan-item" onclick="activatePlanItem(this, 'Listening', 'Multiple Choice')">
+                        <div>
+                            <div style="font-size:0.75em; color:#94a3b8; font-weight:600;">Pending</div>
+                            <div style="font-weight:500; font-size:0.88em;">Listening: Multiple Choice</div>
+                        </div>
+                        <div style="color:#94a3b8; font-size:0.78em;">15m</div>
+                    </div>
+                    <div class="plan-item" onclick="activatePlanItem(this, 'Writing', 'Opinion Essay (Task 2)')">
+                        <div>
+                            <div style="font-size:0.75em; color:#94a3b8; font-weight:600;">Pending</div>
+                            <div style="font-weight:500; font-size:0.88em;">Writing: Opinion Essay (Task 2)</div>
+                        </div>
+                        <div style="color:#94a3b8; font-size:0.78em;">15m</div>
+                    </div>
+                    <div class="plan-item" onclick="activatePlanItem(this, 'Speaking', 'Part 2 Cue Card')">
+                        <div>
+                            <div style="font-size:0.75em; color:#94a3b8; font-weight:600;">Pending</div>
+                            <div style="font-weight:500; font-size:0.88em;">Speaking: Part 2 Cue Card</div>
+                        </div>
+                        <div style="color:#94a3b8; font-size:0.78em;">15m</div>
+                    </div>
+                </div>
+
+
+                <!-- Module Tabs -->
+                <div class="module-tabs">
+                    <div class="mod-tab active" onclick="switchModTab(this, 'reading')">📖 Reading</div>
+                    <div class="mod-tab" onclick="switchModTab(this, 'listening')">🎧 Listening</div>
+                    <div class="mod-tab" onclick="switchModTab(this, 'writing')">✍️ Writing</div>
+                    <div class="mod-tab" onclick="switchModTab(this, 'speaking')">🗣️ Speaking</div>
+                </div>
+
+                <input type="text" id="qt-search-input" placeholder="Search syllabus topics..." oninput="filterSyllabus(this.value)">
+
+                <!-- Syllabus Content Area -->
+                <div id="syllabus-content-area">
+                    <!-- READING -->
+                    <div id="tab-reading" class="mod-content">
+                        <div class="section-hdr rea">Academic Reading (3 Passages)</div>
+                        <div class="qtype-chip active" onclick="selectSyllabus(this, 'Reading', 'Academic', 'True / False / Not Given')">True / False / Not Given</div>
+                        <div class="qtype-chip" onclick="selectSyllabus(this, 'Reading', 'Academic', 'Multiple Choice')">Multiple Choice</div>
+                        <div class="qtype-chip" onclick="selectSyllabus(this, 'Reading', 'Academic', 'Yes / No / Not Given')">Yes / No / Not Given</div>
+                        <div class="qtype-chip" onclick="selectSyllabus(this, 'Reading', 'Academic', 'Matching Headings')">Matching Headings</div>
+                        <div class="qtype-chip" onclick="selectSyllabus(this, 'Reading', 'Academic', 'Matching Information')">Matching Info</div>
+                        <div class="qtype-chip" onclick="selectSyllabus(this, 'Reading', 'Academic', 'Sentence Completion')">Sentence Completion</div>
+                        <div class="qtype-chip" onclick="selectSyllabus(this, 'Reading', 'Academic', 'Summary Completion')">Summary Completion</div>
+                        <div class="section-hdr rea">General Training Reading</div>
+                        <div class="qtype-chip" onclick="selectSyllabus(this, 'Reading', 'GT', 'GT Multiple Choice')">GT Multiple Choice</div>
+                        <div class="qtype-chip" onclick="selectSyllabus(this, 'Reading', 'GT', 'GT True / False / Not Given')">GT T/F/NG</div>
+                    </div>
+
+                    <!-- LISTENING -->
+                    <div id="tab-listening" class="mod-content" style="display:none;">
+                        <div class="section-hdr lis">Section 1 – Everyday Conversation</div>
+                        <div class="qtype-chip" onclick="selectSyllabus(this, 'Listening', 'Section 1', 'Form Completion')">Form Completion</div>
+                        <div class="qtype-chip" onclick="selectSyllabus(this, 'Listening', 'Section 1', 'Multiple Choice')">Multiple Choice</div>
+                        <div class="qtype-chip" onclick="selectSyllabus(this, 'Listening', 'Section 1', 'Short-answer Questions')">Short Answer</div>
+                        <div class="section-hdr lis">Section 2 – Everyday Monologue</div>
+                        <div class="qtype-chip" onclick="selectSyllabus(this, 'Listening', 'Section 2', 'Multiple Choice')">Multiple Choice</div>
+                        <div class="qtype-chip" onclick="selectSyllabus(this, 'Listening', 'Section 2', 'Summary Completion')">Summary Completion</div>
+                        <div class="section-hdr lis">Section 3 – Educational Discussion</div>
+                        <div class="qtype-chip" onclick="selectSyllabus(this, 'Listening', 'Section 3', 'Multiple Choice')">Multiple Choice</div>
+                        <div class="qtype-chip" onclick="selectSyllabus(this, 'Listening', 'Section 3', 'Matching')">Matching (Opinions)</div>
+                        <div class="section-hdr lis">Section 4 – Academic Lecture</div>
+                        <div class="qtype-chip" onclick="selectSyllabus(this, 'Listening', 'Section 4', 'Lecture Notes')">Lecture Notes</div>
+                    </div>
+
+                    <!-- WRITING -->
+                    <div id="tab-writing" class="mod-content" style="display:none;">
+                        <div class="section-hdr wri">Academic Task 1 (20m)</div>
+                        <div class="qtype-chip" onclick="selectSyllabus(this, 'Writing', 'Academic Task 1', 'Line Graph')">Line Graph</div>
+                        <div class="qtype-chip" onclick="selectSyllabus(this, 'Writing', 'Academic Task 1', 'Bar Chart')">Bar Chart</div>
+                        <div class="qtype-chip" onclick="selectSyllabus(this, 'Writing', 'Academic Task 1', 'Pie Chart')">Pie Chart</div>
+                        <div class="qtype-chip" onclick="selectSyllabus(this, 'Writing', 'Academic Task 1', 'Process Diagram')">Process Diagram</div>
+                        <div class="section-hdr wri">Task 2 Essays (40m)</div>
+                        <div class="qtype-chip" onclick="selectSyllabus(this, 'Writing', 'Task 2 Essay', 'Opinion Essay')">Opinion Essay</div>
+                        <div class="qtype-chip" onclick="selectSyllabus(this, 'Writing', 'Task 2 Essay', 'Discussion Essay')">Discussion Essay</div>
+                        <div class="qtype-chip" onclick="selectSyllabus(this, 'Writing', 'Task 2 Essay', 'Problem-Solution')">Problem – Solution</div>
+                    </div>
+
+                    <!-- SPEAKING -->
+                    <div id="tab-speaking" class="mod-content" style="display:none;">
+                        <div class="section-hdr spe">Part 1 – Interview (4-5 min)</div>
+                        <div class="qtype-chip" onclick="selectSyllabus(this, 'Speaking', 'Part 1', 'Home / Accommodation')">Home / Accommodation</div>
+                        <div class="qtype-chip" onclick="selectSyllabus(this, 'Speaking', 'Part 1', 'Work / Study')">Work / Study</div>
+                        <div class="section-hdr spe">Part 2 – Cue Card (3-4 min)</div>
+                        <div class="qtype-chip" onclick="selectSyllabus(this, 'Speaking', 'Part 2', 'Describe a person who influenced you')">Influential Person</div>
+                        <div class="qtype-chip" onclick="selectSyllabus(this, 'Speaking', 'Part 2', 'Describe a memorable event')">Memorable Event</div>
+                        <div class="section-hdr spe">Part 3 – Discussion (4-5 min)</div>
+                        <div class="qtype-chip" onclick="selectSyllabus(this, 'Speaking', 'Part 3', 'Why is it important to learn new skills?')">Learning New Skills</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── RIGHT COLUMN: Huge Class Chat ─────────────── -->
+        <div class="right-panel">
+            <div class="chat-header">
+                <div class="chat-title">
+                    <i class="fas fa-comments" style="color:var(--primary-accent);"></i>
+                    <span>ARIA Class Chat</span>
+                    <span id="current-skill-badge" style="font-size:0.75em; padding:3px 10px; border-radius:12px; background:rgba(99,102,241,0.2); color:#a5b4fc; font-weight:600;">Reading: True / False / Not Given</span>
+                </div>
+                <div class="chat-controls">
+                    <button id="voice-toggle" class="control-btn active" onclick="toggleVoice()" title="Toggle Voice Speech">
+                        <i class="fas fa-volume-high"></i>
+                        <span>Voice: ON</span>
+                    </button>
+                    <button id="mic-toggle" class="control-btn" onclick="toggleMic()" title="Toggle Voice Recognition">
+                        <i class="fas fa-microphone"></i>
+                        <span>Mic</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Chat Messages Viewport -->
+            <div id="chat-container"></div>
+            
+            <div id="typing-indicator">
+                <div class="dots"><span></span><span></span><span></span></div>
+            </div>
+
+            <!-- Dynamic Answer Options -->
+            <div id="options-area"></div>
+            <div id="text-input-area">
+                <textarea id="text-answer" placeholder="Type your answer here..."></textarea>
+            </div>
+            <div id="action-row">
+                <button class="action-btn" id="submit-btn" onclick="submitAnswer()">Submit Answer</button>
+                <button class="action-btn" id="retry-btn" onclick="retryQuestion()">Try Again</button>
+            </div>
+
+            <!-- Bottom Input Bar -->
+            <div class="chat-bottom-bar">
+                <div class="input-row">
+                    <textarea id="chat-input" placeholder="Ask ARIA anything about IELTS strategies, questions, grammar, vocabulary..." rows="1"></textarea>
+                    <button class="icon-btn" id="chat-mic-btn" onclick="toggleMic()" title="Speak with microphone">
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                    <button id="chat-send-btn" onclick="sendMessage()" title="Send Message">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+
+                <!-- Quick Suggestion Pills -->
+                <div class="quick-pills-row">
+                    <button class="pill-btn" onclick="sendQuickMessage('Teach me Matching Headings strategy with Cambridge rules')">Matching Headings Strategy</button>
+                    <button class="pill-btn" onclick="sendQuickMessage('How to get Band 7+ in Task 2 essay?')">Task 2 Essay Guide</button>
+                    <button class="pill-btn" onclick="sendQuickMessage('Explain True/False/Not Given traps with an example')">T/F/NG Traps</button>
+                    <button class="pill-btn" onclick="sendQuickMessage('Give me a Speaking Part 2 cue card practice')">Speaking Cue Card</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Hidden Audio Player for Synchronized Speech -->
+    <audio id="aria-audio-player" preload="auto" style="display:none;"></audio>
+
+    <script>
+        window.allSeededQuestions = {{ all_questions | tojson | safe if all_questions else '[]' }};
+        window.userProfile = {{ profile | tojson | safe if profile else '{}' }};
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(function(e){});
+                document.getElementById('fullscreen-toggle-btn').innerHTML = '<i class="fas fa-compress"></i> <span>Exit Fullscreen</span>';
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen();
+                document.getElementById('fullscreen-toggle-btn').innerHTML = '<i class="fas fa-expand"></i> <span>Fullscreen</span>';
+            }
+        }
+    </script>
+    <script src="/static/js/ai_teacher.js?v=260"></script>
+</body>
+</html>

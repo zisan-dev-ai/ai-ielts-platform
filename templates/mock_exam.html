@@ -1,0 +1,252 @@
+{% extends "base.html" %}
+{% set active_page = "mock_exam" %}
+
+{% block title %}Official IELTS Mock Exam Center — Real Exam Mode{% endblock %}
+
+{% block content %}
+<div style="display:flex; flex-direction:column; gap:var(--space-xl); max-width:1200px; margin:0 auto; padding-bottom:40px;">
+  
+  <!-- EXAM ROADMAP / FULL MOCK SECTION -->
+  <div class="card" style="background:var(--bg-card); border:1.5px solid rgba(99,102,241,0.25); border-radius:14px; padding:24px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; flex-wrap:wrap; gap:10px;">
+      <div>
+        <h3 style="font-size:1.25rem; font-weight:800; color:var(--text-main); margin:0;">
+          🏆 অপশন ১: সম্পূর্ণ ৪-মডিউল ফুল মক টেস্ট রোডম্যাপ
+        </h3>
+        <p style="font-size:0.85rem; color:var(--text-muted); margin:4px 0 0 0;">
+          পরপর ৪টি মডিউল সম্পন্ন হবে এবং শেষে অফিসিয়াল Test Report Form (TRF) ও Overall Band Scorecard পাবেন।
+        </p>
+      </div>
+      <button onclick="startFullMockExam()" class="btn btn-primary" style="font-weight:700;">
+        ফুল টেস্ট শুরু করুন ➔
+      </button>
+    </div>
+
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap:14px;">
+      <!-- STEP 1 -->
+      <div style="background:rgba(59,130,246,0.06); border:1.5px solid rgba(59,130,246,0.3); border-radius:10px; padding:16px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <span style="background:#2563eb; color:#fff; font-size:0.7em; font-weight:800; padding:2px 8px; border-radius:12px;">STEP 1</span>
+          <span style="font-size:0.75em; font-weight:700; color:#38bdf8;">⏱️ 30 Mins</span>
+        </div>
+        <h4 style="font-size:1rem; font-weight:800; color:var(--text-main); margin-bottom:4px;">🎧 Listening CBT</h4>
+        <p style="font-size:0.8em; color:var(--text-muted); line-height:1.5; margin:0;">
+          ৪টি সেকশন • ৪০টি প্রশ্ন • অডিও ১ বারই চলবে • কোনো সাবটাইটেল থাকবে না।
+        </p>
+      </div>
+
+      <!-- STEP 2 -->
+      <div style="background:rgba(16,185,129,0.06); border:1.5px solid rgba(16,185,129,0.3); border-radius:10px; padding:16px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <span style="background:#059669; color:#fff; font-size:0.7em; font-weight:800; padding:2px 8px; border-radius:12px;">STEP 2</span>
+          <span style="font-size:0.75em; font-weight:700; color:#34d399;">⏱️ 60 Mins</span>
+        </div>
+        <h4 style="font-size:1rem; font-weight:800; color:var(--text-main); margin-bottom:4px;">📖 Academic Reading</h4>
+        <p style="font-size:0.8em; color:var(--text-muted); line-height:1.5; margin:0;">
+          ৩টি অ্যাকাডেমিক প্যাসেজ • ৪০টি প্রশ্ন • স্প্লিট-স্ক্রিন মোড • কোনো হিন্ট নেই।
+        </p>
+      </div>
+
+      <!-- STEP 3 -->
+      <div style="background:rgba(245,158,11,0.06); border:1.5px solid rgba(245,158,11,0.3); border-radius:10px; padding:16px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <span style="background:#d97706; color:#fff; font-size:0.7em; font-weight:800; padding:2px 8px; border-radius:12px;">STEP 3</span>
+          <span style="font-size:0.75em; font-weight:700; color:#fbbf24;">⏱️ 60 Mins</span>
+        </div>
+        <h4 style="font-size:1rem; font-weight:800; color:var(--text-main); margin-bottom:4px;">✍️ Academic Writing</h4>
+        <p style="font-size:0.8em; color:var(--text-muted); line-height:1.5; margin:0;">
+          Task 1 (১৫০ শব্দ) + Task 2 (২৫০ শব্দ) • অফিসিয়াল টাইপিং ও ওয়ার্ড কাউন্টার।
+        </p>
+      </div>
+
+      <!-- STEP 4 -->
+      <div style="background:rgba(139,92,246,0.06); border:1.5px solid rgba(139,92,246,0.3); border-radius:10px; padding:16px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <span style="background:#7c3aed; color:#fff; font-size:0.7em; font-weight:800; padding:2px 8px; border-radius:12px;">STEP 4</span>
+          <span style="font-size:0.75em; font-weight:700; color:#c084fc;">⏱️ 11-14 Mins</span>
+        </div>
+        <h4 style="font-size:1rem; font-weight:800; color:var(--text-main); margin-bottom:4px;">🗣️ Speaking Interview</h4>
+        <p style="font-size:0.8em; color:var(--text-muted); line-height:1.5; margin:0;">
+          Part 1, 2, 3 ফুল ইন্টারভিউ • AI এক্সামিনার লাইভ স্পিচ • ৪-ক্রাইটেরিয়া স্কোরিং।
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SINGLE MODULE EXAMS SECTION -->
+  <div>
+    <div style="margin-bottom:16px;">
+      <h3 style="font-size:1.3rem; font-weight:800; color:var(--text-main); margin:0 0 4px 0;">
+        🎯 অপশন ২: একক মডিউল রিয়েল এক্সাম পেপার (Single Module Exam)
+      </h3>
+      <p style="font-size:0.88rem; color:var(--text-muted); margin:0;">
+        আপনার প্রয়োজনমতো যেকোনো ১টি নির্দিষ্ট মডিউল বেছে নিয়ে সম্পূর্ণ পরীক্ষার নিয়ম অনুযায়ী পরীক্ষা দিন।
+      </p>
+    </div>
+
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap:18px;">
+      
+      <!-- 1. LISTENING MOCK CARD -->
+      <div class="card" style="border:1.5px solid rgba(59,130,246,0.3); display:flex; flex-direction:column; justify-content:space-between; height:100%;">
+        <div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <span class="badge badge-primary" style="font-weight:800;">🎧 LISTENING REAL EXAM</span>
+            <span class="badge" style="background:#1e293b; color:#38bdf8; font-weight:700;">⏱️ 30 Mins</span>
+          </div>
+          <h3 style="font-size:1.15rem; font-weight:800; color:var(--text-main); margin-bottom:8px;">
+            Academic Listening Full Exam
+          </h3>
+          <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5; margin-bottom:14px;">
+            ৪টি সেকশন (Social Dialogue, Interactive Map, Academic Tutorial, Lecture) • ৪০টি প্রশ্ন • সিঙ্গেল প্লেব্যাক।
+          </p>
+          <div style="background:var(--neutral-100, #f8fafc); border-radius:8px; padding:10px 12px; font-size:0.8em; color:var(--text-muted); margin-bottom:16px;">
+            ❌ কোনো লাইভ সাবটাইটেল নেই<br>
+            ❌ কোনো হিন্ট বা চেক বাটন নেই<br>
+            ✅ পরীক্ষা শেষে অফিসিয়াল ৯-ব্যান্ড স্কোর
+          </div>
+        </div>
+        <a href="/listening-cbt?mode=exam" class="btn btn-primary btn-block" style="font-weight:800; padding:12px; text-align:center; text-decoration:none;">
+          🎧 Listening এক্সাম শুরু করুন
+        </a>
+      </div>
+
+      <!-- 2. READING MOCK CARD -->
+      <div class="card" style="border:1.5px solid rgba(16,185,129,0.3); display:flex; flex-direction:column; justify-content:space-between; height:100%;">
+        <div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <span class="badge badge-primary" style="background:#059669; border-color:#10b981; font-weight:800;">📖 READING REAL EXAM</span>
+            <span class="badge" style="background:#1e293b; color:#34d399; font-weight:700;">⏱️ 60 Mins</span>
+          </div>
+          <h3 style="font-size:1.15rem; font-weight:800; color:var(--text-main); margin-bottom:8px;">
+            Academic Reading Full Exam
+          </h3>
+          <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5; margin-bottom:14px;">
+            ৩টি পূর্ণাঙ্গ অ্যাকাডেমিক প্যাসেজ • ৪০টি প্রশ্ন (T/F/NG, Headings, Summary, Matching) • স্প্লিট ভিউ।
+          </p>
+          <div style="background:var(--neutral-100, #f8fafc); border-radius:8px; padding:10px 12px; font-size:0.8em; color:var(--text-muted); margin-bottom:16px;">
+            ❌ কোনো বাংলা অনুবাদ নেই<br>
+            ❌ কোনো ইনস্ট্যান্ট উত্তর চেক নেই<br>
+            ✅ পরীক্ষা শেষে বিস্তারিত অ্যানালাইসিস
+          </div>
+        </div>
+        <a href="/reading-cbt?mode=exam" class="btn btn-block" style="background:#059669; color:#fff; font-weight:800; padding:12px; text-align:center; text-decoration:none;">
+          📖 Reading এক্সাম শুরু করুন
+        </a>
+      </div>
+
+      <!-- 3. WRITING MOCK CARD -->
+      <div class="card" style="border:1.5px solid rgba(245,158,11,0.3); display:flex; flex-direction:column; justify-content:space-between; height:100%;">
+        <div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <span class="badge badge-accent" style="background:#d97706; border-color:#f59e0b; font-weight:800;">✍️ WRITING REAL EXAM</span>
+            <span class="badge" style="background:#1e293b; color:#fbbf24; font-weight:700;">⏱️ 60 Mins</span>
+          </div>
+          <h3 style="font-size:1.15rem; font-weight:800; color:var(--text-main); margin-bottom:8px;">
+            Academic Writing Task 1 &amp; 2
+          </h3>
+          <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5; margin-bottom:14px;">
+            Task 1: Academic Data / Chart (২০ মি., ১৫০+ শব্দ) + Task 2: Opinion / Discussion Essay (৪০ মি., ২৫০+ শব্দ)।
+          </p>
+          <div style="background:var(--neutral-100, #f8fafc); border-radius:8px; padding:10px 12px; font-size:0.8em; color:var(--text-muted); margin-bottom:16px;">
+            ❌ কোনো AI ব্রেইনস্টর্ম সাহায্য নেই<br>
+            ❌ কোনো মডেল রচনা অ্যাক্সেস নেই<br>
+            ✅ TA, CC, LR, GRA ৪টি ক্রাইটেরিয়া গ্রেডিং
+          </div>
+        </div>
+        <a href="/writing-practice?mode=exam" class="btn btn-accent btn-block" style="background:#d97706; color:#fff; font-weight:800; padding:12px; text-align:center; text-decoration:none;">
+          ✍️ Writing এক্সাম শুরু করুন
+        </a>
+      </div>
+
+      <!-- 4. SPEAKING MOCK CARD -->
+      <div class="card" style="border:1.5px solid rgba(139,92,246,0.3); display:flex; flex-direction:column; justify-content:space-between; height:100%;">
+        <div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <span class="badge badge-accent" style="font-weight:800;">🗣️ SPEAKING REAL EXAM</span>
+            <span class="badge" style="background:#1e293b; color:#c084fc; font-weight:700;">⏱️ 11-14 Mins</span>
+          </div>
+          <h3 style="font-size:1.15rem; font-weight:800; color:var(--text-main); margin-bottom:8px;">
+            Speaking Full AI Interview
+          </h3>
+          <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5; margin-bottom:14px;">
+            Part 1 (ইন্টারভিউ) ➔ Part 2 (১ মিনিট প্রেপ কিউ কার্ড) ➔ Part 3 (অ্যাবস্ট্রাক্ট ডিসকাশন)।
+          </p>
+          <div style="background:var(--neutral-100, #f8fafc); border-radius:8px; padding:10px 12px; font-size:0.8em; color:var(--text-muted); margin-bottom:16px;">
+            ❌ কোনো AI হিন্ট বা পয়েন্ট সাজেশন নেই<br>
+            ❌ কোনো প্রম্পট ট্রান্সলেশন নেই<br>
+            ✅ ফ্লুয়েন্সি, প্রোনাউনসিয়েশন ও ব্যান্ড মূল্যায়ন
+          </div>
+        </div>
+        <a href="/speaking-practice?mode=exam" class="btn btn-block" style="background:#7c3aed; color:#fff; font-weight:800; padding:12px; text-align:center; text-decoration:none;">
+          🗣️ Speaking এক্সাম শুরু করুন
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- COMPARISON TABLE: PRACTICE MODE VS REAL EXAM MODE -->
+  <div class="card" style="border-radius:12px; padding:24px;">
+    <h3 style="font-size:1.15rem; font-weight:800; color:var(--text-main); margin-bottom:14px; display:flex; align-items:center; gap:8px;">
+      ⚖️ প্র্যাকটিস মোড বনাম রিয়েল এক্সাম মোড (পার্থক্য)
+    </h3>
+    
+    <div style="overflow-x:auto;">
+      <table style="width:100%; border-collapse:collapse; font-size:0.88rem; text-align:left;">
+        <thead>
+          <tr style="border-bottom:2px solid var(--border-color, #e2e8f0); background:var(--neutral-100, #f8fafc);">
+            <th style="padding:12px 14px; color:var(--text-main); font-weight:800;">ফিচার</th>
+            <th style="padding:12px 14px; color:#2563eb; font-weight:800;">💡 প্র্যাকটিস ইঞ্জিন মোড (/practice)</th>
+            <th style="padding:12px 14px; color:#e11d48; font-weight:800;">🏛️ রিয়েল এক্সাম মোড (/mock-exam)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--border-color, #e2e8f0);">
+            <td style="padding:12px 14px; font-weight:700;">AI হিন্ট ও সাজেশন</td>
+            <td style="padding:12px 14px; color:#10b981;">✅ প্রশ্ন চলাকালীন যেকোনো সময় দেখা যায়</td>
+            <td style="padding:12px 14px; color:#ef4444; font-weight:700;">❌ সম্পূর্ণ বন্ধ (Zero Aids)</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border-color, #e2e8f0);">
+            <td style="padding:12px 14px; font-weight:700;">তাৎক্ষণিক উত্তর চেক (`[চেক]`)</td>
+            <td style="padding:12px 14px; color:#10b981;">✅ প্রতিটি প্রশ্নের সাথে সাথে চেক করা যায়</td>
+            <td style="padding:12px 14px; color:#ef4444; font-weight:700;">❌ শুধুমাত্র ফাইনাল সাবমিটের পর ফলাফল আসবে</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border-color, #e2e8f0);">
+            <td style="padding:12px 14px; font-weight:700;">লাইভ সাবটাইটেল (Listening)</td>
+            <td style="padding:12px 14px; color:#10b981;">✅ লাইভ কারাওকে ও সবুজ হাইলাইট পাওয়া যায়</td>
+            <td style="padding:12px 14px; color:#ef4444; font-weight:700;">❌ শুধুই অডিও শুনতে হবে (অফিশিয়াল নিয়ম)</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border-color, #e2e8f0);">
+            <td style="padding:12px 14px; font-weight:700;">অডিও প্লেব্যাক কন্ট্রোল</td>
+            <td style="padding:12px 14px; color:#10b981;">✅ রিওয়াইন্ড, স্পিড পরিবর্তন ও ট্রান্সক্রিপ্ট</td>
+            <td style="padding:12px 14px; color:#ef4444; font-weight:700;">❌ অডিও একাধারে একবারই চলবে</td>
+          </tr>
+          <tr>
+            <td style="padding:12px 14px; font-weight:700;">টাইমার নিয়ম</td>
+            <td style="padding:12px 14px; color:#10b981;">✅ আনলিমিটেড বা পজ করা যায়</td>
+            <td style="padding:12px 14px; color:#ef4444; font-weight:700;">⏱️ অফিশিয়াল কাউন্টডাউন ও অটো-সাবমিট</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+function startFullMockExam() {
+  if (confirm("🏛️ সম্পূর্ণ ৪-মডিউল ফুল মক টেস্ট শুরু করতে যাচ্ছেন (২ ঘণ্টা ৪৫ মিনিট)।\n\nআপনি কি কোনো হিন্ট বা প্র্যাকটিস হেল্প ছাড়া অফিশিয়াল এক্সাম কন্ডিশনে পরীক্ষা দিতে প্রস্তুত?")) {
+    window.location.href = "/listening-cbt?mode=exam&full_mock=1";
+  }
+}
+</script>
+<style>
+@keyframes pulse {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+</style>
+{% endblock %}

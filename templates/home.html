@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI IELTS — Cambridge 9-Band Preparation Suite with Personal AI Tutor</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --primary-light: rgba(99, 102, 241, 0.1);
+      --accent-cyan: #06b6d4;
+      --accent-green: #10b981;
+      --accent-purple: #8b5cf6;
+      --bg-dark: #090a10;
+      --bg-card: #121420;
+      --bg-card-hover: #171a2b;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-glow: rgba(99, 102, 241, 0.4);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── STICKY NAVBAR ──────────────────────────────────────── */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(16px);
+      background: rgba(9, 10, 16, 0.85);
+      border-bottom: 1px solid var(--border-color);
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--primary), var(--accent-purple));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 1.2rem;
+      box-shadow: 0 0 16px rgba(99, 102, 241, 0.4);
+    }
+
+    .brand-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.3px;
+    }
+
+    .brand-subtitle {
+      font-size: 0.7rem;
+      color: var(--accent-cyan);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+    .nav-link:hover {
+      color: #fff;
+    }
+
+    .nav-auth {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      border-radius: 10px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--border-color);
+      color: var(--text-main);
+    }
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+      color: #fff;
+      box-shadow: 0 4px 18px rgba(99, 102, 241, 0.35);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 22px rgba(99, 102, 241, 0.5);
+    }
+
+    .btn-signout {
+      background: rgba(239, 68, 68, 0.1);
+      border-color: rgba(239, 68, 68, 0.25);
+      color: #f87171;
+    }
+    .btn-signout:hover {
+      background: rgba(239, 68, 68, 0.2);
+      color: #fff;
+    }
+
+    /* ── HERO SECTION ───────────────────────────────────────── */
+    .hero {
+      position: relative;
+      padding: 90px 40px 70px;
+      text-align: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .hero-glow {
+      position: absolute;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 450px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.25) 0%, rgba(9, 10, 16, 0) 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      color: #a5b4fc;
+      padding: 6px 16px;
+      border-radius: 30px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-title {
+      font-size: 3.4rem;
+      font-weight: 800;
+      line-height: 1.18;
+      letter-spacing: -1.2px;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+      max-width: 950px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-title span.gradient-text {
+      background: linear-gradient(135deg, #a5b4fc, #6366f1, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-desc {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      max-width: 760px;
+      margin: 0 auto 36px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 48px;
+      position: relative;
+      z-index: 1;
+      flex-wrap: wrap;
+    }
+
+    .trust-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 24px 30px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      position: relative;
+      z-index: 1;
+    }
+
+    .trust-item {
+      text-align: center;
+    }
+    .trust-item .val {
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .trust-item .lbl {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    /* ── FEATURES SECTION ───────────────────────────────────── */
+    .section {
+      padding: 90px 40px;
+      max-width: 1240px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .section-badge {
+      color: var(--accent-cyan);
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .section-title {
+      font-size: 2.3rem;
+      font-weight: 800;
+      letter-spacing: -0.6px;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+
+    .section-subtitle {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 24px;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 32px 28px;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-glow);
+      background: var(--bg-card-hover);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .feature-icon-box {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+    .icon-indigo { background: rgba(99, 102, 241, 0.15); color: #818cf8; }
+    .icon-cyan { background: rgba(6, 182, 212, 0.15); color: #22d3ee; }
+    .icon-green { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+    .icon-amber { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+    .icon-purple { background: rgba(139, 92, 246, 0.15); color: #c084fc; }
+    .icon-rose { background: rgba(244, 63, 94, 0.15); color: #fb7185; }
+
+    .feature-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .feature-desc {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 20px;
+      flex: 1;
+    }
+
+    .feature-link {
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: gap 0.2s;
+    }
+    .feature-card:hover .feature-link {
+      gap: 10px;
+      color: #a5b4fc;
+    }
+
+    /* ── HOW IT WORKS ───────────────────────────────────────── */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .step-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 30px;
+      position: relative;
+    }
+
+    .step-number {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent-purple));
+      color: #fff;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      margin-bottom: 18px;
+    }
+
+    /* ── CTA BANNER ─────────────────────────────────────────── */
+    .cta-banner {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.15));
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      border-radius: 24px;
+      padding: 60px 40px;
+      text-align: center;
+      margin: 40px auto;
+      max-width: 1100px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ── AUTH MODAL ─────────────────────────────────────────── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-card {
+      background: #141724;
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 440px;
+      padding: 32px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      position: relative;
+      animation: modalPop 0.25s ease-out;
+    }
+    @keyframes modalPop {
+      from { transform: scale(0.92); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+    .modal-close:hover { color: #fff; }
+
+    .modal-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 24px;
+      gap: 12px;
+    }
+    .modal-tab-btn {
+      padding: 8px 16px;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .modal-tab-btn.active {
+      color: #fff;
+      border-bottom-color: var(--primary);
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+      text-align: left;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .form-input, .form-select {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 10px 14px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.92rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-input:focus, .form-select:focus {
+      border-color: var(--primary);
+    }
+
+    .demo-credentials-box {
+      background: rgba(99, 102, 241, 0.1);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 0.8rem;
+      color: #a5b4fc;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* ── FOOTER ─────────────────────────────────────────────── */
+    .footer {
+      border-top: 1px solid var(--border-color);
+      padding: 40px 40px 30px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 768px) {
+      .navbar { padding: 0 20px; }
+      .nav-links { display: none; }
+      .hero { padding: 60px 20px 40px; }
+      .hero-title { font-size: 2.2rem; }
+      .trust-grid { grid-template-columns: repeat(2, 1fr); }
+      .steps-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── 1. STICKY NAVBAR ──────────────────────────────────────── -->
+  <nav class="navbar">
+    <a href="/" class="brand-group">
+      <div class="brand-icon">
+        <i class="fas fa-graduation-cap"></i>
+      </div>
+      <div>
+        <div class="brand-title">AI IELTS</div>
+        <div class="brand-subtitle">Cambridge 9-Band Suite</div>
+      </div>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#features" class="nav-link">Features</a></li>
+      <li><a href="/ai-teacher" class="nav-link">AI Teacher ARIA</a></li>
+      <li><a href="/practice" class="nav-link">CBT Engine</a></li>
+      <li><a href="/mock-exam" class="nav-link">Mock Exams</a></li>
+      <li><a href="/analytics" class="nav-link">Analytics</a></li>
+    </ul>
+
+    <div class="nav-auth">
+      {% if user %}
+        <!-- Signed In View -->
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:34px; height:34px; border-radius:50%; background:linear-gradient(135deg, var(--primary), var(--accent-purple)); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.85rem; color:#fff;">
+            {{ user.name[0] if user.name else 'S' }}
+          </div>
+          <span style="font-weight:600; font-size:0.9rem; color:#fff;">{{ user.name }}</span>
+        </div>
+        <a href="/dashboard" class="btn btn-primary" style="padding:8px 18px;">
+          <i class="fas fa-chart-pie"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="/auth/logout" class="btn btn-signout" style="padding:8px 14px;" title="Sign Out">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Sign Out</span>
+        </a>
+      {% else %}
+        <!-- Guest View -->
+        <button onclick="openAuthModal('login')" class="btn btn-outline">
+          <i class="fas fa-sign-in-alt"></i>
+          <span>Sign In</span>
+        </button>
+        <button onclick="openAuthModal('register')" class="btn btn-primary">
+          <i class="fas fa-user-plus"></i>
+          <span>Start Free Prep</span>
+        </button>
+      {% endif %}
+    </div>
+  </nav>
+
+  <!-- ── 2. HERO SECTION ───────────────────────────────────────── -->
+  <header class="hero">
+    <div class="hero-glow"></div>
+
+    <div class="hero-badge">
+      <i class="fas fa-sparkles"></i>
+      <span>Official Cambridge 9-Band AI Preparation</span>
+    </div>
+
+    <h1 class="hero-title">
+      Master IELTS with Your Personal <br>
+      <span class="gradient-text">1-on-1 AI Masterclass Tutor</span>
+    </h1>
+
+    <p class="hero-desc">
+      Experience authentic Cambridge Computer-Delivered Tests (CBT), real-time interactive video coaching with AI Teacher ARIA, instant 4-criterion writing grading, and voice speaking drills.
+    </p>
+
+    <div class="hero-actions">
+      {% if user %}
+        <a href="/dashboard" class="btn btn-primary btn-lg" style="font-size:1.05rem; padding:14px 28px;">
+          <i class="fas fa-rocket"></i>
+          <span>Go to Your Dashboard</span>
+        </a>
+      {% else %}
+        <button onclick="openAuthModal('register')" class="btn btn-primary btn-lg" style="font-size:1.05rem; padding:14px 28px;">
+          <i class="fas fa-rocket"></i>
+          <span>Start Free Practice Now</span>
+        </button>
+      {% endif %}
+
+      <a href="/ai-teacher" class="btn btn-outline btn-lg" style="font-size:1.05rem; padding:14px 24px;">
+        <i class="fas fa-video"></i>
+        <span>Meet AI Teacher ARIA</span>
+      </a>
+    </div>
+
+    <!-- Trust Numbers Bar -->
+    <div class="trust-grid">
+      <div class="trust-item">
+        <div class="val">Band 9.0</div>
+        <div class="lbl">Cambridge Rubric Standard</div>
+      </div>
+      <div class="trust-item">
+        <div class="val">77 Types</div>
+        <div class="lbl">All IELTS Question Types</div>
+      </div>
+      <div class="trust-item">
+        <div class="val">1-on-1</div>
+        <div class="lbl">ARIA Live Classroom Tutor</div>
+      </div>
+      <div class="trust-item">
+        <div class="val">100% CBT</div>
+        <div class="lbl">Authentic Exam Screen</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── 3. FEATURES SHOWCASE ──────────────────────────────────── -->
+  <section id="features" class="section">
+    <div class="section-header">
+      <span class="section-badge">Comprehensive Ecosystem</span>
+      <h2 class="section-title">Everything You Need for IELTS Band 7.5+</h2>
+      <p class="section-subtitle">
+        এক প্ল্যাটফর্মেই ৪টি মডিউল—রিডিং, লিসেনিং, রাইটিং ও স্পিকিং-এর পূর্ণাঙ্গ ও সমন্বিত প্রস্তুতি।
+      </p>
+    </div>
+
+    <div class="features-grid">
+      
+      <!-- Feature 1: AI Teacher ARIA -->
+      <div class="feature-card">
+        <div>
+          <div class="feature-icon-box icon-indigo">
+            <i class="fas fa-robot"></i>
+          </div>
+          <h3 class="feature-title">1-on-1 AI Teacher (ARIA)</h3>
+          <p class="feature-desc">
+            ক্যামব্রিজ এক্সামিনার লেভেলের লাইভ ক্লাস। রিয়েল-টাইম ব্রিটিশ ও বাংলিশ ভয়েস স্পিচ, ডিজিটাল হোয়াইটবোর্ড ও ট্র্যাপ এলার্ট সহ ব্যক্তিগত কোচিং।
+          </p>
+        </div>
+        <a href="/ai-teacher" class="feature-link">
+          <span>Explore AI Teacher</span>
+          <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+
+      <!-- Feature 2: CBT Reading Engine -->
+      <div class="feature-card">
+        <div>
+          <div class="feature-icon-box icon-cyan">
+            <i class="fas fa-book-open"></i>
+          </div>
+          <h3 class="feature-title">Authentic CBT Reading Engine</h3>
+          <p class="feature-desc">
+            আসল কেমব্রিজ পরীক্ষার মতো স্প্লিট-স্ক্রিন প্যাসেজ ভিউয়ার, টেক্সট হাইলাইটার, টাইমার এবং প্রতি প্রশ্নের পুঙ্খানুপুঙ্খ উত্তর ব্যাখ্যা।
+          </p>
+        </div>
+        <a href="/reading-cbt?id=1" class="feature-link">
+          <span>Practice CBT Reading</span>
+          <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+
+      <!-- Feature 3: CBT Listening Simulator -->
+      <div class="feature-card">
+        <div>
+          <div class="feature-icon-box icon-green">
+            <i class="fas fa-headphones"></i>
+          </div>
+          <h3 class="feature-title">CBT Audio Listening Lab</h3>
+          <p class="feature-desc">
+            সেকশন ১ থেকে ৪ পর্যন্ত সম্পূর্ণ অফিসিয়াল অডিও রেকর্ডিং, ডিস্ট্রাক্টর ফিল্টার এবং ইনস্ট্যান্ট স্পেলিং ভ্যালিডেশন।
+          </p>
+        </div>
+        <a href="/listening-cbt?id=9" class="feature-link">
+          <span>Start Listening Test</span>
+          <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+
+      <!-- Feature 4: AI Writing Evaluator -->
+      <div class="feature-card">
+        <div>
+          <div class="feature-icon-box icon-amber">
+            <i class="fas fa-pen-nib"></i>
+          </div>
+          <h3 class="feature-title">AI Writing Evaluator (4-Criteria)</h3>
+          <p class="feature-desc">
+            টাস্ক ১ ও ২ রচনা জমা দেওয়ার সাথে সাথে Task Achievement, Coherence, Lexical Resource ও Grammar-এ সঠিক ব্যান্ড স্কোর ও বাক্যভিত্তিক আপগ্রেড।
+          </p>
+        </div>
+        <a href="/writing-practice?id=6" class="feature-link">
+          <span>Evaluate Essay Now</span>
+          <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+
+      <!-- Feature 5: AI Speaking Coach -->
+      <div class="feature-card">
+        <div>
+          <div class="feature-icon-box icon-purple">
+            <i class="fas fa-microphone-lines"></i>
+          </div>
+          <h3 class="feature-title">Speaking Interview Simulator</h3>
+          <p class="feature-desc">
+            পার্ট ১, ২ কিউ-কার্ড এবং পার্ট ৩ আলোচনা। ভয়েস রেকর্ডিং থেকে ফ্লুয়েন্সি, পজ ডিউরেশন ও প্রোনাউন্সিয়শনের নিখুঁত অ্যাকোস্টিক অ্যানালাইসিস।
+          </p>
+        </div>
+        <a href="/speaking-practice?id=7" class="feature-link">
+          <span>Practice Speaking Drills</span>
+          <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+
+      <!-- Feature 6: Vocabulary & Grammar Master -->
+      <div class="feature-card">
+        <div>
+          <div class="feature-icon-box icon-rose">
+            <i class="fas fa-spell-check"></i>
+          </div>
+          <h3 class="feature-title">Academic Vocabulary & Grammar Hub</h3>
+          <p class="feature-desc">
+            ১৬টি একাডেমিক থিম্যাটিক ওয়ার্ড ব্যাংক, Band 8.5+ লেক্সিক্যাল আপগ্রেড, কোলকেশনস এবং স্পেসড রিপিটেশন (SRS) মেমরি সিস্টেম।
+          </p>
+        </div>
+        <a href="/vocabulary" class="feature-link">
+          <span>Explore Word Banks</span>
+          <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── 4. HOW IT WORKS ──────────────────────────────────────── -->
+  <section class="section" style="background: rgba(255, 255, 255, 0.01); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+    <div class="section-header">
+      <span class="section-badge">Methodology</span>
+      <h2 class="section-title">৩টি সহজ ধাপে ব্যান্ড ৭.৫+ অর্জন</h2>
+      <p class="section-subtitle">
+        অনর্থক বই মুখস্থ না করে ডেটা-ড্রিভেন এবং লক্ষ্যভিত্তিক স্মার্ট প্রস্তুতি নিন।
+      </p>
+    </div>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-number">1</div>
+        <h4 style="font-size:1.15rem; color:#fff; margin-bottom:8px;">১৫ মিনিটের ডায়াগনস্টিক টেস্ট</h4>
+        <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.6;">
+          আপনার বর্তমান ব্যান্ড এবং কোন কোন নির্দিষ্ট প্রশ্নের টাইপে মার্ক কাটা যাচ্ছে তা এক ক্লিকে চিহ্নিত করুন।
+        </p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">2</div>
+        <h4 style="font-size:1.15rem; color:#fff; margin-bottom:8px;">টার্গেটেড AI টিউটর ড্রিল</h4>
+        <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.6;">
+          AI Teacher ARIA-এর সাথে দুর্বল জায়গাগুলো—যেমন Matching Headings বা Complex Grammar দূর করুন।
+        </p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">3</div>
+        <h4 style="font-size:1.15rem; color:#fff; margin-bottom:8px;">ফুল CBT মক টেস্ট ও স্কোর</h4>
+        <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.6;">
+          প্রকৃত ব্রিটিশ কাউন্সিল/আইডিপির পরীক্ষার ইন্টারফেসে মক দিয়ে পরীক্ষার হলের ভয় দূর করুন এবং ব্যান্ড নিশ্চিত করুন।
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 5. CALL TO ACTION ─────────────────────────────────────── -->
+  <section class="cta-banner">
+    <h2 style="font-size:2.2rem; font-weight:800; color:#fff; margin-bottom:12px;">
+      আজই আপনার IELTS প্রস্তুতি শুরু করুন
+    </h2>
+    <p style="color:#cbd5e1; font-size:1.05rem; max-width:600px; margin:0 auto 28px;">
+      কোনো ক্রেডিট কার্ড ছাড়াই ফ্রি একাউন্ট তৈরি করে আজই ফুল CBT টেস্ট ও AI Teacher ক্লাসের অভিজ্ঞতা নিন।
+    </p>
+
+    {% if user %}
+      <a href="/dashboard" class="btn btn-primary btn-lg" style="font-size:1rem; padding:14px 30px;">
+        <i class="fas fa-play"></i>
+        <span>আপনার ড্যাশবোর্ডে প্রবেশ করুন</span>
+      </a>
+    {% else %}
+      <button onclick="openAuthModal('register')" class="btn btn-primary btn-lg" style="font-size:1rem; padding:14px 30px;">
+        <i class="fas fa-user-plus"></i>
+        <span>ফ্রি রেজিস্ট্রেশন করুন</span>
+      </button>
+    {% endif %}
+  </section>
+
+  <!-- ── 6. AUTH MODAL (LOGIN & SIGN UP) ──────────────────────── -->
+  <div id="auth-modal" class="modal-overlay" onclick="handleOverlayClick(event)">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeAuthModal()">✕</button>
+
+      <div class="modal-tabs">
+        <button id="tab-login-btn" class="modal-tab-btn active" onclick="switchAuthTab('login')">
+          Sign In (লগইন)
+        </button>
+        <button id="tab-register-btn" class="modal-tab-btn" onclick="switchAuthTab('register')">
+          Sign Up (রেজিস্ট্রেশন)
+        </button>
+      </div>
+
+      <!-- Quick Demo Credentials Box -->
+      <div id="demo-box" class="demo-credentials-box">
+        <div>
+          <strong>Demo User:</strong> student@ielts.ai | <strong>Pass:</strong> 123456
+        </div>
+        <button type="button" onclick="fillDemo()" style="background:var(--primary); color:#fff; border:none; padding:3px 8px; border-radius:4px; font-size:0.75rem; cursor:pointer; font-weight:600;">1-Click Fill</button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <form id="login-form" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" id="login-email" class="form-input" placeholder="student@ielts.ai" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <div style="position:relative; display:flex; align-items:center;">
+            <input type="password" id="login-password" class="form-input" placeholder="••••••••" style="padding-right:42px;" required>
+            <button type="button" onclick="togglePasswordVisibility('login-password', this)" style="position:absolute; right:12px; background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1rem; padding:4px;" title="Toggle password visibility">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+        </div>
+        <button type="submit" id="login-submit-btn" class="btn btn-primary" style="width:100%; justify-content:center; margin-top:8px;">
+          <i class="fas fa-sign-in-alt"></i>
+          <span>Sign In to Platform</span>
+        </button>
+      </form>
+
+      <!-- REGISTER FORM -->
+      <form id="register-form" onsubmit="handleRegister(event)" style="display:none;">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" id="reg-name" class="form-input" placeholder="Your Name" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" id="reg-email" class="form-input" placeholder="yourname@gmail.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <div style="position:relative; display:flex; align-items:center;">
+            <input type="password" id="reg-password" class="form-input" placeholder="Create a password" style="padding-right:42px;" required>
+            <button type="button" onclick="togglePasswordVisibility('reg-password', this)" style="position:absolute; right:12px; background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1rem; padding:4px;" title="Toggle password visibility">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+        </div>
+        <button type="submit" id="reg-submit-btn" class="btn btn-primary" style="width:100%; justify-content:center; margin-top:8px;">
+          <i class="fas fa-user-plus"></i>
+          <span>Create Account & Start</span>
+        </button>
+      </form>
+
+      <div id="auth-error-msg" style="display:none; color:#f87171; font-size:0.85rem; margin-top:12px; text-align:center;"></div>
+    </div>
+  </div>
+
+  <!-- ── 7. FOOTER ─────────────────────────────────────────────── -->
+  <footer class="footer">
+    <p>© 2026 AI IELTS Cambridge 9-Band Suite. Designed for high-scoring IELTS candidates.</p>
+    <p style="font-size:0.75rem; margin-top:6px; color:rgba(255,255,255,0.3);">
+      IELTS is a registered trademark of University of Cambridge ESOL, the British Council, and IDP Education Australia.
+    </p>
+  </footer>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', function() {
+      var urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('auth') === 'login') {
+        openAuthModal('login');
+        var err = document.getElementById('auth-error-msg');
+        if (err) {
+          err.style.color = '#38bdf8';
+          err.textContent = '🔒 ড্যাশবোর্ড বা ক্লাসে প্রবেশ করার জন্য অনুগ্রহ করে সাইন ইন করুন।';
+          err.style.display = 'block';
+        }
+      } else if (urlParams.get('auth') === 'register') {
+        openAuthModal('register');
+      }
+    });
+
+    function openAuthModal(mode) {
+      document.getElementById('auth-modal').classList.add('active');
+      switchAuthTab(mode || 'login');
+    }
+
+    function closeAuthModal() {
+      document.getElementById('auth-modal').classList.remove('active');
+      document.getElementById('auth-error-msg').style.display = 'none';
+    }
+
+    function handleOverlayClick(e) {
+      if (e.target.id === 'auth-modal') {
+        closeAuthModal();
+      }
+    }
+
+    function switchAuthTab(mode) {
+      var isLogin = mode === 'login';
+      document.getElementById('tab-login-btn').classList.toggle('active', isLogin);
+      document.getElementById('tab-register-btn').classList.toggle('active', !isLogin);
+      document.getElementById('login-form').style.display = isLogin ? 'block' : 'none';
+      document.getElementById('register-form').style.display = isLogin ? 'none' : 'block';
+      document.getElementById('demo-box').style.display = isLogin ? 'flex' : 'none';
+      document.getElementById('auth-error-msg').style.display = 'none';
+    }
+
+    function fillDemo() {
+      document.getElementById('login-email').value = 'student@ielts.ai';
+      document.getElementById('login-password').value = '123456';
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      var email = document.getElementById('login-email').value.trim();
+      var pass = document.getElementById('login-password').value.trim();
+      var btn = document.getElementById('login-submit-btn');
+      var err = document.getElementById('auth-error-msg');
+
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Signing In...</span>';
+      err.style.display = 'none';
+
+      try {
+        var res = await fetch('/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: email, password: pass })
+        });
+        var data = await res.json();
+        if (data.success) {
+          var urlParams = new URLSearchParams(window.location.search);
+          var dest = urlParams.get('redirect') || data.redirect || '/dashboard';
+          window.location.href = dest;
+        } else {
+          err.textContent = data.message || 'Login failed. Please check your credentials.';
+          err.style.display = 'block';
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> <span>Sign In to Platform</span>';
+        }
+      } catch (errExp) {
+        err.textContent = 'Server error. Please try again.';
+        err.style.display = 'block';
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> <span>Sign In to Platform</span>';
+      }
+    }
+
+    function togglePasswordVisibility(inputId, btn) {
+      var input = document.getElementById(inputId);
+      if (!input) return;
+      var icon = btn.querySelector('i');
+      if (input.type === 'password') {
+        input.type = 'text';
+        if (icon) {
+          icon.classList.remove('fa-eye');
+          icon.classList.add('fa-eye-slash');
+        }
+      } else {
+        input.type = 'password';
+        if (icon) {
+          icon.classList.remove('fa-eye-slash');
+          icon.classList.add('fa-eye');
+        }
+      }
+    }
+
+    async function handleRegister(e) {
+      e.preventDefault();
+      var name = document.getElementById('reg-name').value.trim();
+      var email = document.getElementById('reg-email').value.trim();
+      var pass = document.getElementById('reg-password').value.trim();
+      var band = '7.5';
+      var btn = document.getElementById('reg-submit-btn');
+      var err = document.getElementById('auth-error-msg');
+
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Creating Account...</span>';
+      err.style.display = 'none';
+
+      try {
+        var res = await fetch('/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: name, email: email, password: pass, target_band: band })
+        });
+        var data = await res.json();
+        if (data.success) {
+          var urlParams = new URLSearchParams(window.location.search);
+          var dest = urlParams.get('redirect') || data.redirect || '/dashboard';
+          window.location.href = dest;
+        } else {
+          err.textContent = data.message || 'Registration failed.';
+          err.style.display = 'block';
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fas fa-user-plus"></i> <span>Create Account & Start</span>';
+        }
+      } catch (errExp) {
+        err.textContent = 'Server error. Please try again.';
+        err.style.display = 'block';
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-user-plus"></i> <span>Create Account & Start</span>';
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,2381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS Listening CBT — Official British Council Exam Simulation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Arial:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bc-top-bg: #0f172a;
+            --bc-top-text: #ffffff;
+            --bc-border: #cbd5e1;
+            --bc-card-bg: #ffffff;
+            --bc-text: #0f172a;
+            --bc-bottom-bg: #0f172a;
+            --bc-bottom-text: #ffffff;
+            --bc-font-scale: 16px;
+        }
+
+        body.theme-inverted {
+            --bc-card-bg: #1e293b;
+            --bc-text: #f8fafc;
+            --bc-border: #334155;
+            background: #0f172a;
+        }
+        body.theme-yellow-on-black {
+            --bc-card-bg: #111111;
+            --bc-text: #fde047;
+            --bc-border: #444444;
+            --bc-top-bg: #000000;
+            --bc-bottom-bg: #000000;
+            background: #000000;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            user-select: text;
+        }
+
+        html, body {
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            background: #e2e8f0;
+            font-size: var(--bc-font-scale);
+        }
+
+        /* 1. TOP BAR */
+        .bc-top-bar {
+            height: 52px;
+            background: var(--bc-top-bg);
+            color: var(--bc-top-text);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 16px;
+            border-bottom: 2px solid #10b981;
+            flex-shrink: 0;
+            z-index: 100;
+        }
+
+        .bc-brand-group { display: flex; align-items: center; gap: 10px; }
+        .bc-logo-text { font-size: 1.3em; font-weight: 900; color: #fff; }
+        .practice-badge {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid #10b981;
+            color: #34d399;
+            font-size: 0.72em;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .time-customizer-box {
+            display: flex;
+            align-items: center;
+            background: rgba(0,0,0,0.35);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 6px;
+            padding: 2px 8px;
+            gap: 6px;
+        }
+        .bc-clock-display {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.98em;
+            font-weight: 700;
+            color: #34d399;
+            min-width: 50px;
+        }
+        .timer-select-control {
+            background: transparent;
+            border: none;
+            color: #cbd5e1;
+            font-size: 0.78em;
+            font-weight: 700;
+            outline: none;
+            cursor: pointer;
+        }
+        .timer-select-control option { background: #0f172a; color: #fff; }
+
+        .bc-btn-small {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.76em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .bc-btn-small:hover { background: rgba(255,255,255,0.2); }
+
+        /* 2. AUDIO TOOLBAR */
+        .bc-audio-bar {
+            background: #1e293b;
+            color: #fff;
+            padding: 8px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.85em;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .audio-ctrl-group { display: flex; align-items: center; gap: 8px; }
+        .audio-play-btn {
+            background: #10b981;
+            color: #fff;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 4px;
+            font-size: 0.84em;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: 0.15s;
+        }
+        .audio-play-btn:hover { background: #059669; }
+
+        .speed-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #cbd5e1;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.76em;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .speed-btn.active { background: #10b981; color: #fff; border-color: #10b981; }
+
+        /* 3. MAIN CONTENT CONTAINER */
+        .bc-main-layout {
+            height: calc(100vh - 52px - 48px - 58px);
+            overflow-y: auto;
+            padding: 18px 24px;
+        }
+
+        .bc-content-wrapper {
+            max-width: 1050px;
+            margin: 0 auto;
+        }
+
+        /* CAMBRIDGE OFFICIAL DOCUMENT FORM & CARDS */
+        .cambridge-doc-card {
+            background: var(--bc-card-bg);
+            color: var(--bc-text);
+            border: 1px solid var(--bc-border);
+            border-radius: 8px;
+            padding: 22px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .doc-header {
+            border-bottom: 2px solid #10b981;
+            padding-bottom: 10px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .cambridge-instructions {
+            background: rgba(16, 185, 129, 0.08);
+            border-left: 4px solid #10b981;
+            padding: 10px 14px;
+            border-radius: 4px;
+            margin-bottom: 18px;
+            font-size: 0.88em;
+            font-weight: 600;
+            line-height: 1.6;
+        }
+
+        .form-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95em;
+        }
+        .form-table td {
+            padding: 10px 12px;
+            border: 1px solid var(--bc-border);
+        }
+        .form-table td.label-col {
+            font-weight: 700;
+            width: 38%;
+            background: rgba(0,0,0,0.02);
+        }
+
+        .cambridge-inline-input {
+            width: 180px;
+            padding: 6px 10px;
+            border: 2px solid #10b981;
+            border-radius: 4px;
+            font-size: 0.95em;
+            font-weight: 700;
+            outline: none;
+            background: #fff;
+            color: #0f172a;
+        }
+        body.theme-inverted .cambridge-inline-input { background: #0f172a; color: #fff; border-color: #34d399; }
+        .cambridge-inline-input:focus { border-color: #059669; box-shadow: 0 0 6px rgba(16,185,129,0.4); }
+
+        /* SECTION 2 MAP LABELLING 2-COLUMN SPLIT GRID */
+        .map-section-split {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            margin-top: 16px;
+        }
+        .map-pane-left {
+            flex: 1.2;
+            background: #ffffff;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 14px;
+            position: sticky;
+            top: 0;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+        body.theme-inverted .map-pane-left { background: #131722; border-color: #334155; }
+
+        .map-pane-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .map-hotspot {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .map-hotspot {\n            cursor: pointer;\n            transition: all 0.15s;\n        }\n        .map-hotspot:hover circle {\n            fill: #d1fae5 !important;\n            stroke: #059669 !important;\n            stroke-width: 2.5 !important;\n        }\n        .map-hotspot.selected circle {\n            fill: #10b981 !important;\n            stroke: #047857 !important;\n            stroke-width: 3 !important;\n        }\n        .map-hotspot.selected text {\n            fill: #fff !important;\n        }\n        /* Legacy rect support */\n        .map-hotspot:hover rect { fill: #d1fae5 !important; stroke: #059669 !important; }\n        .map-hotspot.selected rect { fill: #10b981 !important; stroke: #047857 !important; }
+
+        .letter-pill-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 4px;
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            color: #0f172a;
+            font-size: 0.85em;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+        body.theme-inverted .letter-pill-btn { background: #1e293b; color: #fff; border-color: #475569; }
+        .letter-pill-btn:hover { background: #10b981; color: #fff; border-color: #10b981; }
+        .letter-pill-btn.active { background: #059669; color: #fff; border-color: #047857; }
+
+        .q-statement-row {
+            padding: 12px;
+            border: 1px solid var(--bc-border);
+            border-radius: 6px;
+            margin-bottom: 8px;
+            background: rgba(255,255,255,0.6);
+            transition: background 0.15s, border-color 0.15s;
+        }
+        body.theme-inverted .q-statement-row { background: rgba(30,41,59,0.6); }
+        .q-statement-row.active-q { border-color: #10b981; background: rgba(16,185,129,0.08); }
+
+        .q-num-pill {
+            background: #0f172a; color: #fff; font-size: 0.8em; font-weight: 800; padding: 2px 7px; border-radius: 3px; margin-right: 6px;
+        }
+
+        .cambridge-radio-group {
+            display: flex; gap: 10px; margin-top: 8px; margin-left: 28px; flex-wrap: wrap;
+        }
+        .cambridge-radio-label {
+            display: inline-flex; align-items: center; gap: 6px; background: #f1f5f9; border: 1px solid #cbd5e1;
+            padding: 6px 12px; border-radius: 4px; font-size: 0.84em; font-weight: 700; cursor: pointer; transition: 0.15s;
+        }
+        body.theme-inverted .cambridge-radio-label { background: #1e293b; border-color: #475569; color: #cbd5e1; }
+        .cambridge-radio-label:hover { background: rgba(16, 185, 129, 0.1); border-color: #10b981; }
+        .cambridge-radio-label input[type="radio"] { accent-color: #10b981; width: 15px; height: 15px; }
+
+        .q-practice-actions {
+            display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap;
+        }
+        .btn-q-action {
+            background: #e2e8f0; border: 1px solid #cbd5e1; color: #334155; padding: 3px 8px;
+            border-radius: 4px; font-size: 0.72em; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;
+        }
+        body.theme-inverted .btn-q-action { background: #1e293b; color: #cbd5e1; border-color: #475569; }
+        .btn-q-action:hover { background: #cbd5e1; }
+        .btn-q-check { background: #059669; color: #fff; border-color: #059669; }
+        .btn-q-check:hover { background: #047857; }
+
+        .q-feedback-drawer {
+            display: none; background: rgba(255,255,255,0.95); border: 1px solid #cbd5e1;
+            border-radius: 6px; padding: 10px 14px; margin-top: 8px; font-size: 0.85em; line-height: 1.5;
+        }
+        body.theme-inverted .q-feedback-drawer { background: #131722; border-color: #334155; color: #cbd5e1; }
+
+        .transcript-container {
+            display: none; background: #fff; border: 1px solid var(--bc-border);
+            border-radius: 8px; padding: 16px; margin-bottom: 20px; font-size: 0.92em; line-height: 1.7; max-height: 250px; overflow-y: auto;
+        }
+        body.theme-inverted .transcript-container { background: #1e293b; color: #cbd5e1; border-color: #334155; }
+
+        /* 4. BOTTOM BAR */
+        .bc-bottom-bar {
+            height: 58px; background: var(--bc-bottom-bg); color: var(--bc-bottom-text);
+            display: flex; justify-content: space-between; align-items: center; padding: 0 16px;
+            border-top: 1px solid rgba(255,255,255,0.15); flex-shrink: 0;
+        }
+        .bc-part-tabs { display: flex; gap: 6px; align-items: center; }
+        .bc-part-btn {
+            background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2);
+            color: #94a3b8; padding: 6px 12px; border-radius: 4px; font-size: 0.78em; font-weight: 700; cursor: pointer;
+        }
+        .bc-part-btn.active { background: #10b981; color: #fff; border-color: #10b981; }
+
+        .bc-palette-row {
+            display: flex; gap: 3px; align-items: center; overflow-x: auto; max-width: 52vw; padding: 4px 0;
+            scrollbar-width: thin;
+        }
+        .bc-pal-btn {
+            min-width: 26px; height: 26px; background: transparent; border: 1px solid rgba(255,255,255,0.3);
+            color: #fff; font-size: 0.75em; font-weight: 700; display: flex; align-items: center; justify-content: center;
+            border-radius: 3px; cursor: pointer; position: relative; flex-shrink: 0;
+        }
+        .bc-pal-btn.answered { background: #ffffff; color: #0f172a; border-color: #ffffff; }
+        .bc-pal-btn.correct { background: #10b981; color: #ffffff; border-color: #10b981; }
+        .bc-pal-btn.wrong { background: #ef4444; color: #ffffff; border-color: #ef4444; }
+        .bc-pal-btn.active { box-shadow: 0 0 0 2px #34d399; }
+        .bc-pal-btn.flagged::after {
+            content: ''; position: absolute; top: -2px; right: -2px; width: 7px; height: 7px; background: #ef4444; border-radius: 50%;
+        }
+
+        .bc-nav-actions { display: flex; align-items: center; gap: 8px; }
+        .bc-nav-btn {
+            background: #10b981; color: #fff; border: none; padding: 7px 14px; border-radius: 4px;
+            font-size: 0.82em; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;
+        }
+        .bc-nav-btn:hover { background: #059669; }
+        .bc-nav-btn.secondary { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); }
+
+        /* FLOATING AI ASSISTANT DRAWER */
+        .ai-assistant-drawer {
+            position: fixed; top: 52px; right: -420px; width: 400px;
+            height: calc(100vh - 52px - 58px); background: #0f172a;
+            border-left: 2px solid #10b981; box-shadow: -8px 0 24px rgba(0,0,0,0.4);
+            z-index: 1000; display: flex; flex-direction: column; transition: right 0.3s ease;
+        }
+        .ai-assistant-drawer.open { right: 0; }
+        .drawer-header {
+            padding: 14px 18px; background: #1e293b; color: #fff;
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .drawer-chat-body { flex: 1; padding: 14px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; font-size: 0.88em; }
+        .drawer-input-row { padding: 12px; background: #1e293b; border-top: 1px solid rgba(255,255,255,0.1); display: flex; gap: 8px; }
+
+        /* OFFICIAL CAMBRIDGE LISTENING RESULT MODAL */
+        .listening-result-modal {
+            display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.88);
+            z-index: 99999; align-items: center; justify-content: center; backdrop-filter: blur(8px);
+        }
+        .result-modal-box {
+            background: #0f172a; color: #fff; width: 92%; max-width: 960px; max-height: 90vh;
+            border-radius: 16px; border: 1.5px solid rgba(16, 185, 129, 0.4);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8); display: flex; flex-direction: column;
+            overflow: hidden;
+        }
+        .result-modal-header {
+            padding: 18px 24px; background: #1e293b; border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .result-modal-body {
+            padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 24px;
+        }
+        .result-hero-box {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(15, 23, 42, 0.95));
+            border: 1.5px solid rgba(16, 185, 129, 0.4); border-radius: 14px; padding: 24px;
+            display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;
+        }
+        .band-circle-lg {
+            width: 105px; height: 105px; border-radius: 50%;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #fff; font-size: 2.6em; font-weight: 900;
+            display: flex; align-items: center; justify-content: center;
+            border: 3px solid #34d399; box-shadow: 0 0 30px rgba(16, 185, 129, 0.4);
+        }
+        .cefr-badge-lg {
+            display: inline-block; padding: 4px 14px; border-radius: 20px; font-size: 0.88em;
+            font-weight: 800; text-transform: uppercase; background: rgba(16, 185, 129, 0.25);
+            color: #34d399; border: 1px solid #10b981; margin-top: 6px;
+        }
+        .stat-grid-4col {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+        }
+        @media (max-width: 768px) { .stat-grid-4col { grid-template-columns: repeat(2, 1fr); } }
+        .section-stat-card {
+            background: #181b24; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px;
+            padding: 14px; text-align: center;
+        }
+        .section-stat-card .sec-name { font-size: 0.82em; color: #94a3b8; font-weight: 700; margin-bottom: 4px; }
+        .section-stat-card .sec-score { font-size: 1.4em; font-weight: 800; color: #34d399; }
+        .section-stat-card .sec-percent { font-size: 0.76em; color: #cbd5e1; margin-top: 2px; }
+
+        .type-mastery-list {
+            display: flex; flex-direction: column; gap: 10px;
+        }
+        .type-mastery-item {
+            background: #181b24; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px;
+            padding: 10px 14px;
+        }
+        .type-mastery-header {
+            display: flex; justify-content: space-between; font-size: 0.85em; font-weight: 700; margin-bottom: 6px;
+        }
+        .type-progress-bg {
+            background: rgba(255,255,255,0.1); border-radius: 6px; height: 8px; overflow: hidden;
+        }
+        .type-progress-fill {
+            background: linear-gradient(90deg, #10b981, #34d399); height: 100%; border-radius: 6px;
+            transition: width 0.4s ease;
+        }
+
+        .audit-table-wrap {
+            background: #181b24; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px;
+            padding: 16px; overflow-x: auto;
+        }
+        .audit-filter-bar {
+            display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap;
+        }
+        .audit-filter-btn {
+            background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2);
+            color: #cbd5e1; padding: 6px 14px; border-radius: 20px; font-size: 0.8em; font-weight: 700;
+            cursor: pointer; transition: 0.15s;
+        }
+        .audit-filter-btn.active {
+            background: #10b981; color: #fff; border-color: #10b981;
+        }
+        .audit-table {
+            width: 100%; border-collapse: collapse; font-size: 0.84em;
+        }
+        .audit-table th {
+            background: #0f172a; color: #94a3b8; padding: 10px; text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .audit-table td {
+            padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.06); vertical-align: top;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. TOP BAR -->
+    <header class="bc-top-bar">
+        <div class="bc-brand-group">
+            <span class="bc-logo-text">IELTS</span>
+            <div class="practice-badge">
+                <i class="fas fa-headphones"></i> Listening CBT
+            </div>
+
+            <!-- Solo Section Drill Selector -->
+            <select class="timer-select-control" style="background:#1e293b; color:#cbd5e1; border:1px solid rgba(255,255,255,0.2); padding:4px 8px; border-radius:4px; font-size:0.75em; font-weight:700; cursor:pointer; outline:none; max-width:220px;" onchange="handleHeaderTopicChange(this.value)">
+                <option value="full_mock" {{ 'selected' if not is_solo_section else '' }}>🎯 Full 4-Section Mock</option>
+                <option value="section_1" {{ 'selected' if is_solo_section and active_section == 1 else '' }}>🗣️ Section 1 Drill (Q1–10)</option>
+                <option value="section_2" {{ 'selected' if is_solo_section and active_section == 2 else '' }}>🗺️ Section 2 Drill (Q11–20)</option>
+                <option value="section_3" {{ 'selected' if is_solo_section and active_section == 3 else '' }}>🎓 Section 3 Drill (Q21–30)</option>
+                <option value="section_4" {{ 'selected' if is_solo_section and active_section == 4 else '' }}>🔬 Section 4 Drill (Q31–40)</option>
+            </select>
+        </div>
+
+        <!-- TIME CUSTOMIZER -->
+        <div class="time-customizer-box">
+            <i class="far fa-clock" style="color:#34d399;"></i>
+            <span class="bc-clock-display" id="timeRemainingDisplay">30:00</span>
+            <select id="timerModeSelect" class="timer-select-control" onchange="changeTimerMode(this.value)">
+                <option value="1800">30 Mins (Standard)</option>
+                <option value="2700">45 Mins (Extended)</option>
+                <option value="unlimited">♾️ Unlimited Time</option>
+            </select>
+            <button class="bc-btn-small" style="padding:2px 6px;" onclick="toggleTimerPause()" id="pauseTimerBtn">⏸️</button>
+            <button class="bc-btn-small" style="padding:2px 6px;" onclick="addExtraTime(300)">+5m</button>
+        </div>
+
+        <div class="bc-top-controls" style="display:flex; gap:6px; align-items:center;">
+            <!-- CUSTOM QUESTION TYPE SELECTOR BUTTON -->
+            <button class="bc-btn-small" onclick="openTypeSelectorModal()" style="background:#1e293b; border-color:#34d399; color:#34d399; font-weight:700;" title="পছন্দের প্রশ্ন টাইপ বেছে নিন">
+                <i class="fas fa-sliders-h"></i> <span>পছন্দের প্রশ্ন টাইপ</span>
+            </button>
+            <!-- AI GENERATE FRESH TEST -->
+            <button class="bc-btn-small" onclick="openAIGeneratorModal()" style="background:linear-gradient(135deg, #8b5cf6, #6366f1); border-color:#8b5cf6; color:#fff;" title="AI দিয়ে সম্পূর্ণ নতুন টেস্ট তৈরি করুন">
+                <i class="fas fa-magic"></i> <span>AI নতুন টেস্ট</span>
+            </button>
+            <button class="bc-btn-small" onclick="toggleTranscript()"><i class="fas fa-scroll" style="color:#34d399;"></i> <span>স্ক্রিপ্ট</span></button>
+            <button class="bc-btn-small" onclick="toggleDrawer()"><i class="fas fa-robot" style="color:#34d399;"></i> Ask ARIA</button>
+            <button class="bc-btn-small" onclick="cycleTheme()"><i class="fas fa-adjust"></i> থিম</button>
+            <button class="bc-btn-small" onclick="cycleFontSize()"><i class="fas fa-font"></i> ফন্ট</button>
+            <button class="bc-btn-small" onclick="finishListeningExam()" style="background:#059669; border-color:#10b981; color:#fff; font-weight:800;" title="টেস্ট সাবমিট করুন ও অফিশিয়াল রেজাল্ট দেখুন">
+                <i class="fas fa-check-double"></i> <span>সাবমিট টেস্ট</span>
+            </button>
+            <a href="/practice" class="bc-btn-small" style="background:var(--bc-red, #e11d48); border-color:var(--bc-red, #f43f5e); color:#fff; text-decoration:none;"><i class="fas fa-home"></i> <span>হাব</span></a>
+        </div>
+    </header>
+
+    <!-- 2. DEDICATED AUDIO CONTROLLER BAR -->
+    <div class="bc-audio-bar">
+        <div style="display:flex; align-items:center; gap:12px;">
+            <button class="audio-play-btn" id="masterPlayBtn" onclick="toggleMasterAudio()">
+                <i class="fas fa-play"></i> <span id="masterPlayText">Play Section 1 Audio</span>
+            </button>
+            <span id="audioSectionTitle" style="font-weight:700;"><b>Section 1 Audio:</b> Bayview Eco-Lodge Registration Form</span>
+            <span id="audioTimeProgress" style="font-family:'JetBrains Mono',monospace; color:#34d399; font-size:0.9em;">0:00 / 0:00</span>
+        </div>
+
+        <div class="audio-ctrl-group">
+            <audio id="examAudio" src="/api/v1/listening/audio/1" preload="auto"></audio>
+            <button class="speed-btn" onclick="seekAudio(-10)">⏪ -10s</button>
+            <button class="speed-btn" onclick="seekAudio(10)">⏩ +10s</button>
+            <button class="speed-btn" onclick="setSpeed(0.75)">0.75x</button>
+            <button class="speed-btn active" id="sp1" onclick="setSpeed(1.0)">1.0x</button>
+            <button class="speed-btn" onclick="setSpeed(1.25)">1.25x</button>
+            <button class="tool-btn" style="padding:4px 10px; font-size:0.8em;" onclick="toggleTranscript()"><i class="fas fa-file-alt"></i> 📜 ট্রান্সক্রিপ্ট</button>
+        </div>
+    </div>
+
+    <!-- 3. MAIN CONTENT CONTAINER -->
+    <main class="bc-main-layout">
+        <div class="bc-content-wrapper">
+            
+            <!-- TRANSCRIPT ACCORDION -->
+            <div class="transcript-container" id="transcriptDrawer">
+                <div style="font-weight:800; color:#10b981; margin-bottom:8px; display:flex; justify-content:space-between;">
+                    <span>📜 Official Audio Dialogue Transcript with Cambridge Cues</span>
+                    <button onclick="toggleTranscript()" style="background:none; border:none; cursor:pointer;">✖</button>
+                </div>
+                <div id="transcriptText">
+                    {% if sections and sections|length > 0 %}
+                        {{ sections[0].transcript | replace("\n", "<br>") | safe }}
+                    {% else %}
+                        Audio script loading...
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- SECTION 1: AUTHENTIC CAMBRIDGE BOOKING FORM (Q1-10) -->
+            <div class="cambridge-doc-card listening-sec-group sec1-group" id="sec1-doc">
+                <div class="doc-header">
+                    <h3 style="font-weight:800; color:#0f172a;">BAYVIEW ECO-LODGE & TOUR BOOKING FORM</h3>
+                    <span style="font-size:0.85em; font-weight:700; color:#10b981;">Questions 1–10</span>
+                </div>
+                <div class="cambridge-instructions">
+                    Complete the form below.<br>
+                    Write <b>NO MORE THAN TWO WORDS AND/OR A NUMBER</b> for each answer.
+                </div>
+
+                <table class="form-table">
+                    {% if questions and questions|length >= 10 %}
+                    <tr class="q-statement-row" id="qRow-1" data-qid="{{ questions[0].id }}" data-index="1" data-ans="{{ questions[0].answer_key }}" data-exp="{{ questions[0].explanation }}" data-section="1">
+                        <td class="label-col"><span class="q-num-pill">1</span> Customer Surname:</td>
+                        <td>
+                            <input type="text" class="cambridge-inline-input" placeholder="[ 1 ]" oninput="handleAnswerChange(1, this.value)">
+                            <button class="btn-q-action btn-q-check" onclick="checkSingleQuestion(1)">চেক</button>
+                            <button class="btn-q-action" onclick="showAudioHint(1)">হিন্ট</button>
+                            <button class="btn-q-action" onclick="revealQuestionAnswer(1)">সমাধান</button>
+                            <div class="q-feedback-drawer" id="feedback-1">
+                                <span id="fb-status-1"></span> | <b id="fb-ans-key-1"></b><br><span id="fb-exp-1"></span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="q-statement-row" id="qRow-2" data-qid="{{ questions[1].id }}" data-index="2" data-ans="{{ questions[1].answer_key }}" data-exp="{{ questions[1].explanation }}" data-section="1">
+                        <td class="label-col"><span class="q-num-pill">2</span> Contact Phone:</td>
+                        <td>
+                            <input type="text" class="cambridge-inline-input" placeholder="[ 2 ]" oninput="handleAnswerChange(2, this.value)">
+                            <button class="btn-q-action btn-q-check" onclick="checkSingleQuestion(2)">চেক</button>
+                            <button class="btn-q-action" onclick="showAudioHint(2)">হিন্ট</button>
+                            <button class="btn-q-action" onclick="revealQuestionAnswer(2)">সমাধান</button>
+                            <div class="q-feedback-drawer" id="feedback-2">
+                                <span id="fb-status-2"></span> | <b id="fb-ans-key-2"></b><br><span id="fb-exp-2"></span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="q-statement-row" id="qRow-3" data-qid="{{ questions[2].id }}" data-index="3" data-ans="{{ questions[2].answer_key }}" data-exp="{{ questions[2].explanation }}" data-section="1">
+                        <td class="label-col"><span class="q-num-pill">3</span> Check-in Date:</td>
+                        <td>
+                            <input type="text" class="cambridge-inline-input" placeholder="[ 3 ]" oninput="handleAnswerChange(3, this.value)"> October
+                            <button class="btn-q-action btn-q-check" onclick="checkSingleQuestion(3)">চেক</button>
+                            <button class="btn-q-action" onclick="showAudioHint(3)">হিন্ট</button>
+                            <button class="btn-q-action" onclick="revealQuestionAnswer(3)">সমাধান</button>
+                            <div class="q-feedback-drawer" id="feedback-3">
+                                <span id="fb-status-3"></span> | <b id="fb-ans-key-3"></b><br><span id="fb-exp-3"></span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="q-statement-row" id="qRow-4" data-qid="{{ questions[3].id }}" data-index="4" data-ans="{{ questions[3].answer_key }}" data-exp="{{ questions[3].explanation }}" data-section="1">
+                        <td class="label-col"><span class="q-num-pill">4</span> Length of Stay:</td>
+                        <td>
+                            <input type="text" class="cambridge-inline-input" placeholder="[ 4 ]" oninput="handleAnswerChange(4, this.value)"> nights
+                            <button class="btn-q-action btn-q-check" onclick="checkSingleQuestion(4)">চেক</button>
+                            <button class="btn-q-action" onclick="showAudioHint(4)">হিন্ট</button>
+                            <button class="btn-q-action" onclick="revealQuestionAnswer(4)">সমাধান</button>
+                            <div class="q-feedback-drawer" id="feedback-4">
+                                <span id="fb-status-4"></span> | <b id="fb-ans-key-4"></b><br><span id="fb-exp-4"></span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="q-statement-row" id="qRow-5" data-qid="{{ questions[4].id }}" data-index="5" data-ans="{{ questions[4].answer_key }}" data-exp="{{ questions[4].explanation }}" data-section="1">
+                        <td class="label-col"><span class="q-num-pill">5</span> Accommodation Type:</td>
+                        <td>
+                            Pine Log <input type="text" class="cambridge-inline-input" placeholder="[ 5 ]" oninput="handleAnswerChange(5, this.value)">
+                            <button class="btn-q-action btn-q-check" onclick="checkSingleQuestion(5)">চেক</button>
+                            <button class="btn-q-action" onclick="showAudioHint(5)">হিন্ট</button>
+                            <button class="btn-q-action" onclick="revealQuestionAnswer(5)">সমাধান</button>
+                            <div class="q-feedback-drawer" id="feedback-5">
+                                <span id="fb-status-5"></span> | <b id="fb-ans-key-5"></b><br><span id="fb-exp-5"></span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="q-statement-row" id="qRow-6" data-qid="{{ questions[5].id }}" data-index="6" data-ans="{{ questions[5].answer_key }}" data-exp="{{ questions[5].explanation }}" data-section="1">
+                        <td class="label-col"><span class="q-num-pill">6</span> Dietary Request 1:</td>
+                        <td>
+                            Son has severe <input type="text" class="cambridge-inline-input" placeholder="[ 6 ]" oninput="handleAnswerChange(6, this.value)"> allergy
+                            <button class="btn-q-action btn-q-check" onclick="checkSingleQuestion(6)">চেক</button>
+                            <button class="btn-q-action" onclick="showAudioHint(6)">হিন্ট</button>
+                            <button class="btn-q-action" onclick="revealQuestionAnswer(6)">সমাধান</button>
+                            <div class="q-feedback-drawer" id="feedback-6">
+                                <span id="fb-status-6"></span> | <b id="fb-ans-key-6"></b><br><span id="fb-exp-6"></span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="q-statement-row" id="qRow-7" data-qid="{{ questions[6].id }}" data-index="7" data-ans="{{ questions[6].answer_key }}" data-exp="{{ questions[6].explanation }}" data-section="1">
+                        <td class="label-col"><span class="q-num-pill">7</span> Dietary Request 2:</td>
+                        <td>
+                            Wife requires <input type="text" class="cambridge-inline-input" placeholder="[ 7 ]" oninput="handleAnswerChange(7, this.value)"> meals
+                            <button class="btn-q-action btn-q-check" onclick="checkSingleQuestion(7)">চেক</button>
+                            <button class="btn-q-action" onclick="showAudioHint(7)">হিন্ট</button>
+                            <button class="btn-q-action" onclick="revealQuestionAnswer(7)">সমাধান</button>
+                            <div class="q-feedback-drawer" id="feedback-7">
+                                <span id="fb-status-7"></span> | <b id="fb-ans-key-7"></b><br><span id="fb-exp-7"></span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="q-statement-row" id="qRow-8" data-qid="{{ questions[7].id }}" data-index="8" data-ans="{{ questions[7].answer_key }}" data-exp="{{ questions[7].explanation }}" data-section="1">
+                        <td class="label-col"><span class="q-num-pill">8</span> Selected Tour:</td>
+                        <td>
+                            Forest Canopy <input type="text" class="cambridge-inline-input" placeholder="[ 8 ]" oninput="handleAnswerChange(8, this.value)">
+                            <button class="btn-q-action btn-q-check" onclick="checkSingleQuestion(8)">চেক</button>
+                            <button class="btn-q-action" onclick="showAudioHint(8)">হিন্ট</button>
+                            <button class="btn-q-action" onclick="revealQuestionAnswer(8)">সমাধান</button>
+                            <div class="q-feedback-drawer" id="feedback-8">
+                                <span id="fb-status-8"></span> | <b id="fb-ans-key-8"></b><br><span id="fb-exp-8"></span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="q-statement-row" id="qRow-9" data-qid="{{ questions[8].id }}" data-index="9" data-ans="{{ questions[8].answer_key }}" data-exp="{{ questions[8].explanation }}" data-section="1">
+                        <td class="label-col"><span class="q-num-pill">9</span> Departure Point:</td>
+                        <td>
+                            Base Camp Station <input type="text" class="cambridge-inline-input" placeholder="[ 9 ]" oninput="handleAnswerChange(9, this.value)">
+                            <button class="btn-q-action btn-q-check" onclick="checkSingleQuestion(9)">চেক</button>
+                            <button class="btn-q-action" onclick="showAudioHint(9)">হিন্ট</button>
+                            <button class="btn-q-action" onclick="revealQuestionAnswer(9)">সমাধান</button>
+                            <div class="q-feedback-drawer" id="feedback-9">
+                                <span id="fb-status-9"></span> | <b id="fb-ans-key-9"></b><br><span id="fb-exp-9"></span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="q-statement-row" id="qRow-10" data-qid="{{ questions[9].id }}" data-index="10" data-ans="{{ questions[9].answer_key }}" data-exp="{{ questions[9].explanation }}" data-section="1">
+                        <td class="label-col"><span class="q-num-pill">10</span> Holding Deposit:</td>
+                        <td>
+                            £ <input type="text" class="cambridge-inline-input" placeholder="[ 10 ]" oninput="handleAnswerChange(10, this.value)">
+                            <button class="btn-q-action btn-q-check" onclick="checkSingleQuestion(10)">চেক</button>
+                            <button class="btn-q-action" onclick="showAudioHint(10)">হিন্ট</button>
+                            <button class="btn-q-action" onclick="revealQuestionAnswer(10)">সমাধান</button>
+                            <div class="q-feedback-drawer" id="feedback-10">
+                                <span id="fb-status-10"></span> | <b id="fb-ans-key-10"></b><br><span id="fb-exp-10"></span>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endif %}
+                </table>
+            </div>
+
+            <!-- SECTION 2: MARITIME MUSEUM & INTERACTIVE SPLIT MAP (Q11-20) -->
+            <div class="cambridge-doc-card listening-sec-group sec2-group" id="sec2-doc" style="display:none;">
+                <div class="doc-header">
+                    <h3 style="font-weight:800; color:#0f172a;">NEW TOWN MARITIME HERITAGE MUSEUM</h3>
+                    <span style="font-size:0.85em; font-weight:700; color:#10b981;">Questions 11–20</span>
+                </div>
+                
+                <!-- MCQs 11-15 -->
+                <div class="cambridge-instructions">
+                    <b>Questions 11–15:</b> Choose the correct letter, <b>A, B, C, or D</b>.
+                </div>
+                {% if questions and questions|length >= 15 %}
+                    {% for q in questions[10:15] %}
+                    <div class="q-statement-row" id="qRow-{{ q.index }}" data-qid="{{ q.id }}" data-index="{{ q.index }}" data-ans="{{ q.answer_key }}" data-exp="{{ q.explanation }}" data-section="2">
+                        <div style="font-size:0.95em; font-weight:700;">
+                            <span class="q-num-pill">{{ q.index }}</span> {{ q.question_text }}
+                        </div>
+                        {% set opts = q.options_json | from_json %}
+                        <div style="margin-left:28px; margin-top:8px;">
+                            {% for opt in opts %}
+                            <label class="cambridge-radio-label" style="display:flex; margin-bottom:6px;">
+                                <input type="radio" name="ans_{{ q.id }}" value="{{ opt }}" onchange="handleAnswerChange({{ q.index }}, this.value)">
+                                <span>{{ opt }}</span>
+                            </label>
+                            {% endfor %}
+                        </div>
+                        <div class="q-practice-actions">
+                            <button class="btn-q-action btn-q-check" onclick="checkSingleQuestion({{ q.index }})">চেক</button>
+                            <button class="btn-q-action" onclick="showAudioHint({{ q.index }})">হিন্ট</button>
+                            <button class="btn-q-action" onclick="revealQuestionAnswer({{ q.index }})">সমাধান</button>
+                        </div>
+                        <div class="q-feedback-drawer" id="feedback-{{ q.index }}">
+                            <span id="fb-status-{{ q.index }}"></span> | <b id="fb-ans-key-{{ q.index }}"></b><br><span id="fb-exp-{{ q.index }}"></span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+
+                <!-- CAMBRIDGE IELTS MAP LABELLING (Q16-20) -->
+                <div class="cambridge-instructions" style="margin-top:24px;">
+                    <b>Questions 16–20:</b> Label the map below.<br>
+                    Write the correct letter, <b>A–H</b>, next to Questions 16–20.
+                </div>
+
+                <div style="display:flex; gap:16px; flex-wrap:wrap; align-items:flex-start; margin-top:14px;">
+                    <!-- CAMBRIDGE OUTDOOR ESTATE MAP (Farley House style) -->
+                    <div style="flex:1.5; min-width:310px; background:#fff; border:1.5px solid #c0bbb0; border-radius:4px; padding:8px;">
+                        <svg id="cambridgeMapSvg" viewBox="0 0 560 430" style="width:100%; height:auto; font-family:Arial,sans-serif;">
+                            <rect width="560" height="430" fill="#f5f0e8"/>
+                            <!-- outer boundary -->
+                            <rect x="30" y="30" width="500" height="370" fill="none" stroke="#333" stroke-width="3"/>
+                            <!-- driveway / road - south entry -->
+                            <rect x="245" y="370" width="70" height="30" fill="#f5f0e8"/> <!-- gate gap -->
+                            <text x="248" y="418" font-size="9.5" fill="#333" font-weight="bold">Car park</text>
+                            <!-- main driveway north -->
+                            <rect x="255" y="255" width="50" height="115" fill="#d6cfc0"/>
+                            <!-- driveway branches -->
+                            <rect x="95" y="255" width="160" height="25" fill="#d6cfc0"/>
+                            <rect x="305" y="255" width="125" height="25" fill="#d6cfc0"/>
+                            <!-- turning circle -->
+                            <ellipse cx="280" cy="240" rx="30" ry="16" fill="#d6cfc0"/>
+
+                            <!-- MAIN HOUSE -->
+                            <rect x="195" y="108" width="170" height="105" fill="#e8e0d0" stroke="#333" stroke-width="2.5"/>
+                            <text x="240" y="163" font-size="11" font-weight="bold" fill="#333">Farley House</text>
+                            <rect x="210" y="122" width="20" height="14" fill="#b8ccd8" stroke="#666" stroke-width="0.8"/>
+                            <rect x="240" y="122" width="20" height="14" fill="#b8ccd8" stroke="#666" stroke-width="0.8"/>
+                            <rect x="305" y="122" width="20" height="14" fill="#b8ccd8" stroke="#666" stroke-width="0.8"/>
+                            <rect x="335" y="122" width="20" height="14" fill="#b8ccd8" stroke="#666" stroke-width="0.8"/>
+                            <!-- steps -->
+                            <rect x="263" y="213" width="34" height="7" fill="#c8b89a" stroke="#888" stroke-width="0.8"/>
+                            <!-- path to driveway -->
+                            <rect x="273" y="220" width="14" height="35" fill="#d6cfc0"/>
+
+                            <!-- STABLE BLOCK (old stables - northwest) -->
+                            <rect x="42" y="112" width="115" height="68" fill="#e0d5c0" stroke="#333" stroke-width="2"/>
+                            <text x="56" y="148" font-size="10" font-weight="bold" fill="#333">Stable block</text>
+                            <line x1="88" y1="112" x2="88" y2="130" stroke="#666" stroke-width="1"/>
+                            <line x1="42" y1="150" x2="157" y2="150" stroke="#666" stroke-width="0.8"/>
+
+                            <!-- FARM SHOP (in stables wing extension) -->
+                            <rect x="157" y="112" width="38" height="45" fill="#f0e0c8" stroke="#333" stroke-width="1.8"/>
+                            <text x="160" y="137" font-size="8.5" font-weight="bold" fill="#222">Farm</text>
+                            <text x="160" y="149" font-size="8.5" font-weight="bold" fill="#222">shop</text>
+
+                            <!-- WALLED KITCHEN GARDEN (northeast) -->
+                            <rect x="398" y="72" width="132" height="115" fill="#dde8d0" stroke="#333" stroke-width="2"/>
+                            <text x="413" y="130" font-size="10" font-weight="bold" fill="#333">Kitchen</text>
+                            <text x="413" y="144" font-size="10" font-weight="bold" fill="#333">gardens</text>
+                            <line x1="418" y1="92" x2="505" y2="92" stroke="#8aaa70" stroke-width="1" stroke-dasharray="4,3"/>
+                            <line x1="418" y1="107" x2="505" y2="107" stroke="#8aaa70" stroke-width="1" stroke-dasharray="4,3"/>
+                            <line x1="418" y1="122" x2="505" y2="122" stroke="#8aaa70" stroke-width="1" stroke-dasharray="4,3"/>
+                            <line x1="418" y1="155" x2="505" y2="155" stroke="#8aaa70" stroke-width="1" stroke-dasharray="4,3"/>
+
+                            <!-- LAKE (west-central) -->
+                            <path d="M 48 220 Q 42 260 58 295 Q 78 328 114 318 Q 146 312 150 282 Q 158 252 138 228 Q 118 205 88 208 Q 58 210 48 220 Z" fill="#b8d8e8" stroke="#5588aa" stroke-width="1.5"/>
+                            <text x="67" y="268" font-size="9" font-weight="bold" fill="#336688">Lake</text>
+                            <!-- Footbridge -->
+                            <rect x="143" y="284" width="28" height="7" fill="#c8b89a" stroke="#555" stroke-width="1.5"/>
+                            <line x1="143" y1="280" x2="143" y2="295" stroke="#444" stroke-width="1.5"/>
+                            <line x1="171" y1="280" x2="171" y2="295" stroke="#444" stroke-width="1.5"/>
+
+                            <!-- WOODLAND (north-west corner) -->
+                            <circle cx="57" cy="63" r="13" fill="#6a9945" opacity="0.85"/>
+                            <circle cx="82" cy="55" r="11" fill="#527a35" opacity="0.85"/>
+                            <circle cx="106" cy="65" r="12" fill="#6a9945" opacity="0.85"/>
+                            <circle cx="67" cy="84" r="10" fill="#527a35" opacity="0.80"/>
+                            <circle cx="90" cy="82" r="11" fill="#6a9945" opacity="0.80"/>
+                            <text x="44" y="100" font-size="9" fill="#3a6620" font-weight="bold">Woodland</text>
+
+                            <!-- ORCHARD (east, between kitchen garden and adventure playground) -->
+                            <circle cx="420" cy="232" r="7" fill="#8ab860" opacity="0.75"/>
+                            <circle cx="445" cy="232" r="7" fill="#8ab860" opacity="0.75"/>
+                            <circle cx="470" cy="232" r="7" fill="#8ab860" opacity="0.75"/>
+                            <circle cx="496" cy="232" r="7" fill="#8ab860" opacity="0.75"/>
+                            <circle cx="420" cy="258" r="7" fill="#8ab860" opacity="0.75"/>
+                            <circle cx="445" cy="258" r="7" fill="#8ab860" opacity="0.75"/>
+                            <circle cx="470" cy="258" r="7" fill="#8ab860" opacity="0.75"/>
+                            <circle cx="496" cy="258" r="7" fill="#8ab860" opacity="0.75"/>
+                            <circle cx="420" cy="284" r="7" fill="#8ab860" opacity="0.75"/>
+                            <circle cx="445" cy="284" r="7" fill="#8ab860" opacity="0.75"/>
+                            <circle cx="470" cy="284" r="7" fill="#8ab860" opacity="0.75"/>
+                            <circle cx="496" cy="284" r="7" fill="#8ab860" opacity="0.75"/>
+                            <text x="440" y="308" font-size="9" fill="#4a7020" font-weight="bold">Orchard</text>
+
+                            <!-- ADVENTURE PLAYGROUND (south-east) -->
+                            <rect x="358" y="308" width="102" height="62" fill="#f8f0c0" stroke="#aa8800" stroke-width="1.5" stroke-dasharray="5,2"/>
+                            <!-- ladder icon -->
+                            <line x1="368" y1="365" x2="368" y2="318" stroke="#885500" stroke-width="2"/>
+                            <line x1="378" y1="365" x2="378" y2="318" stroke="#885500" stroke-width="2"/>
+                            <line x1="368" y1="330" x2="378" y2="330" stroke="#885500" stroke-width="1.5"/>
+                            <line x1="368" y1="343" x2="378" y2="343" stroke="#885500" stroke-width="1.5"/>
+                            <line x1="368" y1="356" x2="378" y2="356" stroke="#885500" stroke-width="1.5"/>
+                            <!-- slide icon -->
+                            <line x1="408" y1="320" x2="440" y2="360" stroke="#cc6600" stroke-width="3"/>
+                            <text x="360" y="306" font-size="8.5" font-weight="bold" fill="#664400">Adventure playground</text>
+
+                            <!-- TEMPLE OF THE FOUR WINDS (north-east corner) -->
+                            <polygon points="455,46 478,46 473,36 460,36" fill="#ddd0b0" stroke="#555" stroke-width="1.5"/>
+                            <rect x="453" y="46" width="26" height="22" fill="#ddd0b0" stroke="#555" stroke-width="1.5"/>
+                            <line x1="459" y1="46" x2="459" y2="68" stroke="#888" stroke-width="1.2"/>
+                            <line x1="466" y1="46" x2="466" y2="68" stroke="#888" stroke-width="1.2"/>
+                            <line x1="473" y1="46" x2="473" y2="68" stroke="#888" stroke-width="1.2"/>
+                            <text x="435" y="80" font-size="8.5" font-weight="bold" fill="#444">Temple of</text>
+                            <text x="435" y="91" font-size="8.5" font-weight="bold" fill="#444">Four Winds</text>
+
+                            <!-- DISABLED ENTRY (west wing of house, ramp) -->
+                            <line x1="185" y1="157" x2="195" y2="165" stroke="#2244cc" stroke-width="2.5"/>
+                            <circle cx="190" cy="153" r="4" fill="none" stroke="#2244cc" stroke-width="1.5"/>
+                            <line x1="175" y1="168" x2="195" y2="168" stroke="#2244cc" stroke-width="2"/>
+
+                            <!-- NORTH COMPASS -->
+                            <g transform="translate(497,52)">
+                                <circle cx="0" cy="0" r="14" fill="white" stroke="#333" stroke-width="1.2"/>
+                                <polygon points="0,-11 3,0 0,2 -3,0" fill="#cc2222"/>
+                                <polygon points="0,11 3,0 0,-2 -3,0" fill="#333"/>
+                                <text x="-3" y="-14" font-size="9" font-weight="bold" fill="#333">N</text>
+                            </g>
+
+                            <!-- ══ LETTER MARKERS A–H (hollow circles, Cambridge official style) ══ -->
+                            <!-- A: Farm shop -->
+                            <g class="map-hotspot" id="hotspot-A" onclick="handleMapClick('A')" style="cursor:pointer;">
+                                <circle cx="176" cy="88" r="13" fill="white" stroke="#111" stroke-width="2.2"/>
+                                <text x="170" y="93" font-size="14" font-weight="900" fill="#111">A</text>
+                            </g>
+                            <!-- B: Disabled entry (west side house) -->
+                            <g class="map-hotspot" id="hotspot-B" onclick="handleMapClick('B')" style="cursor:pointer;">
+                                <circle cx="177" cy="178" r="13" fill="white" stroke="#111" stroke-width="2.2"/>
+                                <text x="171" y="183" font-size="14" font-weight="900" fill="#111">B</text>
+                            </g>
+                            <!-- C: Adventure playground -->
+                            <g class="map-hotspot" id="hotspot-C" onclick="handleMapClick('C')" style="cursor:pointer;">
+                                <circle cx="406" cy="338" r="13" fill="white" stroke="#111" stroke-width="2.2"/>
+                                <text x="400" y="343" font-size="14" font-weight="900" fill="#111">C</text>
+                            </g>
+                            <!-- D: Kitchen gardens -->
+                            <g class="map-hotspot" id="hotspot-D" onclick="handleMapClick('D')" style="cursor:pointer;">
+                                <circle cx="462" cy="132" r="13" fill="white" stroke="#111" stroke-width="2.2"/>
+                                <text x="456" y="137" font-size="14" font-weight="900" fill="#111">D</text>
+                            </g>
+                            <!-- E: Temple of the Four Winds -->
+                            <g class="map-hotspot" id="hotspot-E" onclick="handleMapClick('E')" style="cursor:pointer;">
+                                <circle cx="466" cy="54" r="13" fill="white" stroke="#111" stroke-width="2.2"/>
+                                <text x="460" y="59" font-size="14" font-weight="900" fill="#111">E</text>
+                            </g>
+                            <!-- F: Lake / boathouse -->
+                            <g class="map-hotspot" id="hotspot-F" onclick="handleMapClick('F')" style="cursor:pointer;">
+                                <circle cx="88" cy="316" r="13" fill="white" stroke="#111" stroke-width="2.2"/>
+                                <text x="82" y="321" font-size="14" font-weight="900" fill="#111">F</text>
+                            </g>
+                            <!-- G: Woodland walk -->
+                            <g class="map-hotspot" id="hotspot-G" onclick="handleMapClick('G')" style="cursor:pointer;">
+                                <circle cx="81" cy="65" r="13" fill="white" stroke="#111" stroke-width="2.2"/>
+                                <text x="75" y="70" font-size="14" font-weight="900" fill="#111">G</text>
+                            </g>
+                            <!-- H: Orchard -->
+                            <g class="map-hotspot" id="hotspot-H" onclick="handleMapClick('H')" style="cursor:pointer;">
+                                <circle cx="460" cy="248" r="13" fill="white" stroke="#111" stroke-width="2.2"/>
+                                <text x="454" y="253" font-size="14" font-weight="900" fill="#111">H</text>
+                            </g>
+
+                            <!-- SCALE BAR -->
+                            <g transform="translate(30,412)">
+                                <line x1="0" y1="0" x2="100" y2="0" stroke="#333" stroke-width="2"/>
+                                <line x1="0" y1="-4" x2="0" y2="4" stroke="#333" stroke-width="2"/>
+                                <line x1="50" y1="-3" x2="50" y2="3" stroke="#333" stroke-width="1.5"/>
+                                <line x1="100" y1="-4" x2="100" y2="4" stroke="#333" stroke-width="2"/>
+                                <text x="0" y="13" font-size="9" fill="#444">0</text>
+                                <text x="42" y="13" font-size="9" fill="#444">50 m</text>
+                                <text x="87" y="13" font-size="9" fill="#444">100 m</text>
+                            </g>
+                        </svg>
+                        <div style="font-size:0.76em; color:#64748b; text-align:center; margin-top:4px;">
+                            💡 মানচিত্রে A–H মার্কারে ক্লিক করুন অথবা নিচের ড্রপডাউন ব্যবহার করুন।
+                        </div>
+                    </div>
+
+                    <!-- RIGHT: QUESTIONS 16-20 -->
+                    <div style="flex:1; min-width:200px; display:flex; flex-direction:column; gap:10px;">
+                        {% if questions and questions|length >= 20 %}
+                            {% for q in questions[15:20] %}
+                            <div class="q-statement-row" id="qRow-{{ q.index }}" data-qid="{{ q.id }}" data-index="{{ q.index }}" data-ans="{{ q.answer_key }}" data-exp="{{ q.explanation }}" data-section="2">
+                                <div style="font-size:0.92em; font-weight:700; margin-bottom:6px;">
+                                    <span class="q-num-pill">{{ q.index }}</span> {{ q.question_text }}
+                                </div>
+                                <select id="mapSelect-{{ q.index }}" style="background:#1e293b; color:#fff; padding:7px 10px; border-radius:4px; font-size:0.88em; font-weight:700; border:1px solid rgba(255,255,255,0.25); width:100%; margin-bottom:6px;" onchange="selectMapLetter({{ q.index }}, this.value)">
+                                    <option value="">-- A to H --</option>
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="C">C</option>
+                                    <option value="D">D</option>
+                                    <option value="E">E</option>
+                                    <option value="F">F</option>
+                                    <option value="G">G</option>
+                                    <option value="H">H</option>
+                                </select>
+                                <div style="display:flex; gap:4px; flex-wrap:wrap;">
+                                    <button class="letter-pill-btn" id="btn-{{ q.index }}-A" onclick="selectMapLetter({{ q.index }}, 'A')">A</button>
+                                    <button class="letter-pill-btn" id="btn-{{ q.index }}-B" onclick="selectMapLetter({{ q.index }}, 'B')">B</button>
+                                    <button class="letter-pill-btn" id="btn-{{ q.index }}-C" onclick="selectMapLetter({{ q.index }}, 'C')">C</button>
+                                    <button class="letter-pill-btn" id="btn-{{ q.index }}-D" onclick="selectMapLetter({{ q.index }}, 'D')">D</button>
+                                    <button class="letter-pill-btn" id="btn-{{ q.index }}-E" onclick="selectMapLetter({{ q.index }}, 'E')">E</button>
+                                    <button class="letter-pill-btn" id="btn-{{ q.index }}-F" onclick="selectMapLetter({{ q.index }}, 'F')">F</button>
+                                    <button class="letter-pill-btn" id="btn-{{ q.index }}-G" onclick="selectMapLetter({{ q.index }}, 'G')">G</button>
+                                    <button class="letter-pill-btn" id="btn-{{ q.index }}-H" onclick="selectMapLetter({{ q.index }}, 'H')">H</button>
+                                </div>
+                                <div class="q-practice-actions" style="margin-top:8px;">
+                                    <button class="btn-q-action btn-q-check" onclick="checkSingleQuestion({{ q.index }})">চেক</button>
+                                    <button class="btn-q-action" onclick="showAudioHint({{ q.index }})">হিন্ট</button>
+                                    <button class="btn-q-action" onclick="revealQuestionAnswer({{ q.index }})">সমাধান</button>
+                                </div>
+                                <div class="q-feedback-drawer" id="feedback-{{ q.index }}">
+                                    <span id="fb-status-{{ q.index }}"></span> | <b id="fb-ans-key-{{ q.index }}"></b><br><span id="fb-exp-{{ q.index }}"></span>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+
+                    <div class="map-pane-left">
+                        {% if sections and sections|length > 1 and "Wildlife" in sections[1].title %}
+                        <!-- 1. GREENWOOD WILDLIFE NATURE PARK & TRAIL MAP -->
+                        <svg viewBox="0 0 540 380" style="width:100%; height:auto; background:#ffffff; border-radius:6px; border:1px solid #cbd5e1;">
+                            <defs>
+                                <pattern id="grassDots" width="16" height="16" patternUnits="userSpaceOnUse">
+                                    <circle cx="8" cy="8" r="1" fill="#cbd5e1"/>
+                                </pattern>
+                                <pattern id="waterWaves" width="16" height="8" patternUnits="userSpaceOnUse">
+                                    <path d="M 0 4 Q 4 0 8 4 T 16 4" fill="none" stroke="#38bdf8" stroke-width="1.2"/>
+                                </pattern>
+                            </defs>
+                            <rect width="540" height="380" fill="#ffffff"/>
+                            <rect x="20" y="20" width="500" height="340" fill="url(#grassDots)"/>
+                            <!-- North River Boundary -->
+                            <path d="M 20 40 Q 150 20 280 45 T 520 30 L 520 20 L 20 20 Z" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5"/>
+                            <text x="180" y="32" font-size="11" font-weight="bold" fill="#0369a1">NORTH RIVER SANCTUARY BORDER</text>
+                            
+                            <!-- Outer Fence -->
+                            <rect x="20" y="20" width="500" height="340" fill="none" stroke="#334155" stroke-width="2.5" stroke-dasharray="8,4"/>
+                            
+                            <!-- Central Duck Pond with Islands & Reeds -->
+                            <path d="M 200 140 C 180 200 240 250 310 230 C 370 210 360 150 300 130 C 250 110 220 120 200 140 Z" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+                            <ellipse cx="265" cy="180" rx="40" ry="25" fill="url(#waterWaves)" opacity="0.7"/>
+                            <text x="235" y="180" font-size="11" font-weight="bold" fill="#0369a1">Central Duck Pond</text>
+                            
+                            <!-- Winding Main Boardwalk Trail -->
+                            <path d="M 270 340 L 270 270 C 270 250 200 240 180 210 L 120 210 L 120 110 L 220 70 L 400 70 L 440 120 L 440 270 L 320 270 L 270 340" fill="none" stroke="#d97706" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M 270 340 L 270 270 C 270 250 200 240 180 210 L 120 210 L 120 110 L 220 70 L 400 70 L 440 120 L 440 270 L 320 270 L 270 340" fill="none" stroke="#fef3c7" stroke-width="4" stroke-dasharray="6,4" stroke-linecap="round"/>
+
+                            <!-- South Gate Ticket Plaza -->
+                            <rect x="220" y="325" width="100" height="35" fill="#334155" rx="3"/>
+                            <text x="232" y="347" font-size="11" font-weight="bold" fill="#ffffff">SOUTH GATE</text>
+
+                            <!-- Building A: Educational Discovery Centre (West Trail) -->
+                            <rect x="40" y="190" width="80" height="60" fill="#ffffff" stroke="#0f172a" stroke-width="2"/>
+                            <text x="45" y="182" font-size="9" font-weight="bold" fill="#0f172a">Discovery Centre</text>
+                            <g class="map-hotspot" id="hotspot-A" onclick="handleMapClick('A')">
+                                <circle cx="80" cy="220" r="16" fill="#ffffff" stroke="#0f172a" stroke-width="2.5"/>
+                                <text x="74" y="226" font-size="16" font-weight="900" fill="#0f172a">A</text>
+                            </g>
+
+                            <!-- Building B: Tropical Bird Aviary (Northwest) -->
+                            <rect x="50" y="70" width="85" height="65" fill="#ffffff" stroke="#0f172a" stroke-width="2" rx="6"/>
+                            <text x="54" y="62" font-size="9" font-weight="bold" fill="#0f172a">Tropical Aviary</text>
+                            <g class="map-hotspot" id="hotspot-B" onclick="handleMapClick('B')">
+                                <circle cx="92" cy="102" r="16" fill="#ffffff" stroke="#0f172a" stroke-width="2.5"/>
+                                <text x="86" y="108" font-size="16" font-weight="900" fill="#0f172a">B</text>
+                            </g>
+
+                            <!-- Building C: Reptile Bio-Dome (Northeast) -->
+                            <ellipse cx="430" cy="95" rx="45" ry="35" fill="#ffffff" stroke="#0f172a" stroke-width="2"/>
+                            <text x="395" y="55" font-size="9" font-weight="bold" fill="#0f172a">Reptile Bio-Dome</text>
+                            <g class="map-hotspot" id="hotspot-C" onclick="handleMapClick('C')">
+                                <circle cx="430" cy="95" r="16" fill="#ffffff" stroke="#0f172a" stroke-width="2.5"/>
+                                <text x="424" y="101" font-size="16" font-weight="900" fill="#0f172a">C</text>
+                            </g>
+
+                            <!-- Building D: Woodland Treehouse Cafe (East Boundary) -->
+                            <rect x="390" y="210" width="85" height="60" fill="#ffffff" stroke="#0f172a" stroke-width="2"/>
+                            <text x="395" y="202" font-size="9" font-weight="bold" fill="#0f172a">Treehouse Cafe</text>
+                            <g class="map-hotspot" id="hotspot-D" onclick="handleMapClick('D')">
+                                <circle cx="432" cy="240" r="16" fill="#ffffff" stroke="#0f172a" stroke-width="2.5"/>
+                                <text x="426" y="246" font-size="16" font-weight="900" fill="#0f172a">D</text>
+                            </g>
+
+                            <!-- Building E: Ranger Office (Right of South Gate) -->
+                            <rect x="340" y="315" width="70" height="45" fill="#ffffff" stroke="#0f172a" stroke-width="2"/>
+                            <text x="342" y="308" font-size="8.5" font-weight="bold" fill="#0f172a">Ranger Office</text>
+                            <g class="map-hotspot" id="hotspot-E" onclick="handleMapClick('E')">
+                                <circle cx="375" cy="337" r="15" fill="#ffffff" stroke="#0f172a" stroke-width="2.5"/>
+                                <text x="370" y="342" font-size="15" font-weight="900" fill="#0f172a">E</text>
+                            </g>
+
+                            <!-- Compass -->
+                            <g transform="translate(170, 75)">
+                                <circle cx="0" cy="0" r="16" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+                                <polygon points="0,-14 3,0 0,3 -3,0" fill="#ef4444"/>
+                                <polygon points="0,14 3,0 0,-3 -3,0" fill="#0f172a"/>
+                                <text x="-4" y="-18" font-size="9" font-weight="bold">N</text>
+                            </g>
+                        </svg>
+                        {% elif sections and sections|length > 1 and "Festival" in sections[1].title %}
+                        <!-- 2. RIVERFRONT ARTS & MUSIC FESTIVAL GROUNDS MAP -->
+                        <svg viewBox="0 0 540 380" style="width:100%; height:auto; background:#ffffff; border-radius:6px; border:1px solid #cbd5e1;">
+                            <rect width="540" height="380" fill="#ffffff"/>
+                            <rect x="20" y="20" width="500" height="34" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5"/>
+                            <text x="175" y="42" font-size="12" font-weight="bold" fill="#0369a1">⚓ RIVERBANK PROMENADE &amp; MARINA</text>
+                            <rect x="20" y="54" width="500" height="286" fill="none" stroke="#0f172a" stroke-width="3"/>
+                            
+                            <!-- Central Festival Lawn -->
+                            <rect x="180" y="120" width="180" height="130" fill="#f8fafc" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4,4" rx="6"/>
+                            <text x="220" y="185" font-size="12" font-weight="bold" fill="#334155">Main Festival Lawn</text>
+
+                            <!-- South Pedestrian Entrance -->
+                            <rect x="210" y="315" width="120" height="25" fill="#334155" rx="3"/>
+                            <text x="218" y="332" font-size="10.5" font-weight="bold" fill="#ffffff">SOUTH ENTRANCE</text>
+
+                            <!-- Area A: Acoustic Stage (West Lawn) -->
+                            <rect x="40" y="210" width="110" height="85" fill="#ffffff" stroke="#0f172a" stroke-width="2"/>
+                            <text x="45" y="202" font-size="9" font-weight="bold" fill="#0f172a">Acoustic Stage</text>
+                            <g class="map-hotspot" id="hotspot-A" onclick="handleMapClick('A')">
+                                <circle cx="95" cy="252" r="16" fill="#ffffff" stroke="#0f172a" stroke-width="2.5"/>
+                                <text x="89" y="258" font-size="16" font-weight="900" fill="#0f172a">A</text>
+                            </g>
+
+                            <!-- Area B: Food Pavilion (Northwest) -->
+                            <rect x="40" y="80" width="110" height="85" fill="#ffffff" stroke="#0f172a" stroke-width="2"/>
+                            <text x="45" y="72" font-size="9" font-weight="bold" fill="#0f172a">Food Pavilion</text>
+                            <g class="map-hotspot" id="hotspot-B" onclick="handleMapClick('B')">
+                                <circle cx="95" cy="122" r="16" fill="#ffffff" stroke="#0f172a" stroke-width="2.5"/>
+                                <text x="89" y="128" font-size="16" font-weight="900" fill="#0f172a">B</text>
+                            </g>
+
+                            <!-- Area C: Craft Market (Northeast near Marina) -->
+                            <rect x="390" y="80" width="110" height="85" fill="#ffffff" stroke="#0f172a" stroke-width="2"/>
+                            <text x="395" y="72" font-size="9" font-weight="bold" fill="#0f172a">Artisan Market</text>
+                            <g class="map-hotspot" id="hotspot-C" onclick="handleMapClick('C')">
+                                <circle cx="445" cy="122" r="16" fill="#ffffff" stroke="#0f172a" stroke-width="2.5"/>
+                                <text x="439" y="128" font-size="16" font-weight="900" fill="#0f172a">C</text>
+                            </g>
+
+                            <!-- Area D: Kids Carnival Tent (East Border) -->
+                            <rect x="390" y="195" width="110" height="75" fill="#ffffff" stroke="#0f172a" stroke-width="2"/>
+                            <text x="395" y="188" font-size="9" font-weight="bold" fill="#0f172a">Kids Carnival Tent</text>
+                            <g class="map-hotspot" id="hotspot-D" onclick="handleMapClick('D')">
+                                <circle cx="445" cy="232" r="16" fill="#ffffff" stroke="#0f172a" stroke-width="2.5"/>
+                                <text x="439" y="238" font-size="16" font-weight="900" fill="#0f172a">D</text>
+                            </g>
+
+                            <!-- Area E: Volunteer & Lost Property (Right of South Entrance) -->
+                            <rect x="350" y="305" width="85" height="35" fill="#ffffff" stroke="#0f172a" stroke-width="2"/>
+                            <text x="352" y="298" font-size="8" font-weight="bold" fill="#0f172a">Lost Property</text>
+                            <g class="map-hotspot" id="hotspot-E" onclick="handleMapClick('E')">
+                                <circle cx="392" cy="322" r="14" fill="#ffffff" stroke="#0f172a" stroke-width="2.5"/>
+                                <text x="387" y="327" font-size="14" font-weight="900" fill="#0f172a">E</text>
+                            </g>
+
+                            <g transform="translate(170, 85)">
+                                <circle cx="0" cy="0" r="16" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+                                <polygon points="0,-14 3,0 0,3 -3,0" fill="#ef4444"/>
+                                <polygon points="0,14 3,0 0,-3 -3,0" fill="#0f172a"/>
+                                <text x="-4" y="-18" font-size="9" font-weight="bold">N</text>
+                            </g>
+                        </svg>
+                        {% else %}
+                        <!-- 3. OFFICIAL CAMBRIDGE MARITIME MUSEUM ARCHITECTURAL FLOOR PLAN -->
+                        <svg viewBox="0 0 540 380" style="width:100%; height:auto; background:#ffffff; border-radius:6px; border:1px solid #cbd5e1;">
+                            <defs>
+                                <pattern id="floorGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+                                    <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#f1f5f9" stroke-width="1"/>
+                                </pattern>
+                                <pattern id="harborWave" width="16" height="8" patternUnits="userSpaceOnUse">
+                                    <path d="M 0 4 Q 4 0 8 4 T 16 4" fill="none" stroke="#38bdf8" stroke-width="1"/>
+                                </pattern>
+                            </defs>
+                            <rect width="540" height="380" fill="#ffffff"/>
+                            <rect x="20" y="20" width="500" height="340" fill="url(#floorGrid)"/>
+
+                            <!-- North Harbor Waterfront & Docks -->
+                            <rect x="20" y="20" width="500" height="36" fill="#f0f9ff" stroke="#0284c7" stroke-width="1.5"/>
+                            <rect x="20" y="20" width="500" height="36" fill="url(#harborWave)" opacity="0.6"/>
+                            <!-- Moored Ship Outline in Harbor -->
+                            <path d="M 380 32 L 440 32 Q 455 38 440 44 L 380 44 Z" fill="#e2e8f0" stroke="#0f172a" stroke-width="1.2"/>
+                            <line x1="410" y1="26" x2="410" y2="48" stroke="#0f172a" stroke-width="1.5"/>
+                            <text x="155" y="42" font-family="'Segoe UI', Arial, sans-serif" font-size="12" font-weight="800" fill="#0369a1" letter-spacing="1">⚓ HARBOR WATERFRONT &amp; MOORING DOCKS</text>
+
+                            <!-- Outer Masonry Walls -->
+                            <rect x="20" y="56" width="500" height="284" fill="none" stroke="#0f172a" stroke-width="3.5"/>
+
+                            <!-- South Entrance Foyer with Double Glass Doors -->
+                            <rect x="210" y="316" width="120" height="24" fill="#ffffff" stroke="#0f172a" stroke-width="2"/>
+                            <path d="M 235 340 A 24 24 0 0 0 259 316" fill="none" stroke="#64748b" stroke-width="1.5" stroke-dasharray="2,2"/>
+                            <line x1="235" y1="340" x2="235" y2="316" stroke="#0f172a" stroke-width="2"/>
+                            <path d="M 305 340 A 24 24 0 0 1 281 316" fill="none" stroke="#64748b" stroke-width="1.5" stroke-dasharray="2,2"/>
+                            <line x1="305" y1="340" x2="305" y2="316" stroke="#0f172a" stroke-width="2"/>
+                            <text x="228" y="333" font-family="'Segoe UI', Arial, sans-serif" font-size="10" font-weight="bold" fill="#0f172a">MAIN ENTRANCE</text>
+
+                            <!-- Central Atrium with Great Galleon Display Pedestal -->
+                            <rect x="190" y="115" width="160" height="135" fill="#f8fafc" stroke="#334155" stroke-width="2" stroke-dasharray="6,4" rx="4"/>
+                            <!-- Galleon Ship Drawing -->
+                            <ellipse cx="270" cy="175" rx="50" ry="18" fill="#e2e8f0" stroke="#0f172a" stroke-width="1.5"/>
+                            <line x1="240" y1="175" x2="300" y2="175" stroke="#0f172a" stroke-width="2"/>
+                            <circle cx="250" cy="175" r="3" fill="#0f172a"/>
+                            <circle cx="270" cy="175" r="4" fill="#0f172a"/>
+                            <circle cx="290" cy="175" r="3" fill="#0f172a"/>
+                            <text x="232" y="152" font-family="'Segoe UI', Arial, sans-serif" font-size="11" font-weight="bold" fill="#0f172a">CENTRAL ATRIUM</text>
+                            <text x="218" y="210" font-family="'Segoe UI', Arial, sans-serif" font-size="9" font-weight="600" fill="#64748b">(Great Galleon Exhibit)</text>
+
+                            <!-- Corridors & Walkways -->
+                            <line x1="190" y1="180" x2="160" y2="180" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+                            <line x1="350" y1="180" x2="380" y2="180" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+                            <line x1="270" y1="250" x2="270" y2="316" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+
+                            <!-- Room B: Northwest Model Ship Workshop -->
+                            <rect x="20" y="56" width="140" height="110" fill="#ffffff" stroke="#0f172a" stroke-width="2.5"/>
+                            <path d="M 160 135 A 25 25 0 0 0 135 160" fill="none" stroke="#64748b" stroke-width="1.5" stroke-dasharray="2,2"/>
+                            <line x1="160" y1="135" x2="135" y2="135" stroke="#0f172a" stroke-width="2"/>
+                            <g class="map-hotspot" id="hotspot-B" onclick="handleMapClick('B')">
+                                <circle cx="90" cy="111" r="18" fill="#ffffff" stroke="#0f172a" stroke-width="2.5"/>
+                                <text x="83" y="118" font-family="'Segoe UI', Arial, sans-serif" font-size="18" font-weight="900" fill="#0f172a">B</text>
+                            </g>
+
+                            <!-- Room A: Southwest Audio-Visual Theater -->
+                            <rect x="20" y="195" width="140" height="145" fill="#ffffff" stroke="#0f172a" stroke-width="2.5"/>
+                            <path d="M 160 225 A 25 25 0 0 1 135 200" fill="none" stroke="#64748b" stroke-width="1.5" stroke-dasharray="2,2"/>
+                            <line x1="160" y1="225" x2="135" y2="225" stroke="#0f172a" stroke-width="2"/>
+                            <g class="map-hotspot" id="hotspot-A" onclick="handleMapClick('A')">
+                                <circle cx="90" cy="265" r="18" fill="#ffffff" stroke="#0f172a" stroke-width="2.5"/>
+                                <text x="83" y="272" font-family="'Segoe UI', Arial, sans-serif" font-size="18" font-weight="900" fill="#0f172a">A</text>
+                            </g>
+
+                            <!-- Room C: Northeast Harbor View Cafe -->
+                            <rect x="380" y="56" width="140" height="95" fill="#ffffff" stroke="#0f172a" stroke-width="2.5"/>
+                            <path d="M 380 125 A 25 25 0 0 1 405 150" fill="none" stroke="#64748b" stroke-width="1.5" stroke-dasharray="2,2"/>
+                            <line x1="380" y1="125" x2="405" y2="125" stroke="#0f172a" stroke-width="2"/>
+                            <g class="map-hotspot" id="hotspot-C" onclick="handleMapClick('C')">
+                                <circle cx="450" cy="103" r="18" fill="#ffffff" stroke="#0f172a" stroke-width="2.5"/>
+                                <text x="443" y="110" font-family="'Segoe UI', Arial, sans-serif" font-size="18" font-weight="900" fill="#0f172a">C</text>
+                            </g>
+
+                            <!-- Room D: East Central Children's Discovery Zone -->
+                            <rect x="380" y="165" width="140" height="75" fill="#ffffff" stroke="#0f172a" stroke-width="2.5"/>
+                            <path d="M 380 195 A 25 25 0 0 1 405 220" fill="none" stroke="#64748b" stroke-width="1.5" stroke-dasharray="2,2"/>
+                            <line x1="380" y1="195" x2="405" y2="195" stroke="#0f172a" stroke-width="2"/>
+                            <g class="map-hotspot" id="hotspot-D" onclick="handleMapClick('D')">
+                                <circle cx="450" cy="202" r="18" fill="#ffffff" stroke="#0f172a" stroke-width="2.5"/>
+                                <text x="443" y="209" font-family="'Segoe UI', Arial, sans-serif" font-size="18" font-weight="900" fill="#0f172a">D</text>
+                            </g>
+
+                            <!-- Room E: Southeast Souvenir & Maritime Book Shop -->
+                            <rect x="380" y="250" width="140" height="90" fill="#ffffff" stroke="#0f172a" stroke-width="2.5"/>
+                            <path d="M 380 275 A 25 25 0 0 1 405 300" fill="none" stroke="#64748b" stroke-width="1.5" stroke-dasharray="2,2"/>
+                            <line x1="380" y1="275" x2="405" y2="275" stroke="#0f172a" stroke-width="2"/>
+                            <g class="map-hotspot" id="hotspot-E" onclick="handleMapClick('E')">
+                                <circle cx="450" cy="293" r="18" fill="#ffffff" stroke="#0f172a" stroke-width="2.5"/>
+                                <text x="443" y="300" font-family="'Segoe UI', Arial, sans-serif" font-size="18" font-weight="900" fill="#0f172a">E</text>
+                            </g>
+
+                            <!-- 4-Point Compass Rose -->
+                            <g transform="translate(175, 85)">
+                                <circle cx="0" cy="0" r="18" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+                                <polygon points="0,-15 3,0 0,3 -3,0" fill="#ef4444"/>
+                                <polygon points="0,15 3,0 0,-3 -3,0" fill="#0f172a"/>
+                                <polygon points="-15,0 0,3 3,0 0,-3" fill="#64748b"/>
+                                <polygon points="15,0 0,3 -3,0 0,-3" fill="#64748b"/>
+                                <text x="-4" y="-20" font-family="'Segoe UI', Arial, sans-serif" font-size="10" font-weight="900" fill="#0f172a">N</text>
+                                <text x="21" y="4" font-family="'Segoe UI', Arial, sans-serif" font-size="9" font-weight="bold" fill="#64748b">E</text>
+                                <text x="-4" y="28" font-family="'Segoe UI', Arial, sans-serif" font-size="9" font-weight="bold" fill="#64748b">S</text>
+                                <text x="-29" y="4" font-family="'Segoe UI', Arial, sans-serif" font-size="9" font-weight="bold" fill="#64748b">W</text>
+                            </g>
+
+                            <!-- Scale Indicator -->
+                            <g transform="translate(30, 355)">
+                                <line x1="0" y1="0" x2="80" y2="0" stroke="#0f172a" stroke-width="2"/>
+                                <line x1="0" y1="-4" x2="0" y2="4" stroke="#0f172a" stroke-width="2"/>
+                                <line x1="40" y1="-3" x2="40" y2="3" stroke="#0f172a" stroke-width="1.5"/>
+                                <line x1="80" y1="-4" x2="80" y2="4" stroke="#0f172a" stroke-width="2"/>
+                                <text x="0" y="12" font-size="8" font-weight="bold" fill="#64748b">0m</text>
+                                <text x="35" y="12" font-size="8" font-weight="bold" fill="#64748b">10m</text>
+                                <text x="75" y="12" font-size="8" font-weight="bold" fill="#64748b">20m</text>
+                            </g>
+                        </svg>
+                        {% endif %}
+                        <div style="font-size:0.78em; color:#64748b; text-align:center; margin-top:8px; font-weight:600;">
+                            💡 মানচিত্রের যেকোনো লেটার পিন (A, B, C, D, E) বা ডানপাশের ড্রপডাউন থেকে উত্তর সিলেক্ট করুন।
+                        </div>
+                    </div>
+
+                    <!-- RIGHT COLUMN: QUESTIONS 16-20 (OFFICIAL CD-IELTS SELECTOR + PILLS) -->
+                    <div class="map-pane-right">
+                        {% if questions and questions|length >= 20 %}
+                            {% for q in questions[15:20] %}
+                            <div class="q-statement-row" id="qRow-{{ q.index }}" data-qid="{{ q.id }}" data-index="{{ q.index }}" data-ans="{{ q.answer_key }}" data-exp="{{ q.explanation }}" data-section="2">
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                                    <span style="font-size:0.95em; font-weight:700;">
+                                        <span class="q-num-pill">{{ q.index }}</span> {{ q.question_text }}
+                                    </span>
+                                </div>
+                                <div style="display:flex; align-items:center; gap:8px; margin:8px 0; flex-wrap:wrap;">
+                                    <select id="mapSelect-{{ q.index }}" class="custom-select-dark" style="background:#1e293b; color:#fff; padding:6px 10px; border-radius:4px; font-size:0.85em; font-weight:700; border:1px solid rgba(255,255,255,0.2); width:auto;" onchange="selectMapLetter({{ q.index }}, this.value)">
+                                        <option value="">-- বর্ণ বেছে নিন (A–E) --</option>
+                                        <option value="A">A</option>
+                                        <option value="B">B</option>
+                                        <option value="C">C</option>
+                                        <option value="D">D</option>
+                                        <option value="E">E</option>
+                                    </select>
+                                    <div style="display:flex; gap:4px;">
+                                        <button class="letter-pill-btn" id="btn-{{ q.index }}-A" onclick="selectMapLetter({{ q.index }}, 'A')">A</button>
+                                        <button class="letter-pill-btn" id="btn-{{ q.index }}-B" onclick="selectMapLetter({{ q.index }}, 'B')">B</button>
+                                        <button class="letter-pill-btn" id="btn-{{ q.index }}-C" onclick="selectMapLetter({{ q.index }}, 'C')">C</button>
+                                        <button class="letter-pill-btn" id="btn-{{ q.index }}-D" onclick="selectMapLetter({{ q.index }}, 'D')">D</button>
+                                        <button class="letter-pill-btn" id="btn-{{ q.index }}-E" onclick="selectMapLetter({{ q.index }}, 'E')">E</button>
+                                    </div>
+                                </div>
+                                <div class="q-practice-actions">
+                                    <button class="btn-q-action btn-q-check" onclick="checkSingleQuestion({{ q.index }})">চেক</button>
+                                    <button class="btn-q-action" onclick="showAudioHint({{ q.index }})">হিন্ট</button>
+                                    <button class="btn-q-action" onclick="revealQuestionAnswer({{ q.index }})">সমাধান</button>
+                                </div>
+                                <div class="q-feedback-drawer" id="feedback-{{ q.index }}">
+                                    <span id="fb-status-{{ q.index }}"></span> | <b id="fb-ans-key-{{ q.index }}"></b><br><span id="fb-exp-{{ q.index }}"></span>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 3: UNIVERSITY TUTORIAL (Q21-30) -->
+            <div class="cambridge-doc-card listening-sec-group sec3-group" id="sec3-doc" style="display:none;">
+                <div class="doc-header">
+                    <h3 style="font-weight:800; color:#0f172a;">RESEARCH TUTORIAL ON SMART MICROGRIDS</h3>
+                    <span style="font-size:0.85em; font-weight:700; color:#10b981;">Questions 21–30</span>
+                </div>
+                <div class="cambridge-instructions">
+                    Listen to the tutorial discussion between Dr. Evans and students Jack & Maya and answer Questions 21–30.
+                </div>
+                {% if questions and questions|length >= 30 %}
+                    {% for q in questions[20:30] %}
+                    <div class="q-statement-row" id="qRow-{{ q.index }}" data-qid="{{ q.id }}" data-index="{{ q.index }}" data-ans="{{ q.answer_key }}" data-exp="{{ q.explanation }}" data-section="3">
+                        <div style="font-size:0.95em; font-weight:700;">
+                            <span class="q-num-pill">{{ q.index }}</span> {{ q.question_text }}
+                        </div>
+                        {% set opts = q.options_json | from_json %}
+                        {% if opts and opts|length > 0 %}
+                            <div style="margin-left:28px; margin-top:8px;">
+                                {% for opt in opts %}
+                                <label class="cambridge-radio-label" style="display:flex; margin-bottom:6px;">
+                                    <input type="radio" name="ans_{{ q.id }}" value="{{ opt }}" onchange="handleAnswerChange({{ q.index }}, this.value)">
+                                    <span>{{ opt }}</span>
+                                </label>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div style="margin-left:28px; margin-top:8px;">
+                                <input type="text" class="cambridge-inline-input" placeholder="[ {{ q.index }} ]" oninput="handleAnswerChange({{ q.index }}, this.value)">
+                            </div>
+                        {% endif %}
+                        <div class="q-practice-actions">
+                            <button class="btn-q-action btn-q-check" onclick="checkSingleQuestion({{ q.index }})">চেক</button>
+                            <button class="btn-q-action" onclick="showAudioHint({{ q.index }})">হিন্ট</button>
+                            <button class="btn-q-action" onclick="revealQuestionAnswer({{ q.index }})">সমাধান</button>
+                        </div>
+                        <div class="q-feedback-drawer" id="feedback-{{ q.index }}">
+                            <span id="fb-status-{{ q.index }}"></span> | <b id="fb-ans-key-{{ q.index }}"></b><br><span id="fb-exp-{{ q.index }}"></span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <!-- SECTION 4: UNIVERSITY LECTURE HANDOUT (Q31-40) -->
+            <div class="cambridge-doc-card listening-sec-group sec4-group" id="sec4-doc" style="display:none;">
+                <div class="doc-header">
+                    <h3 style="font-weight:800; color:#0f172a;">LECTURE: MARINE BIOLUMINESCENCE</h3>
+                    <span style="font-size:0.85em; font-weight:700; color:#10b981;">Questions 31–40</span>
+                </div>
+                <div class="cambridge-instructions">
+                    Complete the lecture notes below.<br>
+                    Write <b>NO MORE THAN TWO WORDS AND/OR A NUMBER</b> for each answer.
+                </div>
+
+                <div style="background:rgba(255,255,255,0.7); border:1px solid var(--bc-border); border-radius:8px; padding:18px;">
+                    <h4 style="margin-bottom:12px; font-weight:800; color:#059669;">Biochemical Mechanisms & Ecological Functions</h4>
+                    <ul style="list-style-type:circle; padding-left:20px; font-size:0.95em; line-height:2.4;">
+                        {% if questions and questions|length >= 40 %}
+                            {% for q in questions[30:40] %}
+                            <li class="q-statement-row" id="qRow-{{ q.index }}" data-qid="{{ q.id }}" data-index="{{ q.index }}" data-ans="{{ q.answer_key }}" data-exp="{{ q.explanation }}" data-section="4">
+                                <span class="q-num-pill">{{ q.index }}</span>
+                                {{ q.question_text | replace("________", "") }}
+                                <input type="text" class="cambridge-inline-input" placeholder="[ {{ q.index }} ]" oninput="handleAnswerChange({{ q.index }}, this.value)">
+                                <button class="btn-q-action btn-q-check" onclick="checkSingleQuestion({{ q.index }})">চেক</button>
+                                <button class="btn-q-action" onclick="showAudioHint({{ q.index }})">হিন্ট</button>
+                                <button class="btn-q-action" onclick="revealQuestionAnswer({{ q.index }})">সমাধান</button>
+                                <div class="q-feedback-drawer" id="feedback-{{ q.index }}">
+                                    <span id="fb-status-{{ q.index }}"></span> | <b id="fb-ans-key-{{ q.index }}"></b><br><span id="fb-exp-{{ q.index }}"></span>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FLOATING AI ASSISTANT DRAWER -->
+    <div class="ai-assistant-drawer" id="aiAssistantDrawer">
+        <div class="drawer-header">
+            <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-size:1.2em;">🤖</span>
+                <span style="font-weight:800; font-size:0.95em;">ARIA Listening Tutor</span>
+            </div>
+            <button onclick="toggleDrawer()" style="background:none; border:none; color:#cbd5e1; font-size:1.1em; cursor:pointer;">✖</button>
+        </div>
+        <div class="drawer-chat-body" id="drawerChatBody">
+            <div style="background:rgba(255,255,255,0.05); padding:10px 14px; border-radius:8px; color:#cbd5e1;">
+                🎧 হ্যালো! লিসেনিংয়ের যেকোনো অডিও স্পেলিং বা কি-ওয়ার্ড মিস করলে আমাকে বাংলায় জিজ্ঞেস করুন!
+            </div>
+        </div>
+    <!-- OFFICIAL CAMBRIDGE LISTENING RESULT MODAL -->
+    <div class="listening-result-modal" id="listeningResultModal">
+        <div class="result-modal-box">
+            <div class="result-modal-header">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <i class="fas fa-trophy" style="color:#10b981; font-size:1.4em;"></i>
+                    <div>
+                        <h3 style="font-size:1.15em; font-weight:800; color:#fff; margin:0;" id="resultModalTitle">IELTS Listening CBT Result & Official Band Report</h3>
+                        <p style="font-size:0.8em; color:#94a3b8; margin:2px 0 0;">Official Cambridge Assessment Standards (0.0–9.0 Scale)</p>
+                    </div>
+                </div>
+                <button onclick="closeListeningResultModal()" style="background:none; border:none; color:#94a3b8; font-size:1.3em; cursor:pointer;">✖</button>
+            </div>
+
+            <div class="result-modal-body">
+                <!-- HERO BAND SCORE BANNER -->
+                <div class="result-hero-box">
+                    <div style="display:flex; align-items:center; gap:20px;">
+                        <div class="band-circle-lg" id="modalBandScore">7.5</div>
+                        <div>
+                            <div style="font-size:0.85em; color:#94a3b8; font-weight:700; text-transform:uppercase;">Overall Cambridge Band</div>
+                            <div style="font-size:1.6em; font-weight:800; color:#fff; margin:2px 0;" id="modalDescriptorTitle">Good User</div>
+                            <div class="cefr-badge-lg" id="modalCefrBadge">CEFR C1</div>
+                        </div>
+                    </div>
+                    <div style="text-align:right;">
+                        <div style="font-size:0.85em; color:#94a3b8; font-weight:700;">RAW ACCURACY</div>
+                        <div style="font-size:2em; font-weight:900; color:#34d399;" id="modalRawScore">32 / 40</div>
+                        <div style="font-size:0.8em; color:#cbd5e1;" id="modalPercentage">80.0% Correct</div>
+                    </div>
+                </div>
+
+                <!-- 4 SECTIONS ACCURACY GRID -->
+                <div>
+                    <h4 style="font-size:0.95em; font-weight:800; color:#cbd5e1; margin-bottom:10px; display:flex; align-items:center; gap:6px;">
+                        <span>📊 Section Breakdown:</span>
+                    </h4>
+                    <div class="stat-grid-4col">
+                        <div class="section-stat-card">
+                            <div class="sec-name">Section 1 (Q1–10)</div>
+                            <div class="sec-score" id="statS1Score">0/10</div>
+                            <div class="sec-percent" id="statS1Pct">0%</div>
+                        </div>
+                        <div class="section-stat-card">
+                            <div class="sec-name">Section 2 (Q11–20)</div>
+                            <div class="sec-score" id="statS2Score">0/10</div>
+                            <div class="sec-percent" id="statS2Pct">0%</div>
+                        </div>
+                        <div class="section-stat-card">
+                            <div class="sec-name">Section 3 (Q21–30)</div>
+                            <div class="sec-score" id="statS3Score">0/10</div>
+                            <div class="sec-percent" id="statS3Pct">0%</div>
+                        </div>
+                        <div class="section-stat-card">
+                            <div class="sec-name">Section 4 (Q31–40)</div>
+                            <div class="sec-score" id="statS4Score">0/10</div>
+                            <div class="sec-percent" id="statS4Pct">0%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QUESTION TYPE MASTERY BARS -->
+                <div>
+                    <h4 style="font-size:0.95em; font-weight:800; color:#cbd5e1; margin-bottom:10px;">
+                        🎯 Question Type Mastery:
+                    </h4>
+                    <div class="type-mastery-list" id="modalTypeMasteryList"></div>
+                </div>
+
+                <!-- 1-40 QUESTION AUDIT TABLE WITH FILTER TOGGLES -->
+                <div class="audit-table-wrap">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
+                        <h4 style="font-size:0.95em; font-weight:800; color:#cbd5e1; margin:0;">
+                            📋 Detailed Question Audit (1–40):
+                        </h4>
+                        <div class="audit-filter-bar" style="margin-bottom:0;">
+                            <button class="audit-filter-btn active" id="filterBtnAll" onclick="filterListeningAudit('all')">All Questions</button>
+                            <button class="audit-filter-btn" id="filterBtnWrong" onclick="filterListeningAudit('wrong')">❌ Incorrect & Unanswered</button>
+                            <button class="audit-filter-btn" id="filterBtnCorrect" onclick="filterListeningAudit('correct')">✅ Correct</button>
+                        </div>
+                    </div>
+
+                    <table class="audit-table">
+                        <thead>
+                            <tr>
+                                <th style="width:40px;">#</th>
+                                <th style="width:70px;">Sec</th>
+                                <th style="width:130px;">Question Type</th>
+                                <th style="width:140px;">Your Answer</th>
+                                <th style="width:140px;">Official Answer</th>
+                                <th>Cambridge Audio Reference & Explanation</th>
+                            </tr>
+                        </thead>
+                        <tbody id="modalAuditTableBody"></tbody>
+                    </table>
+                </div>
+
+                <!-- ACTION BUTTONS -->
+                <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:8px;">
+                    <button onclick="location.reload()" class="bc-btn-small" style="padding:10px 18px; font-size:0.88em; background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.25);">
+                        <i class="fas fa-redo"></i> <span>আবার টেস্ট দিন</span>
+                    </button>
+                    <a href="/practice" class="bc-btn-small" style="padding:10px 18px; font-size:0.88em; background:#059669; border-color:#10b981; color:#fff; text-decoration:none;">
+                        <i class="fas fa-home"></i> <span>প্র্যাকটিস হাবে ফিরুন</span>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    <!-- QUESTION TYPE CUSTOMIZER MODAL -->
+    <div class="listening-result-modal" id="typeSelectorModal" style="display:none;">
+        <div class="result-modal-box" style="max-width:980px;">
+            <div class="result-modal-header" style="border-bottom:1px solid rgba(16,185,129,0.2);">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <i class="fas fa-sliders-h" style="color:#10b981; font-size:1.3em;"></i>
+                    <div>
+                        <h3 style="font-size:1.15em; font-weight:800; color:#fff; margin:0;">ক্যামব্রিজ লিসেনিং কোশ্চেন টাইপ কাস্টমাইজার</h3>
+                        <p style="font-size:0.8em; color:#94a3b8; margin:2px 0 0;">সেকশন ১, ২, ৩ এবং ৪ এর জন্য কোন কোন প্রশ্ন টাইপ চান তা নিজের মতো সিলেক্ট করুন</p>
+                    </div>
+                </div>
+                <button onclick="closeTypeSelectorModal()" style="background:none; border:none; color:#cbd5e1; font-size:1.2em; cursor:pointer;">✖</button>
+            </div>
+
+            <div class="result-modal-body" style="gap:16px;">
+                <!-- PRESET BUTTONS -->
+                <div>
+                    <label style="font-size:0.85em; font-weight:800; color:#cbd5e1; display:block; margin-bottom:8px;">⚡ দ্রুত প্রিসেট কম্বিনেশন বেছে নিন:</label>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                        <button type="button" class="bc-btn-small" onclick="applyListeningPreset('classic')">🌟 স্ট্যান্ডার্ড ক্যামব্রিজ মিক্স</button>
+                        <button type="button" class="bc-btn-small" onclick="applyListeningPreset('map_plan')">🗺️ ম্যাপ ও লেআউট ম্যাচিং</button>
+                        <button type="button" class="bc-btn-small" onclick="applyListeningPreset('gap_fills')">📝 ফর্ম, নোট ও টেবিল গ্যাপ-ফিল</button>
+                        <button type="button" class="bc-btn-small" onclick="applyListeningPreset('academic')">🎓 একাডেমিক টিউটোরিয়াল ও লেকচার</button>
+                        <button type="button" class="bc-btn-small" onclick="applyListeningPreset('all_types')">🌈 সব ৪টি সেকশন কম্বাইন্ড</button>
+                    </div>
+                </div>
+
+                <!-- 4 SECTIONS GRID -->
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap:12px;">
+                    <!-- SECTION 1 -->
+                    <div style="background:#181b24; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.08); border-top:3px solid #10b981; display:flex; flex-direction:column; gap:6px;">
+                        <div style="font-size:0.85em; font-weight:800; color:#34d399; display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:4px;">
+                            <span>🗣️ Section 1 (Q1–10)</span>
+                            <span style="color:#94a3b8; font-size:0.75em;">Band 6.0</span>
+                        </div>
+                        <label style="font-size:0.8em; color:#cbd5e1; display:flex; gap:6px; cursor:pointer;"><input type="checkbox" name="cbt_lis_s1_type" value="Form Completion" checked> <span>Form Completion</span></label>
+                        <label style="font-size:0.8em; color:#cbd5e1; display:flex; gap:6px; cursor:pointer;"><input type="checkbox" name="cbt_lis_s1_type" value="Note Completion" checked> <span>Note Completion</span></label>
+                        <label style="font-size:0.8em; color:#cbd5e1; display:flex; gap:6px; cursor:pointer;"><input type="checkbox" name="cbt_lis_s1_type" value="Table Completion"> <span>Table Completion</span></label>
+                        <label style="font-size:0.8em; color:#cbd5e1; display:flex; gap:6px; cursor:pointer;"><input type="checkbox" name="cbt_lis_s1_type" value="Short Answer Questions"> <span>Short Answer Questions</span></label>
+                    </div>
+
+                    <!-- SECTION 2 -->
+                    <div style="background:#181b24; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.08); border-top:3px solid #3b82f6; display:flex; flex-direction:column; gap:6px;">
+                        <div style="font-size:0.85em; font-weight:800; color:#60a5fa; display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:4px;">
+                            <span>🗺️ Section 2 (Q11–20)</span>
+                            <span style="color:#94a3b8; font-size:0.75em;">Band 6.5</span>
+                        </div>
+                        <label style="font-size:0.8em; color:#cbd5e1; display:flex; gap:6px; cursor:pointer;"><input type="checkbox" name="cbt_lis_s2_type" value="Multiple Choice" checked> <span>Multiple Choice (A-C)</span></label>
+                        <label style="font-size:0.8em; color:#cbd5e1; display:flex; gap:6px; cursor:pointer;"><input type="checkbox" name="cbt_lis_s2_type" value="Map Labelling" checked> <span>Map / Plan Labelling</span></label>
+                        <label style="font-size:0.8em; color:#cbd5e1; display:flex; gap:6px; cursor:pointer;"><input type="checkbox" name="cbt_lis_s2_type" value="Matching Information"> <span>Matching Information</span></label>
+                        <label style="font-size:0.8em; color:#cbd5e1; display:flex; gap:6px; cursor:pointer;"><input type="checkbox" name="cbt_lis_s2_type" value="Flow-chart Completion"> <span>Flow-chart Completion</span></label>
+                    </div>
+
+                    <!-- SECTION 3 -->
+                    <div style="background:#181b24; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.08); border-top:3px solid #8b5cf6; display:flex; flex-direction:column; gap:6px;">
+                        <div style="font-size:0.85em; font-weight:800; color:#c084fc; display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:4px;">
+                            <span>🎓 Section 3 (Q21–30)</span>
+                            <span style="color:#94a3b8; font-size:0.75em;">Band 7.5</span>
+                        </div>
+                        <label style="font-size:0.8em; color:#cbd5e1; display:flex; gap:6px; cursor:pointer;"><input type="checkbox" name="cbt_lis_s3_type" value="Multiple Choice" checked> <span>Multiple Choice</span></label>
+                        <label style="font-size:0.8em; color:#cbd5e1; display:flex; gap:6px; cursor:pointer;"><input type="checkbox" name="cbt_lis_s3_type" value="Sentence Completion" checked> <span>Sentence Completion</span></label>
+                        <label style="font-size:0.8em; color:#cbd5e1; display:flex; gap:6px; cursor:pointer;"><input type="checkbox" name="cbt_lis_s3_type" value="Matching Features"> <span>Matching Features</span></label>
+                        <label style="font-size:0.8em; color:#cbd5e1; display:flex; gap:6px; cursor:pointer;"><input type="checkbox" name="cbt_lis_s3_type" value="Summary Completion"> <span>Summary Completion</span></label>
+                    </div>
+
+                    <!-- SECTION 4 -->
+                    <div style="background:#181b24; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.08); border-top:3px solid #f59e0b; display:flex; flex-direction:column; gap:6px;">
+                        <div style="font-size:0.85em; font-weight:800; color:#fbbf24; display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:4px;">
+                            <span>🔬 Section 4 (Q31–40)</span>
+                            <span style="color:#94a3b8; font-size:0.75em;">Band 8.5</span>
+                        </div>
+                        <label style="font-size:0.8em; color:#cbd5e1; display:flex; gap:6px; cursor:pointer;"><input type="checkbox" name="cbt_lis_s4_type" value="Note Completion" checked> <span>Note Completion</span></label>
+                        <label style="font-size:0.8em; color:#cbd5e1; display:flex; gap:6px; cursor:pointer;"><input type="checkbox" name="cbt_lis_s4_type" value="Summary Completion"> <span>Summary Completion</span></label>
+                        <label style="font-size:0.8em; color:#cbd5e1; display:flex; gap:6px; cursor:pointer;"><input type="checkbox" name="cbt_lis_s4_type" value="Sentence Completion"> <span>Sentence Completion</span></label>
+                        <label style="font-size:0.8em; color:#cbd5e1; display:flex; gap:6px; cursor:pointer;"><input type="checkbox" name="cbt_lis_s4_type" value="Table Completion"> <span>Table Completion</span></label>
+                    </div>
+                </div>
+            </div>
+
+            <div style="padding:16px 24px; background:#1e293b; border-top:1px solid rgba(255,255,255,0.1); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                <button type="button" onclick="closeTypeSelectorModal()" class="bc-btn-small" style="padding:8px 16px;">বাতিল</button>
+                <button type="button" onclick="submitCbtListeningCustomTypes('ai_gen')" class="bc-btn-small" style="background:#059669; border-color:#10b981; color:#fff; padding:8px 24px; font-weight:800; font-size:0.95em;">
+                    <i class="fas fa-magic"></i> AI দিয়ে জেনারেট করে শুরু করুন
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI LISTENING TEST GENERATOR MODAL -->
+    <div class="listening-result-modal" id="aiGeneratorModal" style="display:none;">
+        <div class="result-modal-box" style="max-width:540px;">
+            <div class="result-modal-header">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <i class="fas fa-robot" style="color:#8b5cf6; font-size:1.4em;"></i>
+                    <h3 style="font-size:1.1em; font-weight:800; color:#fff; margin:0;">AI Dynamic Listening Test Generator</h3>
+                </div>
+                <button onclick="closeAIGeneratorModal()" style="background:none; border:none; color:#94a3b8; font-size:1.3em; cursor:pointer;">✖</button>
+            </div>
+            <div class="result-modal-body" style="gap:16px;">
+                <div>
+                    <label style="font-size:0.82em; color:#cbd5e1; font-weight:700; display:block; margin-bottom:6px;">পছন্দের AI ইঞ্জিন / API প্রোভাইডার সিলেক্ট করুন:</label>
+                    <select id="aiProviderSelect" class="timer-select-control" style="width:100%; background:#1e293b; color:#fff; border:1px solid rgba(255,255,255,0.2); padding:10px; border-radius:8px; font-size:0.9em; outline:none;">
+                        <option value="">⚡ অটো সিলেক্ট (যেকোনো অ্যাক্টিভ API / ফাস্টেস্ট মডেল)</option>
+                        <option value="openai">🟢 OpenAI (GPT-4o / GPT-4o-mini)</option>
+                        <option value="claude">🟣 Anthropic Claude (Claude 3.5 Sonnet / Haiku)</option>
+                        <option value="deepseek">🔵 DeepSeek (DeepSeek V3 / R1)</option>
+                        <option value="grok">🔴 Grok (xAI Grok 2)</option>
+                        <option value="gemini">✨ Google Gemini (Gemini 2.0 Flash / Pro)</option>
+                        <option value="custom">⚙️ Custom API Key / OpenRouter / Ollama</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="font-size:0.82em; color:#cbd5e1; font-weight:700; display:block; margin-bottom:6px;">টপিক থিম (ঐচ্ছিক):</label>
+                    <input type="text" id="aiTopicThemeInput" placeholder="যেমন: Marine Biology, Renewable Energy, Space Archaeology..." style="width:100%; background:#1e293b; color:#fff; border:1px solid rgba(255,255,255,0.2); padding:10px; border-radius:8px; font-size:0.9em; outline:none;">
+                </div>
+                <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:10px;">
+                    <button onclick="closeAIGeneratorModal()" class="bc-btn-small" style="padding:10px 16px;">বাতিল</button>
+                    <button onclick="executeGenerateAILisTest()" class="bc-btn-small" style="padding:10px 20px; background:linear-gradient(135deg, #8b5cf6, #6366f1); border-color:#8b5cf6; font-weight:800;">
+                        <i class="fas fa-bolt"></i> <span>নতুন টেস্ট জেনারেট করুন</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOADING MODAL -->
+    <div class="listening-result-modal" id="listeningLoadingModal" style="display:none;">
+        <div class="result-modal-box" style="max-width:440px; text-align:center; padding:32px; align-items:center;">
+            <div style="font-size:2.8em; margin-bottom:12px; animation:spin 2s linear infinite;">⏳</div>
+            <h3 style="font-size:1.2em; font-weight:800; color:#fff; margin-bottom:6px;" id="loadingModalTitle">নতুন টেস্ট সেট প্রস্তুত হচ্ছে...</h3>
+            <p style="font-size:0.85em; color:#94a3b8;">অডিও ট্রান্সক্রিপ্ট ও ৪০টি প্রশ্ন সিঙ্ক করা হচ্ছে</p>
+        </div>
+    </div>
+
+    <!-- 4. BOTTOM BAR -->
+    <footer class="bc-bottom-bar">
+        <div class="bc-part-tabs">
+            <button class="bc-part-btn active" id="partTab1" onclick="switchSection(1)">Section 1</button>
+            <button class="bc-part-btn" id="partTab2" onclick="switchSection(2)">Section 2</button>
+            <button class="bc-part-btn" id="partTab3" onclick="switchSection(3)">Section 3</button>
+            <button class="bc-part-btn" id="partTab4" onclick="switchSection(4)">Section 4</button>
+        </div>
+
+        <div class="bc-palette-row" id="paletteContainer"></div>
+
+        <div class="bc-nav-actions">
+            <label style="display:flex; align-items:center; gap:6px; font-size:0.82em; color:#cbd5e1; cursor:pointer;">
+                <input type="checkbox" id="reviewFlagCheckbox" onchange="toggleCurrentFlag(this.checked)" style="accent-color:#ef4444;">
+                <span>Review</span>
+            </label>
+            <button class="bc-nav-btn secondary" onclick="navigateQuestion(-1)"><i class="fas fa-chevron-left"></i> Back</button>
+            <button class="bc-nav-btn" onclick="navigateQuestion(1)">Next <i class="fas fa-chevron-right"></i></button>
+            <button class="bc-nav-btn" style="background:linear-gradient(135deg, #059669, #10b981); color:#fff; font-weight:800; border:none; box-shadow:0 2px 8px rgba(16,185,129,0.4);" onclick="finishListeningExam()">
+                <i class="fas fa-flag-checkered"></i> <span>সাবমিট ও ফলাফল</span>
+            </button>
+        </div>
+    </footer>
+
+    <script>
+    var urlParams = new URLSearchParams(window.location.search);
+    var sectionParam = urlParams.get('section');
+    var isSoloSection = (sectionParam === '1' || sectionParam === '2' || sectionParam === '3' || sectionParam === '4' || {{ 'true' if is_solo_section else 'false' }});
+    var soloSectionNum = isSoloSection ? parseInt(sectionParam || {{ active_section | default(1) }}, 10) : 0;
+
+    var totalQuestions = 40;
+    var currentActiveIndex = isSoloSection ? ((soloSectionNum - 1) * 10 + 1) : 1;
+    var currentSectionNum = isSoloSection ? soloSectionNum : 1;
+    var userAnswers = {};
+    var flaggedQuestions = {};
+    var timeRemaining = isSoloSection ? 420 : 1800; // Solo drill: 7 mins; Full Mock: 30 mins
+    var timerInterval = null;
+    var isTimerPaused = false;
+    var isUnlimitedTime = false;
+    var elapsedSeconds = 0;
+    var lastEvaluationData = null;
+
+    var themes = ['theme-standard', 'theme-inverted', 'theme-yellow-on-black'];
+    var currentThemeIdx = 0;
+    var fontSizes = [16, 18, 20];
+    var currentFontIdx = 0;
+
+    var sectionTranscripts = {
+        1: `{{ sections[0].transcript | replace("\n", "<br>") | safe if sections and sections|length > 0 else '' }}`,
+        2: `{{ sections[1].transcript | replace("\n", "<br>") | safe if sections and sections|length > 1 else '' }}`,
+        3: `{{ sections[2].transcript | replace("\n", "<br>") | safe if sections and sections|length > 2 else '' }}`,
+        4: `{{ sections[3].transcript | replace("\n", "<br>") | safe if sections and sections|length > 3 else '' }}`
+    };
+
+    function handleHeaderTopicChange(val) {
+        if (val === 'full_mock') {
+            window.location.href = '/listening-cbt';
+        } else if (val === 'section_1') {
+            window.location.href = '/listening-cbt?section=1';
+        } else if (val === 'section_2') {
+            window.location.href = '/listening-cbt?section=2';
+        } else if (val === 'section_3') {
+            window.location.href = '/listening-cbt?section=3';
+        } else if (val === 'section_4') {
+            window.location.href = '/listening-cbt?section=4';
+        }
+    }
+
+    async function handleSetChange(setName) {
+        var modal = document.getElementById('listeningLoadingModal');
+        var title = document.getElementById('loadingModalTitle');
+        if (title) title.textContent = setName === 'random' ? 'র‍্যান্ডম নতুন টেস্ট লোড হচ্ছে...' : 'Cambridge Set ' + setName + ' লোড হচ্ছে...';
+        if (modal) modal.style.display = 'flex';
+        
+        try {
+            await fetch('/api/v1/listening/switch-set', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ set_name: setName })
+            });
+            window.location.href = '/listening-cbt';
+        } catch(e) {
+            window.location.href = '/listening-cbt';
+        }
+    }
+
+    function openTypeSelectorModal() {
+        var modal = document.getElementById('typeSelectorModal');
+        if (modal) modal.style.display = 'flex';
+    }
+
+    function closeTypeSelectorModal() {
+        var modal = document.getElementById('typeSelectorModal');
+        if (modal) modal.style.display = 'none';
+    }
+
+    function applyListeningPreset(preset) {
+        var s1 = document.querySelectorAll('input[name="cbt_lis_s1_type"]');
+        var s2 = document.querySelectorAll('input[name="cbt_lis_s2_type"]');
+        var s3 = document.querySelectorAll('input[name="cbt_lis_s3_type"]');
+        var s4 = document.querySelectorAll('input[name="cbt_lis_s4_type"]');
+
+        s1.forEach(el => el.checked = false);
+        s2.forEach(el => el.checked = false);
+        s3.forEach(el => el.checked = false);
+        s4.forEach(el => el.checked = false);
+
+        if (preset === 'classic') {
+            s1.forEach(el => { if (['Form Completion', 'Note Completion'].includes(el.value)) el.checked = true; });
+            s2.forEach(el => { if (['Multiple Choice', 'Map Labelling'].includes(el.value)) el.checked = true; });
+            s3.forEach(el => { if (['Multiple Choice', 'Sentence Completion'].includes(el.value)) el.checked = true; });
+            s4.forEach(el => { if (['Note Completion', 'Summary Completion'].includes(el.value)) el.checked = true; });
+        } else if (preset === 'map_plan') {
+            s1.forEach(el => { if (['Form Completion'].includes(el.value)) el.checked = true; });
+            s2.forEach(el => { if (['Map Labelling', 'Matching Information'].includes(el.value)) el.checked = true; });
+            s3.forEach(el => { if (['Matching Features'].includes(el.value)) el.checked = true; });
+            s4.forEach(el => { if (['Note Completion'].includes(el.value)) el.checked = true; });
+        } else if (preset === 'gap_fills') {
+            s1.forEach(el => { if (['Form Completion', 'Table Completion'].includes(el.value)) el.checked = true; });
+            s2.forEach(el => { if (['Flow-chart Completion'].includes(el.value)) el.checked = true; });
+            s3.forEach(el => { if (['Sentence Completion', 'Table Completion'].includes(el.value)) el.checked = true; });
+            s4.forEach(el => { if (['Note Completion', 'Sentence Completion'].includes(el.value)) el.checked = true; });
+        } else if (preset === 'academic') {
+            s1.forEach(el => { if (['Note Completion'].includes(el.value)) el.checked = true; });
+            s2.forEach(el => { if (['Multiple Choice'].includes(el.value)) el.checked = true; });
+            s3.forEach(el => { if (['Multiple Choice', 'Sentence Completion', 'Matching Features'].includes(el.value)) el.checked = true; });
+            s4.forEach(el => { if (['Note Completion', 'Summary Completion'].includes(el.value)) el.checked = true; });
+        } else if (preset === 'all_types') {
+            s1.forEach(el => el.checked = true);
+            s2.forEach(el => el.checked = true);
+            s3.forEach(el => el.checked = true);
+            s4.forEach(el => el.checked = true);
+        }
+    }
+
+    function getCbtListeningSelectedTypes() {
+        var getChecked = name => Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(el => el.value);
+        return {
+            S1: getChecked('cbt_lis_s1_type'),
+            S2: getChecked('cbt_lis_s2_type'),
+            S3: getChecked('cbt_lis_s3_type'),
+            S4: getChecked('cbt_lis_s4_type')
+        };
+    }
+
+    async function submitCbtListeningCustomTypes() {
+        var selected = getCbtListeningSelectedTypes();
+        if (selected.S1.length === 0 || selected.S2.length === 0 || selected.S3.length === 0 || selected.S4.length === 0) {
+            alert('অনুগ্রহ করে প্রতিটি সেকশনের (Section 1, 2, 3, 4) জন্য অন্তত ১টি প্রশ্ন টাইপ সিলেক্ট করুন!');
+            return;
+        }
+        closeTypeSelectorModal();
+        var modal = document.getElementById('listeningLoadingModal');
+        var title = document.getElementById('loadingModalTitle');
+        if (title) title.textContent = 'AI দিয়ে নতুন লিসেনিং টেস্ট ও অডিও তৈরি হচ্ছে...';
+        if (modal) modal.style.display = 'flex';
+
+        try {
+            await fetch('/api/v1/listening/generate-practice', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ custom_types: selected })
+            });
+            window.location.href = '/listening-cbt';
+        } catch(e) {
+            window.location.href = '/listening-cbt';
+        }
+    }
+
+    function openAIGeneratorModal() {
+        var modal = document.getElementById('aiGeneratorModal');
+        if (modal) modal.style.display = 'flex';
+    }
+
+    function closeAIGeneratorModal() {
+        var modal = document.getElementById('aiGeneratorModal');
+        if (modal) modal.style.display = 'none';
+    }
+
+    async function executeGenerateAILisTest() {
+        var provider = document.getElementById('aiProviderSelect').value;
+        var theme = document.getElementById('aiTopicThemeInput').value.trim();
+        
+        closeAIGeneratorModal();
+        var modal = document.getElementById('listeningLoadingModal');
+        var title = document.getElementById('loadingModalTitle');
+        if (title) title.textContent = 'যেকোনো AI API দিয়ে নতুন লিসেনিং টেস্ট ও অডিও তৈরি হচ্ছে...';
+        if (modal) modal.style.display = 'flex';
+
+        try {
+            await fetch('/api/v1/listening/generate-practice', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ provider: provider || null, theme: theme || null })
+            });
+            window.location.href = '/listening-cbt';
+        } catch(e) {
+            window.location.href = '/listening-cbt';
+        }
+    }
+
+    function initListeningExam() {
+        renderPalette();
+        startTimer();
+        initAudioListeners();
+        if (isSoloSection) {
+            switchSection(soloSectionNum, true);
+        } else {
+            activateQuestion(1);
+        }
+    }
+
+    function renderPalette() {
+        var container = document.getElementById('paletteContainer');
+        if (!container) return;
+        container.innerHTML = '';
+
+        for (var i = 1; i <= totalQuestions; i++) {
+            var btn = document.createElement('button');
+            btn.className = 'bc-pal-btn' + (i === currentActiveIndex ? ' active' : '') + (userAnswers[i] ? ' answered' : '') + (flaggedQuestions[i] ? ' flagged' : '');
+            btn.id = 'pal-btn-' + i;
+            btn.textContent = i;
+            (function(idx) {
+                btn.onclick = function() { activateQuestion(idx); };
+            })(i);
+            container.appendChild(btn);
+        }
+    }
+
+    function activateQuestion(idx) {
+        currentActiveIndex = idx;
+        document.querySelectorAll('.q-statement-row').forEach(function(row) { row.classList.remove('active-q'); });
+        document.querySelectorAll('.bc-pal-btn').forEach(function(btn) { btn.classList.remove('active'); });
+
+        var targetRow = document.getElementById('qRow-' + idx);
+        if (targetRow) {
+            targetRow.classList.add('active-q');
+            targetRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            var secNum = parseInt(targetRow.getAttribute('data-section'), 10) || (idx > 30 ? 4 : (idx > 20 ? 3 : (idx > 10 ? 2 : 1)));
+            if (secNum !== currentSectionNum) {
+                switchSection(secNum, false);
+            }
+        }
+
+        var palBtn = document.getElementById('pal-btn-' + idx);
+        if (palBtn) palBtn.classList.add('active');
+
+        var flagBox = document.getElementById('reviewFlagCheckbox');
+        if (flagBox) flagBox.checked = !!flaggedQuestions[idx];
+    }
+
+    function switchSection(secNum, jumpToFirst) {
+        currentSectionNum = secNum;
+        document.querySelectorAll('.listening-sec-group').forEach(function(g) { g.style.display = 'none'; });
+        var targetDoc = document.getElementById('sec' + secNum + '-doc');
+        if (targetDoc) targetDoc.style.display = 'block';
+
+        document.querySelectorAll('.bc-part-btn').forEach(function(b) { b.classList.remove('active'); });
+        var partBtn = document.getElementById('partTab' + secNum);
+        if (partBtn) partBtn.classList.add('active');
+
+        var titleEl = document.getElementById('audioSectionTitle');
+        if (titleEl) {
+            titleEl.innerHTML = '<b>Section ' + secNum + ' Audio:</b> ' + (secNum === 1 ? 'Bayview Eco-Lodge Registration Form' : (secNum === 2 ? 'New Town Maritime Heritage Museum' : (secNum === 3 ? 'Smart Microgrids Research Tutorial' : 'Marine Bioluminescence Lecture')));
+        }
+
+        var transEl = document.getElementById('transcriptText');
+        if (transEl && sectionTranscripts[secNum]) {
+            transEl.innerHTML = sectionTranscripts[secNum];
+        }
+
+        // Switch Audio Track
+        var audio = document.getElementById('examAudio');
+        if (audio) {
+            audio.pause();
+            audio.src = '/api/v1/listening/audio/' + secNum;
+            audio.load();
+            var btn = document.getElementById('masterPlayBtn');
+            if (btn) btn.innerHTML = '<i class="fas fa-play"></i> <span>Play Section ' + secNum + ' Audio</span>';
+        }
+
+        if (jumpToFirst !== false) {
+            if (secNum === 1) activateQuestion(1);
+            else if (secNum === 2) activateQuestion(11);
+            else if (secNum === 3) activateQuestion(21);
+            else if (secNum === 4) activateQuestion(31);
+        }
+    }
+
+    function initAudioListeners() {
+        var audio = document.getElementById('examAudio');
+        var timeProg = document.getElementById('audioTimeProgress');
+        var btn = document.getElementById('masterPlayBtn');
+        if (!audio) return;
+
+        audio.ontimeupdate = function() {
+            var cur = Math.floor(audio.currentTime);
+            var dur = Math.floor(audio.duration) || 0;
+            var curStr = Math.floor(cur / 60) + ':' + ((cur % 60) < 10 ? '0' : '') + (cur % 60);
+            var durStr = Math.floor(dur / 60) + ':' + ((dur % 60) < 10 ? '0' : '') + (dur % 60);
+            if (timeProg) timeProg.textContent = curStr + ' / ' + durStr;
+        };
+
+        audio.onplay = function() {
+            if (btn) btn.innerHTML = '<i class="fas fa-pause"></i> <span>Pause Section ' + currentSectionNum + '</span>';
+        };
+        audio.onpause = function() {
+            if (btn) btn.innerHTML = '<i class="fas fa-play"></i> <span>Play Section ' + currentSectionNum + ' Audio</span>';
+        };
+    }
+
+    function toggleMasterAudio() {
+        var audio = document.getElementById('examAudio');
+        if (!audio) return;
+        if (audio.paused) {
+            audio.play().catch(function(e) {
+                console.log('Autoplay blocked or audio load error');
+            });
+        } else {
+            audio.pause();
+        }
+    }
+
+    function setSpeed(speed) {
+        var audio = document.getElementById('examAudio');
+        if (audio) audio.playbackRate = speed;
+        document.querySelectorAll('.speed-btn').forEach(function(b) { b.classList.remove('active'); });
+        if (event && event.target) event.target.classList.add('active');
+    }
+
+    function seekAudio(seconds) {
+        var audio = document.getElementById('examAudio');
+        if (audio) audio.currentTime = Math.max(0, audio.currentTime + seconds);
+    }
+
+    /* MAP CLICK & LETTER SELECTION */
+    function handleMapClick(letter) {
+        document.querySelectorAll('.map-hotspot').forEach(function(h) { h.classList.remove('selected'); });
+        var targetHotspot = document.getElementById('hotspot-' + letter);
+        if (targetHotspot) targetHotspot.classList.add('selected');
+
+        if (currentActiveIndex >= 16 && currentActiveIndex <= 20) {
+            selectMapLetter(currentActiveIndex, letter);
+        } else {
+            activateQuestion(16);
+            selectMapLetter(16, letter);
+        }
+    }
+
+    function selectMapLetter(qIdx, letter) {
+        handleAnswerChange(qIdx, letter);
+        
+        document.querySelectorAll('.map-hotspot').forEach(function(h) { h.classList.remove('selected'); });
+        if (letter) {
+            var targetHotspot = document.getElementById('hotspot-' + letter);
+            if (targetHotspot) targetHotspot.classList.add('selected');
+        }
+
+        var row = document.getElementById('qRow-' + qIdx);
+        if (row) {
+            row.querySelectorAll('.letter-pill-btn').forEach(function(btn) {
+                if (btn.textContent.trim() === letter) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
+            var sel = document.getElementById('mapSelect-' + qIdx);
+            if (sel) sel.value = letter || '';
+        }
+        renderPalette();
+    }
+
+    function handleAnswerChange(qIdx, val) {
+        if (val && val.trim().length > 0) userAnswers[qIdx] = val.trim();
+        else delete userAnswers[qIdx];
+
+        var palBtn = document.getElementById('pal-btn-' + qIdx);
+        if (palBtn) {
+            if (userAnswers[qIdx]) palBtn.classList.add('answered');
+            else palBtn.classList.remove('answered');
+        }
+    }
+
+    function toggleCurrentFlag(isFlagged) {
+        if (isFlagged) flaggedQuestions[currentActiveIndex] = true;
+        else delete flaggedQuestions[currentActiveIndex];
+
+        var palBtn = document.getElementById('pal-btn-' + currentActiveIndex);
+        if (palBtn) {
+            if (isFlagged) palBtn.classList.add('flagged');
+            else palBtn.classList.remove('flagged');
+        }
+    }
+
+    function navigateQuestion(delta) {
+        var target = currentActiveIndex + delta;
+        if (target >= 1 && target <= totalQuestions) activateQuestion(target);
+    }
+
+    function checkSingleQuestion(qIdx) {
+        var row = document.getElementById('qRow-' + qIdx);
+        if (!row) return;
+        var correctAns = (row.getAttribute('data-ans') || '').trim();
+        var exp = row.getAttribute('data-exp') || '';
+        var userAns = (userAnswers[qIdx] || '').trim();
+
+        var drawer = document.getElementById('feedback-' + qIdx);
+        var statusEl = document.getElementById('fb-status-' + qIdx);
+        var ansKeyEl = document.getElementById('fb-ans-key-' + qIdx);
+        var expEl = document.getElementById('fb-exp-' + qIdx);
+        var palBtn = document.getElementById('pal-btn-' + qIdx);
+
+        if (!userAns) {
+            alert('অনুগ্রহ করে আগে একটি উত্তর ইনপুট বা সিলেক্ট করুন!');
+            return;
+        }
+
+        var isCorrect = (userAns.toLowerCase() === correctAns.toLowerCase()) || 
+                        (correctAns.toLowerCase().startsWith(userAns.toLowerCase().slice(0, 3))) ||
+                        (userAns.length === 1 && correctAns.startsWith(userAns));
+
+        drawer.style.display = 'block';
+        if (isCorrect) {
+            if (palBtn) { palBtn.classList.add('correct'); palBtn.classList.remove('wrong'); }
+            statusEl.innerHTML = '<span style="color:#10b981; font-weight:800;">✅ সঠিক উত্তর!</span>';
+        } else {
+            if (palBtn) { palBtn.classList.add('wrong'); palBtn.classList.remove('correct'); }
+            statusEl.innerHTML = '<span style="color:#ef4444; font-weight:800;">❌ ভুল উত্তর।</span>';
+        }
+
+        ansKeyEl.innerHTML = 'অফিশিয়াল উত্তর: <b style="color:#059669;">' + correctAns + '</b>';
+        expEl.innerHTML = '<b>ব্যাখ্যা ও অডিও রেফারেন্স:</b> ' + exp;
+    }
+
+    function showAudioHint(qIdx) {
+        var row = document.getElementById('qRow-' + qIdx);
+        if (!row) return;
+        var exp = row.getAttribute('data-exp') || '';
+        var drawer = document.getElementById('feedback-' + qIdx);
+        drawer.style.display = 'block';
+        document.getElementById('fb-status-' + qIdx).innerHTML = '<span style="color:#f59e0b; font-weight:800;">💡 অডিও কিউ:</span>';
+        document.getElementById('fb-exp-' + qIdx).innerHTML = 'অডিওতে লক্ষ্য করুন: ' + exp.slice(0, 100) + '...';
+    }
+
+    function revealQuestionAnswer(qIdx) {
+        var row = document.getElementById('qRow-' + qIdx);
+        if (!row) return;
+        var correctAns = row.getAttribute('data-ans') || '';
+        var exp = row.getAttribute('data-exp') || '';
+        var drawer = document.getElementById('feedback-' + qIdx);
+        drawer.style.display = 'block';
+        document.getElementById('fb-status-' + qIdx).innerHTML = '<span style="color:#6366f1; font-weight:800;">🔍 সমাধান:</span>';
+        document.getElementById('fb-ans-key-' + qIdx).innerHTML = 'অফিশিয়াল উত্তর: <b style="color:#059669;">' + correctAns + '</b>';
+        document.getElementById('fb-exp-' + qIdx).innerHTML = '<b>ব্যাখ্যা:</b> ' + exp;
+    }
+
+    function checkAllQuestionsPractice() {
+        for (var i = 1; i <= totalQuestions; i++) {
+            if (userAnswers[i]) checkSingleQuestion(i);
+        }
+        alert('সব উত্তর চেক করা হয়েছে!');
+    }
+
+    function toggleTranscript() {
+        var drawer = document.getElementById('transcriptDrawer');
+        drawer.style.display = drawer.style.display === 'block' ? 'none' : 'block';
+    }
+
+    /* FULL EXAM SUBMISSION & CAMBRIDGE BAND SCORE RESULT MODAL */
+    async function finishListeningExam() {
+        var answersPayload = {};
+        
+        // 1. Collect from inline inputs
+        document.querySelectorAll('.cambridge-inline-input').forEach(function(inp) {
+            var row = inp.closest('.q-statement-row');
+            if (row) {
+                var qid = row.getAttribute('data-qid');
+                var idx = row.getAttribute('data-index');
+                if (inp.value && inp.value.trim().length > 0) {
+                    answersPayload[qid || idx] = inp.value.trim();
+                    userAnswers[idx] = inp.value.trim();
+                }
+            }
+        });
+
+        // 2. Collect from radio buttons
+        document.querySelectorAll('input[type="radio"]:checked').forEach(function(rad) {
+            var row = rad.closest('.q-statement-row');
+            if (row) {
+                var qid = row.getAttribute('data-qid');
+                var idx = row.getAttribute('data-index');
+                answersPayload[qid || idx] = rad.value;
+                userAnswers[idx] = rad.value;
+            }
+        });
+
+        // 3. Merge with userAnswers
+        for (var k in userAnswers) {
+            if (userAnswers[k]) {
+                var row = document.getElementById('qRow-' + k);
+                var qid = row ? row.getAttribute('data-qid') : k;
+                answersPayload[qid] = userAnswers[k];
+            }
+        }
+
+        var answeredCount = Object.keys(answersPayload).length;
+        var expectedCount = isSoloSection ? 10 : 40;
+        
+        if (answeredCount < expectedCount) {
+            var unans = expectedCount - answeredCount;
+            var conf = confirm('⚠️ আপনার এখনও ' + unans + ' টি প্রশ্নের উত্তর দেওয়া বাকি আছে!\n\nআপনি কি এখনই টেস্ট সাবমিট করে অফিসিয়াল রেজাল্ট দেখতে চান?');
+            if (!conf) return;
+        }
+
+        try {
+            var res = await fetch('/api/v1/mock/submit-listening', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user_id: 1,
+                    section_number: isSoloSection ? soloSectionNum : null,
+                    answers: answersPayload
+                })
+            });
+
+            var data = await res.json();
+            lastEvaluationData = data;
+            renderListeningExamResult(data);
+        } catch(e) {
+            alert('টেস্ট সাবমিট করতে সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।');
+        }
+    }
+
+    function renderListeningExamResult(data) {
+        if (!data) return;
+
+        // 1. Hero Score Banner
+        document.getElementById('modalBandScore').textContent = data.band_score !== undefined ? Number(data.band_score).toFixed(1) : "0.0";
+        document.getElementById('modalDescriptorTitle').textContent = data.descriptor || "Competent User";
+        document.getElementById('modalCefrBadge').textContent = "CEFR " + (data.cefr || "B2");
+        document.getElementById('modalRawScore').textContent = data.total_correct + " / " + data.total_questions;
+        
+        var pct = ((data.total_correct / (data.total_questions || 40)) * 100).toFixed(1);
+        document.getElementById('modalPercentage').textContent = pct + "% Accuracy";
+
+        // 2. Sections Stat Cards
+        var secScores = data.section_scores || {};
+        if (secScores.S1) {
+            document.getElementById('statS1Score').textContent = secScores.S1.correct + " / " + secScores.S1.total;
+            document.getElementById('statS1Pct').textContent = secScores.S1.total > 0 ? ((secScores.S1.correct / secScores.S1.total) * 100).toFixed(0) + "%" : "0%";
+        }
+        if (secScores.S2) {
+            document.getElementById('statS2Score').textContent = secScores.S2.correct + " / " + secScores.S2.total;
+            document.getElementById('statS2Pct').textContent = secScores.S2.total > 0 ? ((secScores.S2.correct / secScores.S2.total) * 100).toFixed(0) + "%" : "0%";
+        }
+        if (secScores.S3) {
+            document.getElementById('statS3Score').textContent = secScores.S3.correct + " / " + secScores.S3.total;
+            document.getElementById('statS3Pct').textContent = secScores.S3.total > 0 ? ((secScores.S3.correct / secScores.S3.total) * 100).toFixed(0) + "%" : "0%";
+        }
+        if (secScores.S4) {
+            document.getElementById('statS4Score').textContent = secScores.S4.correct + " / " + secScores.S4.total;
+            document.getElementById('statS4Pct').textContent = secScores.S4.total > 0 ? ((secScores.S4.correct / secScores.S4.total) * 100).toFixed(0) + "%" : "0%";
+        }
+
+        // 3. Question Type Mastery List
+        var masteryList = document.getElementById('modalTypeMasteryList');
+        if (masteryList && data.type_scores) {
+            masteryList.innerHTML = '';
+            for (var t in data.type_scores) {
+                var item = data.type_scores[t];
+                var tPct = item.total > 0 ? ((item.correct / item.total) * 100).toFixed(0) : 0;
+                var div = document.createElement('div');
+                div.className = 'type-mastery-item';
+                div.innerHTML = `
+                    <div class="type-mastery-header">
+                        <span><b>${t}</b></span>
+                        <span><b style="color:#34d399;">${item.correct}/${item.total}</b> (${tPct}%)</span>
+                    </div>
+                    <div class="type-progress-bg">
+                        <div class="type-progress-fill" style="width:${tPct}%;"></div>
+                    </div>
+                `;
+                masteryList.appendChild(div);
+            }
+        }
+
+        // 4. Detailed 1-40 Question Audit Table
+        var tbody = document.getElementById('modalAuditTableBody');
+        if (tbody && data.detailed_results) {
+            tbody.innerHTML = '';
+            data.detailed_results.forEach(function(res, i) {
+                var tr = document.createElement('tr');
+                tr.className = 'audit-row ' + (res.is_correct ? 'row-correct' : 'row-wrong');
+                tr.setAttribute('data-status', res.is_correct ? 'correct' : 'wrong');
+                
+                var statusIcon = res.is_correct ? '<span style="color:#10b981; font-weight:800;">✅</span>' : '<span style="color:#ef4444; font-weight:800;">❌</span>';
+                var userAnsDisplay = res.user_answer ? `<span style="font-weight:700; color:${res.is_correct ? '#34d399' : '#f87171'};">${res.user_answer}</span>` : '<i style="color:#94a3b8;">(Unanswered)</i>';
+                
+                tr.innerHTML = `
+                    <td><b>${i + 1}</b></td>
+                    <td><span class="q-num-pill" style="font-size:0.75em;">Sec ${res.section_index}</span></td>
+                    <td><span style="font-size:0.85em; color:#94a3b8;">${res.question_type}</span></td>
+                    <td>${statusIcon} ${userAnsDisplay}</td>
+                    <td><b style="color:#10b981;">${res.answer_key}</b></td>
+                    <td style="color:#cbd5e1; line-height:1.4;">${res.explanation || 'Official Cambridge audio reference.'}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Open Modal
+        var modal = document.getElementById('listeningResultModal');
+        if (modal) modal.style.display = 'flex';
+    }
+
+    function filterListeningAudit(filter) {
+        document.querySelectorAll('.audit-filter-btn').forEach(function(b) { b.classList.remove('active'); });
+        if (filter === 'all') document.getElementById('filterBtnAll').classList.add('active');
+        else if (filter === 'wrong') document.getElementById('filterBtnWrong').classList.add('active');
+        else if (filter === 'correct') document.getElementById('filterBtnCorrect').classList.add('active');
+
+        document.querySelectorAll('.audit-row').forEach(function(row) {
+            var st = row.getAttribute('data-status');
+            if (filter === 'all') {
+                row.style.display = '';
+            } else if (filter === 'wrong') {
+                row.style.display = (st === 'wrong' ? '' : 'none');
+            } else if (filter === 'correct') {
+                row.style.display = (st === 'correct' ? '' : 'none');
+            }
+        });
+    }
+
+    function closeListeningResultModal() {
+        var modal = document.getElementById('listeningResultModal');
+        if (modal) modal.style.display = 'none';
+    }
+
+    /* TIMER CONTROLS */
+    function startTimer() {
+        var display = document.getElementById('timeRemainingDisplay');
+        timerInterval = setInterval(function() {
+            if (isTimerPaused) return;
+            if (isUnlimitedTime) {
+                elapsedSeconds++;
+                var em = Math.floor(elapsedSeconds / 60);
+                var es = elapsedSeconds % 60;
+                display.textContent = '⏱️ ' + (em < 10 ? '0' + em : em) + ':' + (es < 10 ? '0' + es : es);
+                return;
+            }
+            if (timeRemaining <= 0) { display.textContent = '00:00'; return; }
+            timeRemaining--;
+            var m = Math.floor(timeRemaining / 60);
+            var s = timeRemaining % 60;
+            display.textContent = (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s);
+        }, 1000);
+    }
+
+    function changeTimerMode(val) {
+        if (val === 'unlimited') {
+            isUnlimitedTime = true;
+            elapsedSeconds = 0;
+            document.getElementById('timeRemainingDisplay').textContent = '⏱️ 00:00';
+        } else {
+            isUnlimitedTime = false;
+            timeRemaining = parseInt(val, 10);
+        }
+    }
+    function toggleTimerPause() {
+        isTimerPaused = !isTimerPaused;
+        document.getElementById('pauseTimerBtn').textContent = isTimerPaused ? '▶️' : '⏸️';
+    }
+    function addExtraTime(secs) {
+        if (!isUnlimitedTime) { timeRemaining += secs; alert('+৫ মিনিট সময় যোগ করা হয়েছে!'); }
+    }
+
+    function toggleDrawer(forceOpen) {
+        var drawer = document.getElementById('aiAssistantDrawer');
+        if (forceOpen === true) drawer.classList.add('open');
+        else drawer.classList.toggle('open');
+    }
+
+    async function sendDrawerMessage() {
+        var input = document.getElementById('drawerMsgInput');
+        var msg = input.value.trim();
+        if (!msg) return;
+
+        var chatBody = document.getElementById('drawerChatBody');
+        var userBubble = document.createElement('div');
+        userBubble.style.cssText = 'background:#10b981; color:#fff; padding:8px 12px; border-radius:8px; margin-left:20px; align-self:flex-end;';
+        userBubble.textContent = msg;
+        chatBody.appendChild(userBubble);
+        input.value = '';
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        var botBubble = document.createElement('div');
+        botBubble.style.cssText = 'background:rgba(255,255,255,0.08); color:#cbd5e1; padding:10px 14px; border-radius:8px; margin-right:20px; line-height:1.6;';
+        botBubble.innerHTML = '<i>ARIA ভাবছে...</i>';
+        chatBody.appendChild(botBubble);
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        try {
+            var res = await fetch('/api/v1/ai/chat/stream', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user_message: msg,
+                    context: { current_skill: 'Listening Group Practice', target_band: 7.5, lang_pref: 'both' }
+                })
+            });
+
+            var reader = res.body.getReader();
+            var decoder = new TextDecoder('utf-8');
+            var full = '';
+            botBubble.innerHTML = '';
+
+            while (true) {
+                var chunk = await reader.read();
+                if (chunk.done) break;
+                var text = decoder.decode(chunk.value, { stream: true });
+                var lines = text.split('\n\n');
+                for (var i = 0; i < lines.length; i++) {
+                    var line = lines[i];
+                    if (line.startsWith('data: ')) {
+                        var ds = line.slice(6).trim();
+                        if (ds === '[DONE]') break;
+                        try {
+                            var obj = JSON.parse(ds);
+                            if (obj.text) {
+                                full += obj.text;
+                                botBubble.innerHTML = full.replace(/\n/g, '<br>');
+                                chatBody.scrollTop = chatBody.scrollHeight;
+                            }
+                        } catch(e) {}
+                    }
+                }
+            }
+        } catch(e) {
+            botBubble.innerHTML = 'ARIA রেসপন্স দিতে পারছে না। অনুগ্রহ করে আবার চেষ্টা করুন।';
+        }
+    }
+
+    function cycleTheme() {
+        currentThemeIdx = (currentThemeIdx + 1) % themes.length;
+        document.body.className = themes[currentThemeIdx];
+    }
+    function cycleFontSize() {
+        currentFontIdx = (currentFontIdx + 1) % fontSizes.length;
+        document.documentElement.style.setProperty('--bc-font-scale', fontSizes[currentFontIdx] + 'px');
+    }
+
+    window.onload = initListeningExam;
+    </script>
+</body>
+</html>

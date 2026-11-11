@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% set active_page = "onboarding" %}
+
+{% block title %}Personalized Onboarding — AI IELTS{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 0 auto;">
+  <div class="card">
+    <h2 style="margin-bottom:var(--space-xs); color:var(--primary-600);">Step 1 of 2: Set Your IELTS Goal</h2>
+    <p class="card-subtitle" style="margin-bottom:var(--space-lg);">Configure your target band and preferred AI teacher learning setup.</p>
+
+    <form action="/api/v1/user/onboarding" method="POST" style="display:flex; flex-direction:column; gap:var(--space-md);">
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <input type="text" name="name" class="form-control" value="Monem Student" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">IELTS Exam Type</label>
+        <select name="ielts_type" class="form-select">
+          <option value="Academic">IELTS Academic (University / Higher Ed)</option>
+          <option value="General Training">IELTS General Training (Migration / Work)</option>
+        </select>
+      </div>
+
+      <div class="grid-cols-2">
+        <div class="form-group">
+          <label class="form-label">Target Band Score</label>
+          <select name="target_band" class="form-select">
+            <option value="6.5">Band 6.5</option>
+            <option value="7.0">Band 7.0</option>
+            <option value="7.5" selected>Band 7.5</option>
+            <option value="8.0">Band 8.0</option>
+            <option value="8.5">Band 8.5</option>
+            <option value="9.0">Band 9.0</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Current Estimated Band</label>
+          <select name="current_level" class="form-select">
+            <option value="5.5">Band 5.5</option>
+            <option value="6.0" selected>Band 6.0</option>
+            <option value="6.5">Band 6.5</option>
+            <option value="7.0">Band 7.0</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Daily Available Study Time</label>
+        <select name="daily_study_mins" class="form-select">
+          <option value="30">30 Minutes / Day</option>
+          <option value="45" selected>45 Minutes / Day</option>
+          <option value="60">60 Minutes / Day</option>
+          <option value="90">90 Minutes / Day</option>
+        </select>
+      </div>
+
+      <div class="grid-cols-2">
+        <div class="form-group">
+          <label class="form-label">Mother Language</label>
+          <input type="text" name="mother_language" class="form-control" value="Bengali" placeholder="e.g. Bengali, Hindi, Arabic">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">AI Teacher Language Mode</label>
+          <select name="teacher_language_pref" class="form-select">
+            <option value="English + Mother Language" selected>English + Mother Language (Recommended)</option>
+            <option value="English Only">English Only (Immersive)</option>
+            <option value="Mother Language Only">Mother Language Only</option>
+          </select>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top:var(--space-md);">
+        Save & Launch Study Plan 🚀
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}

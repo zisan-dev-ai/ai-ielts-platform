@@ -1,0 +1,60 @@
+/* Writing Editor & Auto-Save UI */
+.writing-editor-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.writing-prompt-card {
+  background-color: var(--primary-50);
+  border-left: 4px solid var(--primary-600);
+  padding: var(--space-md);
+  border-radius: var(--radius-sm);
+}
+
+.writing-textarea {
+  width: 100%;
+  min-height: 320px;
+  padding: var(--space-md);
+  font-family: inherit;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  border: 1px solid var(--neutral-300);
+  border-radius: var(--radius-md);
+  resize: vertical;
+}
+
+.writing-textarea:focus {
+  outline: none;
+  border-color: var(--primary-600);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.editor-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--neutral-100);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+}
+
+.word-count-badge {
+  font-weight: 700;
+  color: var(--primary-700);
+}
+
+.save-status-indicator {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  color: var(--neutral-600);
+}
+
+.save-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background-color: var(--success-500);
+}

@@ -1,0 +1,437 @@
+{% extends "base.html" %}
+{% set active_page = "grammar_vocab" %}
+
+{% block title %}Grammar & Vocabulary Skill Engine — AI IELTS{% endblock %}
+
+{% block content %}
+<div style="display:flex; flex-direction:column; gap:var(--space-xl);">
+
+  <!-- Hero Header Banner with Guided Pathway CTA -->
+  <div class="card" style="background: linear-gradient(135deg, rgba(30, 27, 75, 0.95), rgba(79, 70, 229, 0.85)); border: 1px solid rgba(99, 102, 241, 0.4); padding: var(--space-xl); position:relative; overflow:hidden;">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:var(--space-md); position:relative; z-index:2;">
+      <div>
+        <span class="badge" style="background: rgba(99, 102, 241, 0.3); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.5); font-size:0.75rem; text-transform:uppercase; margin-bottom:var(--space-xs);">Guided Step-by-Step Grammar Pathway</span>
+        <h1 style="font-size:1.9rem; font-weight:800; color:#ffffff; margin-bottom:var(--space-xs);">
+          📖 Grammar & Vocabulary Master Hub
+        </h1>
+        <p style="color: #cbd5e1; font-size:0.95rem; max-width:650px; line-height:1.5;">
+          Parts of Speech থেকে শুরু করে Band 9.0 পর্যন্ত ধাপে ধাপে শিখুন। নিচে **১-ক্লিক লেসন** অথবা ক্যাটাগরি সিলেক্ট করুন।
+        </p>
+      </div>
+      <div style="display:flex; gap:12px; flex-wrap:wrap;">
+        <button onclick="startGuidedPathway()" class="btn btn-accent btn-lg" style="box-shadow: 0 8px 24px rgba(20, 184, 166, 0.4); padding:12px 24px; font-size:1rem;">
+          🚀 Start Step 1 Lesson (Nouns)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search & Category Quick Chips Bar -->
+  <div class="card" style="background:#0f172a; border:1px solid rgba(255,255,255,0.12); padding:var(--space-md);">
+    <div style="display:flex; flex-direction:column; gap:var(--space-md);">
+      
+      <!-- Top Row: Search Input -->
+      <div style="position:relative; width:100%;">
+        <span style="position:absolute; left:16px; top:50%; transform:translateY(-50%); font-size:1.2rem; color:#94a3b8;">🔍</span>
+        <input type="text" id="topicSearchInput" onkeyup="filterGrammarTopics()" placeholder="সহজে খুঁজুন: Nouns, Prepositions, Verbs, Conditionals, Inversion..." 
+          style="width:100%; padding:12px 16px 12px 48px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.15); border-radius:10px; color:#ffffff; font-size:0.98rem; font-weight:500; outline:none; transition:all 0.2s;"
+          onfocus="this.style.borderColor='#6366f1'; this.style.boxShadow='0 0 0 3px rgba(99,102,241,0.2)';"
+          onblur="this.style.borderColor='rgba(255,255,255,0.15)'; this.style.boxShadow='none';"
+        >
+      </div>
+
+      <!-- Quick Category Chips -->
+      <div>
+        <div style="font-size:0.78rem; font-weight:700; color:#94a3b8; text-transform:uppercase; margin-bottom:8px; letter-spacing:0.05em;">
+          🎯 1-Click Topic Groups (বিষয়ভিত্তিক পড়া):
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+          <button onclick="filterCategory('pos')" class="category-chip-btn" style="padding:6px 14px; border-radius:8px; font-size:0.85rem; font-weight:700; cursor:pointer; background:rgba(99,102,241,0.15); color:#a5b4fc; border:1px solid rgba(99,102,241,0.3);">
+            📌 Parts of Speech (7 Topics)
+          </button>
+          <button onclick="filterCategory('tense')" class="category-chip-btn" style="padding:6px 14px; border-radius:8px; font-size:0.85rem; font-weight:700; cursor:pointer; background:rgba(56,189,248,0.15); color:#38bdf8; border:1px solid rgba(56,189,248,0.3);">
+            ⏱️ Tense & Time (4 Topics)
+          </button>
+          <button onclick="filterCategory('sentence')" class="category-chip-btn" style="padding:6px 14px; border-radius:8px; font-size:0.85rem; font-weight:700; cursor:pointer; background:rgba(251,191,36,0.15); color:#fbbf24; border:1px solid rgba(251,191,36,0.3);">
+            🏗️ Sentence Building (7 Topics)
+          </button>
+          <button onclick="filterCategory('master')" class="category-chip-btn" style="padding:6px 14px; border-radius:8px; font-size:0.85rem; font-weight:700; cursor:pointer; background:rgba(168,85,247,0.15); color:#c084fc; border:1px solid rgba(168,85,247,0.3);">
+            👑 Band 9.0 Master (6 Topics)
+          </button>
+        </div>
+      </div>
+
+      <!-- Level Filter Tabs -->
+      <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;" id="levelTabButtons">
+        <button onclick="setLevelFilter('all')" class="level-tab-btn active" data-level="all" style="padding:5px 12px; border-radius:20px; font-size:0.8rem; font-weight:700; cursor:pointer; background:#6366f1; color:#fff; border:none; transition:all 0.2s;">
+          🌟 All Topics (24)
+        </button>
+        <button onclick="setLevelFilter('Beginner')" class="level-tab-btn" data-level="Beginner" style="padding:5px 12px; border-radius:20px; font-size:0.8rem; font-weight:700; cursor:pointer; background:rgba(255,255,255,0.06); color:#cbd5e1; border:1px solid rgba(255,255,255,0.1); transition:all 0.2s;">
+          🟢 Beginner (4.5-5.5)
+        </button>
+        <button onclick="setLevelFilter('Foundational')" class="level-tab-btn" data-level="Foundational" style="padding:5px 12px; border-radius:20px; font-size:0.8rem; font-weight:700; cursor:pointer; background:rgba(255,255,255,0.06); color:#cbd5e1; border:1px solid rgba(255,255,255,0.1); transition:all 0.2s;">
+          📘 Foundational (5.0-6.0)
+        </button>
+        <button onclick="setLevelFilter('Intermediate')" class="level-tab-btn" data-level="Intermediate" style="padding:5px 12px; border-radius:20px; font-size:0.8rem; font-weight:700; cursor:pointer; background:rgba(255,255,255,0.06); color:#cbd5e1; border:1px solid rgba(255,255,255,0.1); transition:all 0.2s;">
+          🎯 Intermediate (6.5-7.0)
+        </button>
+        <button onclick="setLevelFilter('Advanced Master')" class="level-tab-btn" data-level="Advanced Master" style="padding:5px 12px; border-radius:20px; font-size:0.8rem; font-weight:700; cursor:pointer; background:rgba(255,255,255,0.06); color:#cbd5e1; border:1px solid rgba(255,255,255,0.1); transition:all 0.2s;">
+          🚀 Advanced Master (7.5-9.0)
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Auto-Detected Errors Alert Banner (If Any) -->
+  {% if error_alerts %}
+  <div class="card" style="background:rgba(239, 68, 68, 0.1); border:1px solid rgba(239, 68, 68, 0.3); padding:var(--space-md);">
+    <h3 style="font-size:1rem; font-weight:800; color:#f87171; margin-bottom:8px; display:flex; align-items:center; gap:8px;">
+      ⚠️ Flagged Errors from recent Essays/Speaking
+    </h3>
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:10px;">
+      {% for err in error_alerts %}
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 14px; background:rgba(0,0,0,0.3); border-radius:8px; border-left:3px solid #ef4444;">
+        <div>
+          <div style="font-weight:700; color:#ffffff; font-size:0.9rem;">{{ err.error_type }}</div>
+          <div style="font-size:0.78rem; color:#94a3b8;">Source: {{ err.source_module }}</div>
+        </div>
+        <button onclick="launchTargetedDrill('{{ err.error_type }}')" class="btn btn-outline" style="min-height:30px; padding:0 10px; font-size:0.8rem; background:rgba(239,68,68,0.2); color:#f87171; border-color:rgba(239,68,68,0.4);">
+          Fix Error
+        </button>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Comprehensive Grammar Syllabus Grid -->
+  <div>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-md);">
+      <h3 style="font-size:1.3rem; font-weight:800; color:#ffffff;">
+        📚 Step-by-Step Grammar Lessons
+      </h3>
+      <span id="topicCountBadge" class="badge" style="background:rgba(99,102,241,0.2); color:#a5b4fc; font-size:0.8rem;">Showing 24 Topics</span>
+    </div>
+
+    <!-- Cards Grid -->
+    <div id="topicsGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap:var(--space-md);">
+      {% set ns = namespace(step=1) %}
+      {% for level_name, topics in skill_map.items() %}
+        {% for t in topics %}
+        <div class="topic-card card" data-level="{{ level_name }}" data-title="{{ t.topic_or_word | lower }}" style="background:#0f172a; border:1px solid rgba(255,255,255,0.1); transition:all 0.2s;" onmouseenter="this.style.borderColor='#6366f1'; this.style.transform='translateY(-2px)';" onmouseleave="this.style.borderColor='rgba(255,255,255,0.1)'; this.style.transform='translateY(0)';" >
+          
+          <!-- Top Row: Badge & Step Number -->
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <span class="badge" style="font-size:0.75rem; font-weight:800; background:rgba(99,102,241,0.2); color:#a5b4fc; border:1px solid rgba(99,102,241,0.3);">
+              Lesson {{ ns.step }}
+            </span>
+
+            <span class="badge" style="font-size:0.72rem; font-weight:700;
+              {% if 'Beginner' in level_name %}background:rgba(34, 197, 94, 0.15); color:#4ade80; border:1px solid rgba(34, 197, 94, 0.3);
+              {% elif 'Foundational' in level_name %}background:rgba(56, 189, 248, 0.15); color:#38bdf8; border:1px solid rgba(56, 189, 248, 0.3);
+              {% elif 'Intermediate' in level_name %}background:rgba(251, 191, 36, 0.15); color:#fbbf24; border:1px solid rgba(251, 191, 36, 0.3);
+              {% else %}background:rgba(168, 85, 247, 0.15); color:#c084fc; border:1px solid rgba(168, 85, 247, 0.3);{% endif %}">
+              {{ level_name.split(' ')[0] }}
+            </span>
+          </div>
+
+          <!-- Topic Name -->
+          <h4 style="font-size:1.1rem; font-weight:800; color:#ffffff; margin-bottom:6px; line-height:1.3;">
+            {{ t.topic_or_word }}
+          </h4>
+
+          <!-- Common Mistake Snippet -->
+          <div style="font-size:0.82rem; color:#94a3b8; margin-bottom:14px; min-height:36px; line-height:1.4;">
+            <span style="color:#f87171; font-weight:700;">Trap:</span> {{ t.common_error[:60] }}{% if t.common_error|length > 60 %}...{% endif %}
+          </div>
+
+          <!-- Progress Bar -->
+          <div style="height:6px; background:rgba(255,255,255,0.08); border-radius:3px; overflow:hidden; margin-bottom:14px;">
+            <div style="width:{{ t.active_mastery_pct }}%; height:100%; background:linear-gradient(90deg, #6366f1, #22c55e);"></div>
+          </div>
+
+          <!-- Card Action Button -->
+          <button onclick="launchTargetedDrill('{{ t.topic_or_word }}')" class="btn btn-primary btn-block" style="min-height:38px; font-size:0.88rem; background:linear-gradient(135deg, #4f46e5, #6366f1); border-radius:8px;">
+            ▶️ Start Lesson {{ ns.step }}
+          </button>
+
+        </div>
+        {% set ns.step = ns.step + 1 %}
+        {% endfor %}
+      {% endfor %}
+    </div>
+
+    <!-- No Search Results Found Message -->
+    <div id="noResultsMsg" style="display:none; text-align:center; padding:var(--space-xl); background:rgba(255,255,255,0.03); border-radius:12px; margin-top:var(--space-md);">
+      <div style="font-size:2rem; margin-bottom:8px;">🔎</div>
+      <h4 style="color:#ffffff; font-size:1.1rem; font-weight:700;">No matching grammar topics found</h4>
+      <p style="color:#94a3b8; font-size:0.9rem;">Try searching for another keyword like "verbs", "nouns", "prepositions", or "conditionals".</p>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Targeted Drill Modal (4-Step Progressive Learning: Rule -> Example -> Easy Practice -> Main Drill) -->
+<div id="drill-modal" class="modal-overlay" style="display:none; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px);">
+  <div class="modal-card" style="max-width:680px; width:95%; max-height:90vh; overflow-y:auto; padding:var(--space-xl); background:#0f172a; border:1px solid rgba(255,255,255,0.15); box-shadow:0 20px 50px rgba(0,0,0,0.9); border-radius:16px;">
+    
+    <!-- Modal Header -->
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:var(--space-sm); margin-bottom:var(--space-md);">
+      <div>
+        <span class="badge badge-accent" style="font-size:0.75rem; text-transform:uppercase; background:rgba(20,184,166,0.2); color:#2dd4bf; border:1px solid rgba(20,184,166,0.4);">Progressive Mastery Lesson</span>
+        <h3 id="drill-title" style="font-size:1.3rem; font-weight:800; color:#ffffff; margin-top:4px;">Targeted Lesson</h3>
+      </div>
+      <button onclick="closeDrillModal()" style="background:rgba(255,255,255,0.1); border:none; color:#cbd5e1; border-radius:50%; width:32px; height:32px; cursor:pointer; font-size:1.2rem; display:flex; align-items:center; justify-content:center;">✕</button>
+    </div>
+
+    <!-- 1. Rule & Explanation Section -->
+    <div style="background:rgba(79, 70, 229, 0.2); border:1px solid rgba(99, 102, 241, 0.4); padding:var(--space-md); border-radius:var(--radius-md); margin-bottom:var(--space-md);">
+      <div style="font-size:0.82rem; font-weight:800; color:#a5b4fc; text-transform:uppercase; letter-spacing:0.05em;">📘 1. Grammar Rule & Concept (নিয়ম)</div>
+      <p id="drill-rule" style="font-size:0.98rem; color:#ffffff; margin-top:6px; font-weight:600; line-height:1.5;"></p>
+      <p id="drill-rule-bengali" style="font-size:0.9rem; color:#38bdf8; margin-top:8px; background:rgba(0,0,0,0.4); padding:8px 12px; border-radius:6px; border-left:3px solid #0284c7;"></p>
+    </div>
+
+    <!-- 2. Examples Section -->
+    <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); padding:var(--space-md); border-radius:var(--radius-md); margin-bottom:var(--space-md);">
+      <div style="font-size:0.82rem; font-weight:800; color:#fde047; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:10px;">💡 2. Real Cambridge Examples (উদাহরণ)</div>
+      <div id="drill-example-incorrect" style="font-size:0.9rem; color:#f87171; background:rgba(239, 68, 68, 0.15); padding:10px 14px; border-radius:6px; margin-bottom:8px; border-left:4px solid #ef4444; font-weight:500;"></div>
+      <div id="drill-example-correct" style="font-size:0.9rem; color:#4ade80; background:rgba(34, 197, 94, 0.15); padding:10px 14px; border-radius:6px; border-left:4px solid #22c55e; font-weight:500;"></div>
+    </div>
+
+    <!-- 3. Easy Practice Warm-up Section -->
+    <div id="easy-practice-section" style="background:rgba(16, 185, 129, 0.12); border:1px solid rgba(16, 185, 129, 0.35); padding:var(--space-md); border-radius:var(--radius-md); margin-bottom:var(--space-md);">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <span style="font-size:0.82rem; font-weight:800; color:#34d399; text-transform:uppercase; letter-spacing:0.05em;">🌱 3. Easy Warm-up Practice (সহজ অনুশীলন)</span>
+        <span class="badge" style="background:rgba(52, 211, 153, 0.2); color:#6ee7b7; border:1px solid rgba(52, 211, 153, 0.3);">Step 1 of 2</span>
+      </div>
+      <div id="easy-question" style="font-weight:700; color:#ffffff; font-size:0.96rem; margin-bottom:var(--space-sm);"></div>
+      <div id="easy-options" style="display:flex; flex-direction:column; gap:8px; margin-bottom:8px;"></div>
+      <div id="easy-feedback" style="display:none; font-size:0.88rem; padding:10px 14px; border-radius:6px; font-weight:600;"></div>
+    </div>
+
+    <!-- 4. Main Cambridge Exam Drill Section -->
+    <div id="main-drill-section" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); padding:var(--space-md); border-radius:var(--radius-md); margin-bottom:var(--space-md);">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <span style="font-size:0.82rem; font-weight:800; color:#818cf8; text-transform:uppercase; letter-spacing:0.05em;">🎯 4. Main Cambridge Exam Drill (মূল ড্রিল)</span>
+        <span class="badge" style="background:rgba(129, 140, 248, 0.2); color:#a5b4fc; border:1px solid rgba(129, 140, 248, 0.3);">Step 2 of 2 (Band 7.5+)</span>
+      </div>
+      <div id="main-question" style="font-weight:700; color:#ffffff; font-size:0.98rem; margin-bottom:var(--space-sm);"></div>
+      <div id="main-options" style="display:flex; flex-direction:column; gap:8px; margin-bottom:8px;"></div>
+      <div id="main-feedback" style="display:none; padding:12px; border-radius:6px; margin-top:8px; font-size:0.9rem; line-height:1.4;"></div>
+    </div>
+
+    <!-- Modal Footer Actions -->
+    <div style="display:flex; justify-content:flex-end; gap:var(--space-sm); border-top:1px solid rgba(255,255,255,0.1); padding-top:var(--space-md);">
+      <button onclick="closeDrillModal()" class="btn btn-outline" style="background:rgba(255,255,255,0.05); color:#cbd5e1; border-color:rgba(255,255,255,0.15);">Close Lesson</button>
+      <button id="main-submit-btn" onclick="submitMainDrillAnswer()" class="btn btn-primary" style="box-shadow: 0 4px 14px rgba(79, 70, 229, 0.4);">Submit Main Drill Answer</button>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+let currentExercise = null;
+let currentTopic = '';
+
+async function launchTargetedDrill(topic) {
+  currentTopic = topic;
+  try {
+    const res = await fetch('/api/v1/grammar-vocab/exercise', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: 1, topic_or_word: topic })
+    });
+    
+    currentExercise = await res.json();
+    
+    // Header & Title
+    document.getElementById('drill-title').textContent = `Targeted Lesson: ${topic}`;
+    
+    // 1. Rule & Bengali Explanation
+    const ruleObj = currentExercise.rule || currentExercise;
+    document.getElementById('drill-rule').textContent = typeof ruleObj === 'string' ? ruleObj : ruleObj.rule || currentExercise.rule;
+    document.getElementById('drill-rule-bengali').textContent = currentExercise.rule_bengali || "নিয়মটি ভালোভাবে পড়ে নিচের উদাহরণ দুটি খেয়াল করুন।";
+    
+    // 2. Examples (Incorrect vs Correct)
+    document.getElementById('drill-example-incorrect').textContent = currentExercise.incorrect_example || `❌ Incorrect: ${currentExercise.common_error || 'Common error'}`;
+    document.getElementById('drill-example-correct').textContent = currentExercise.correct_example || `✅ Correct: ${currentExercise.correct_option || 'Correct usage'}`;
+    
+    // 3. Easy Warm-up Practice Setup
+    const easyObj = currentExercise.easy_practice || {
+      question: `Easy Warm-up: Choose correct form for ${topic}`,
+      options: [`Option A: Correct option`, `Option B: Incorrect option`],
+      correct_option: `Option A: Correct option`,
+      explanation: "Great job! Easy warm-up completed."
+    };
+    
+    document.getElementById('easy-question').textContent = easyObj.question || easyObj.question_text || `Warm-up Question for ${topic}`;
+    const easyContainer = document.getElementById('easy-options');
+    easyContainer.innerHTML = '';
+    const easyOpts = easyObj.options || currentExercise.options.slice(0, 2);
+    
+    easyOpts.forEach((opt) => {
+      const btn = document.createElement('button');
+      btn.className = 'btn btn-outline';
+      btn.style.cssText = 'text-align:left; width:100%; justify-content:flex-start; font-size:0.9rem; padding:10px 14px; background:rgba(255,255,255,0.05); color:#ffffff; border:1px solid rgba(255,255,255,0.15); border-radius:6px; cursor:pointer;';
+      btn.textContent = opt;
+      btn.onclick = () => {
+        const isEasyCorr = opt.startsWith(easyObj.correct_option || easyOpts[0]);
+        const efb = document.getElementById('easy-feedback');
+        efb.style.display = 'block';
+        if (isEasyCorr) {
+          efb.style.background = 'rgba(34, 197, 94, 0.25)';
+          efb.style.color = '#4ade80';
+          efb.style.border = '1px solid rgba(34, 197, 94, 0.4)';
+          efb.innerHTML = `<strong>Correct Warm-up! 🎉</strong> ${easyObj.explanation || 'Nice start!'}`;
+        } else {
+          efb.style.background = 'rgba(239, 68, 68, 0.25)';
+          efb.style.color = '#f87171';
+          efb.style.border = '1px solid rgba(239, 68, 68, 0.4)';
+          efb.innerHTML = `<strong>Not quite.</strong> ${easyObj.explanation || 'Try reviewing the rule above!'}`;
+        }
+      };
+      easyContainer.appendChild(btn);
+    });
+    document.getElementById('easy-feedback').style.display = 'none';
+
+    // 4. Main Cambridge Exam Drill Setup
+    const mainObj = currentExercise.main_drill || currentExercise;
+    document.getElementById('main-question').textContent = mainObj.question_text || currentExercise.question_text;
+    const mainContainer = document.getElementById('main-options');
+    mainContainer.innerHTML = '';
+    const mainOpts = mainObj.options || currentExercise.options;
+    
+    mainOpts.forEach((opt) => {
+      const card = document.createElement('div');
+      card.className = 'option-card';
+      card.style.cssText = 'padding:12px 14px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); border-radius:8px; cursor:pointer; color:#ffffff; font-size:0.92rem; font-weight:500;';
+      card.textContent = opt;
+      card.onclick = () => {
+        document.querySelectorAll('#main-options .option-card').forEach(c => c.style.borderColor = 'rgba(255,255,255,0.12)');
+        card.style.borderColor = '#6366f1';
+        card.style.background = 'rgba(99, 102, 241, 0.15)';
+        card.dataset.selected = 'true';
+      };
+      mainContainer.appendChild(card);
+    });
+    
+    document.getElementById('main-feedback').style.display = 'none';
+    document.getElementById('drill-modal').style.display = 'flex';
+  } catch (err) {
+    console.error(err);
+    alert('Error loading lesson.');
+  }
+}
+
+function closeDrillModal() {
+  document.getElementById('drill-modal').style.display = 'none';
+}
+
+async function submitMainDrillAnswer() {
+  const selected = document.querySelector('#main-options .option-card[data-selected="true"]');
+  if(!selected) { alert('Please select an option for the Main Drill.'); return; }
+  
+  const val = selected.textContent;
+  const mainObj = currentExercise.main_drill || currentExercise;
+  const targetOption = mainObj.correct_option || currentExercise.correct_option;
+  const isCorrect = val.startsWith(targetOption);
+  const fb = document.getElementById('main-feedback');
+  
+  try {
+    await fetch('/api/v1/grammar-vocab/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: 1, topic_or_word: currentTopic, is_correct: isCorrect })
+    });
+  } catch(e) {}
+
+  fb.style.display = 'block';
+  if(isCorrect) {
+    fb.style.background = 'rgba(34, 197, 94, 0.2)';
+    fb.style.border = '1px solid rgba(34, 197, 94, 0.4)';
+    fb.style.color = 'var(--success-400)';
+    fb.innerHTML = `<strong>Correct Main Drill! 🎉 Active Mastery Elevated!</strong><br>${mainObj.explanation || currentExercise.explanation}`;
+  } else {
+    fb.style.background = 'rgba(239, 68, 68, 0.2)';
+    fb.style.border = '1px solid rgba(239, 68, 68, 0.4)';
+    fb.style.color = 'var(--danger-400)';
+    fb.innerHTML = `<strong>Not quite right.</strong><br>${mainObj.explanation || currentExercise.explanation}`;
+  }
+}
+
+// Live Search & Level Filter Logic
+let currentLevelFilter = 'all';
+
+function setLevelFilter(level) {
+  currentLevelFilter = level;
+  
+  // Highlight active tab button
+  document.querySelectorAll('.level-tab-btn').forEach(btn => {
+    if (btn.dataset.level === level) {
+      btn.style.background = '#6366f1';
+      btn.style.color = '#ffffff';
+      btn.style.border = 'none';
+    } else {
+      btn.style.background = 'rgba(255,255,255,0.06)';
+      btn.style.color = '#cbd5e1';
+      btn.style.border = '1px solid rgba(255,255,255,0.1)';
+    }
+  });
+  
+  filterGrammarTopics();
+}
+
+function filterGrammarTopics() {
+  const query = document.getElementById('topicSearchInput').value.toLowerCase().trim();
+  const cards = document.querySelectorAll('.topic-card');
+  let visibleCount = 0;
+  
+  cards.forEach(card => {
+    const title = card.dataset.title;
+    const level = card.dataset.level;
+    
+    const matchesSearch = !query || title.includes(query);
+    const matchesLevel = currentLevelFilter === 'all' || level.includes(currentLevelFilter);
+    
+    if (matchesSearch && matchesLevel) {
+      card.style.display = 'block';
+      visibleCount++;
+    } else {
+      card.style.display = 'none';
+    }
+  });
+  
+  const countBadge = document.getElementById('topicCountBadge');
+  if (countBadge) countBadge.textContent = `Showing ${visibleCount} Topics`;
+  const noRes = document.getElementById('noResultsMsg');
+  if (noRes) noRes.style.display = visibleCount === 0 ? 'block' : 'none';
+}
+
+function startGuidedPathway() {
+  // Automatically open Lesson 1 (Nouns)
+  launchTargetedDrill('Nouns (Countable & Uncountable)');
+}
+
+function filterCategory(cat) {
+  const searchInput = document.getElementById('topicSearchInput');
+  if (cat === 'pos') {
+    if (searchInput) searchInput.value = '';
+    currentLevelFilter = 'Beginner';
+  } else if (cat === 'tense') {
+    if (searchInput) searchInput.value = 'tense';
+    currentLevelFilter = 'all';
+  } else if (cat === 'sentence') {
+    if (searchInput) searchInput.value = '';
+    currentLevelFilter = 'Intermediate';
+  } else if (cat === 'master') {
+    if (searchInput) searchInput.value = '';
+    currentLevelFilter = 'Advanced Master';
+  }
+  setLevelFilter(currentLevelFilter);
+}
+</script>
+{% endblock %}

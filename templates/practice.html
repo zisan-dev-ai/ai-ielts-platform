@@ -1,0 +1,1622 @@
+{% extends "base.html" %}
+{% set active_page = "practice" %}
+
+{% block title %}IELTS Official Practice Command Center — Academic Reading Infrastructure{% endblock %}
+
+{% block extra_head %}
+<style>
+:root {
+    --bc-red: #e11d48;
+    --bc-red-glow: rgba(225, 29, 72, 0.25);
+    --bc-navy: #0f172a;
+    --bc-blue: #2563eb;
+    --bc-emerald: #10b981;
+    --bc-amber: #f59e0b;
+    --bc-purple: #8b5cf6;
+}
+
+.cmd-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding-bottom: 40px;
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+/* HERO BANNER */
+.hero-banner {
+    position: relative;
+    background: radial-gradient(circle at 10% 20%, rgba(37, 99, 235, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(225, 29, 72, 0.12) 0%, transparent 40%),
+                linear-gradient(135deg, #11141c 0%, #0d1017 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    padding: 30px 36px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    overflow: hidden;
+}
+
+.hero-banner::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #2563eb, #e11d48, #10b981, #8b5cf6);
+}
+
+.official-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(225, 29, 72, 0.12);
+    border: 1px solid rgba(225, 29, 72, 0.35);
+    color: #fda4af;
+    font-size: 0.75em;
+    font-weight: 800;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+}
+
+.live-pulse {
+    width: 8px;
+    height: 8px;
+    background: #e11d48;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #e11d48;
+    animation: pulseGlow 1.5s infinite;
+}
+@keyframes pulseGlow {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(1.3); }
+}
+
+/* MODULE GRID */
+.module-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+@media (max-width: 992px) {
+    .module-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.cbt-card {
+    background: #12151d;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+.cbt-card:hover {
+    box-shadow: 0 14px 36px rgba(0,0,0,0.6);
+    transform: translateY(-2px);
+}
+
+.cbt-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #3b82f6, #60a5fa);
+}
+
+/* Card Themes */
+.card-reading::before { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+.card-reading:hover { border-color: rgba(59, 130, 246, 0.5); }
+.card-reading .card-icon-box { border-color: rgba(59, 130, 246, 0.3); background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+.card-reading .status-tag { background: rgba(37, 99, 235, 0.15); border-color: rgba(37, 99, 235, 0.35); color: #93c5fd; }
+.card-reading .btn-cbt-start { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
+
+.card-listening::before { background: linear-gradient(90deg, #8b5cf6, #c084fc); }
+.card-listening:hover { border-color: rgba(139, 92, 246, 0.5); }
+.card-listening .card-icon-box { border-color: rgba(139, 92, 246, 0.3); background: rgba(139, 92, 246, 0.15); color: #c084fc; }
+.card-listening .status-tag { background: rgba(139, 92, 246, 0.15); border-color: rgba(139, 92, 246, 0.35); color: #c084fc; }
+.card-listening .btn-cbt-start { background: linear-gradient(135deg, #7c3aed, #6d28d9); }
+
+.card-writing::before { background: linear-gradient(90deg, #10b981, #34d399); }
+.card-writing:hover { border-color: rgba(16, 185, 129, 0.5); }
+.card-writing .card-icon-box { border-color: rgba(16, 185, 129, 0.3); background: rgba(16, 185, 129, 0.15); color: #34d399; }
+.card-writing .status-tag { background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.35); color: #6ee7b7; }
+.card-writing .btn-cbt-start { background: linear-gradient(135deg, #059669, #047857); }
+
+.card-speaking::before { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+.card-speaking:hover { border-color: rgba(245, 158, 11, 0.5); }
+.card-speaking .card-icon-box { border-color: rgba(245, 158, 11, 0.3); background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+.card-speaking .status-tag { background: rgba(245, 158, 11, 0.15); border-color: rgba(245, 158, 11, 0.35); color: #fde68a; }
+.card-speaking .btn-cbt-start { background: linear-gradient(135deg, #d97706, #b45309); }
+
+.card-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.card-icon-box {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6em;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    background: rgba(59, 130, 246, 0.15);
+    color: #60a5fa;
+}
+
+.status-tag {
+    font-size: 0.75em;
+    font-weight: 800;
+    padding: 4px 12px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: rgba(37, 99, 235, 0.15);
+    border: 1px solid rgba(37, 99, 235, 0.35);
+    color: #93c5fd;
+}
+
+.cbt-title {
+    font-size: 1.4em;
+    font-weight: 800;
+    color: #fff;
+    margin: 6px 0 4px;
+}
+.cbt-desc {
+    font-size: 0.9em;
+    color: #94a3b8;
+    line-height: 1.6;
+}
+
+.feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 10px 0;
+}
+.feat-item {
+    font-size: 0.88em;
+    color: #cbd5e1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.feat-item span {
+    color: #34d399;
+    font-weight: 800;
+}
+
+.interactive-control-box {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: auto;
+}
+
+.custom-select-dark {
+    width: 100%;
+    background: #181b24;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    padding: 11px 14px;
+    color: #fff;
+    font-size: 0.9em;
+    outline: none;
+    transition: 0.2s;
+}
+.custom-select-dark:focus {
+    border-color: #3b82f6;
+    background: #1e222e;
+}
+
+.btn-cbt-start {
+    width: 100%;
+    padding: 13px 18px;
+    border-radius: 8px;
+    font-size: 0.95em;
+    font-weight: 800;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(37,99,235,0.35);
+}
+.btn-cbt-start:hover {
+    background: #3b82f6;
+    transform: translateY(-1px);
+}
+
+.btn-action-outline {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #cbd5e1;
+    padding: 9px 14px;
+    border-radius: 8px;
+    font-size: 0.85em;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: 0.15s;
+}
+.btn-action-outline:hover {
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+}
+
+/* CUSTOM QUESTION TYPE SELECTOR MODAL */
+.type-selector-modal {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2500;
+    align-items: center; justify-content: center; backdrop-filter: blur(4px);
+}
+.type-selector-card {
+    background: #0f172a; color: #fff; width: 92%; max-width: 960px; max-height: 88vh;
+    border-radius: 14px; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+    display: flex; flex-direction: column; overflow: hidden;
+}
+.type-selector-header {
+    padding: 18px 24px; background: #1e293b; border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: flex; justify-content: space-between; align-items: center;
+}
+.type-selector-body {
+    padding: 20px 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px;
+}
+.preset-pills-row {
+    display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px;
+}
+.preset-pill {
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2);
+    color: #93c5fd; padding: 6px 12px; border-radius: 20px; font-size: 0.82em; font-weight: 700;
+    cursor: pointer; transition: 0.15s;
+}
+.preset-pill:hover { background: #2563eb; color: #fff; border-color: #3b82f6; }
+
+.passages-type-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+}
+@media (max-width: 768px) {
+    .passages-type-grid { grid-template-columns: 1fr; }
+}
+.passage-type-col {
+    background: #1e293b; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 14px;
+}
+.passage-type-col-title {
+    font-size: 0.95em; font-weight: 800; color: #38bdf8; margin-bottom: 12px; padding-bottom: 6px;
+    border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between;
+}
+.type-checkbox-item {
+    display: flex; align-items: center; gap: 8px; font-size: 0.84em; margin-bottom: 8px;
+    color: #cbd5e1; cursor: pointer; padding: 4px 6px; border-radius: 4px; transition: 0.15s;
+}
+.type-checkbox-item:hover { background: rgba(255,255,255,0.05); color: #fff; }
+.type-checkbox-item input[type="checkbox"] { accent-color: #10b981; width: 16px; height: 16px; }
+
+.type-selector-footer {
+    padding: 16px 24px; background: #1e293b; border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+}
+
+/* MODAL SPINNER */
+.ai-loading-modal {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 3000;
+    align-items: center; justify-content: center; flex-direction: column; color: #fff;
+    backdrop-filter: blur(5px);
+}
+.ai-loading-spinner {
+    width: 54px; height: 54px; border: 5px solid rgba(255,255,255,0.2); border-top-color: #38bdf8;
+    border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 18px;
+}
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="cmd-container">
+
+    <!-- HERO BANNER -->
+    <div class="hero-banner">
+        <div>
+            <div class="official-badge">
+                <span class="live-pulse"></span>
+                <span>British Council & Cambridge CD-IELTS Infrastructure</span>
+            </div>
+            <h1 style="font-size:1.9em; font-weight:800; color:#fff; margin:8px 0 4px;">
+                🎯 Official Exam & Practice Command Center
+            </h1>
+            <p style="color:#cbd5e1; font-size:0.95em; max-width:650px; margin:0; line-height:1.5;">
+                ব্রিটিশ কাউন্সিল ও কেমব্রিজ অফিশিয়াল কম্পিউটার-ডেলিভার্ড (CD IELTS) এক্সাম ইন্টারফেসে স্প্লিট স্ক্রিন, টেক্সট হাইলাইটার, কোশ্চেন প্যালেট ও টাইমার সহ প্র্যাকটিস করুন।
+            </p>
+        </div>
+        <div>
+            <a href="/reading-cbt" class="btn btn-primary" style="background:linear-gradient(135deg, #e11d48, #be123c); border:none; padding:12px 24px; border-radius:10px; font-weight:800; font-size:0.95em; text-decoration:none; display:inline-flex; align-items:center; gap:8px; box-shadow:0 6px 20px rgba(225,29,72,0.35);">
+                📖 ফুল রিডিং CBT মক টেস্ট শুরু করুন →
+            </a>
+        </div>
+    </div>
+
+    <!-- 4 CORE IELTS MODULES GRID -->
+    <div class="module-grid">
+        <!-- 1. READING MODULE -->
+        <div class="cbt-card card-reading">
+            <div class="card-header-row">
+                <div class="card-icon-box">📖</div>
+                <span class="status-tag">CD-IELTS READY</span>
+            </div>
+            <div>
+                <h3 class="cbt-title">IELTS Academic Reading</h3>
+                <p class="cbt-desc">
+                    স্প্লিট-স্ক্রিন প্যাসেজ ভিউয়ার, টেক্সট হাইলাইটার, নোটপ্যাড এবং ১৪টি অফিশিয়াল প্রশ্ন টাইপ সহ সম্পূর্ণ ডাইনামিক AI টেস্ট জেনারেটর।
+                </p>
+            </div>
+
+            <div class="feature-list">
+                <div class="feat-item"><span>✓</span> স্প্লিট স্ক্রিন ও ড্র্যাগেবল প্যাসেজ প্যানেল</div>
+                <div class="feat-item"><span>✓</span> ট্রু/ফলস, হেডিংস ও গ্যাপ-ফিল কোয়েশ্চেন প্যালেট</div>
+                <div class="feat-item"><span>✓</span> ৬০ মিনিট অফিশিয়াল ব্রিটিশ কাউন্সিল ক্লক</div>
+                <div class="feat-item"><span>✓</span> মাল্টি-এআই (OpenAI, Claude, DeepSeek, Gemini) স্বয়ংক্রিয় টেস্ট মেকার</div>
+            </div>
+
+            <div class="interactive-control-box">
+                <div>
+                    <label style="font-size:0.78em; color:#94a3b8; font-weight:800; text-transform:uppercase;">প্যাসেজ বা প্রশ্ন টাইপ নির্বাচন করুন</label>
+                    <select id="rd-qtype-select" class="custom-select-dark" onchange="handleReadingSelectChange(this.value)">
+                        <option value="ai_fresh">✨ AI দিয়ে নতুন টেস্ট জেনারেট করুন (যেকোনো ৩টি টাইপ)</option>
+                        <option value="custom_modal">🛠️ পছন্দের কোশ্চেন টাইপ নিজের মতো সিলেক্ট করুন...</option>
+                        <option value="p1_tf_notes">📌 Passage 1 Focus: True/False/NG + Note + Table</option>
+                        <option value="p2_headings_info">📌 Passage 2 Focus: Matching Headings + Summary</option>
+                        <option value="p3_yn_mcq">📌 Passage 3 Focus: Yes/No/NG + Multiple Choice</option>
+                        <option value="gap_fills">📝 Gap-Fill Mastery: Table, Flow-chart & Notes</option>
+                        <option value="matching_focus">🔍 Matching Mastery: Headings, Info & Features</option>
+                    </select>
+                </div>
+                
+                <div style="display:grid; grid-template-columns: 1fr auto; gap:10px;">
+                    <button type="button" onclick="startSelectedReadingPractice()" class="btn-cbt-start">
+                        🖥️ ব্রিটিশ কাউন্সিল CBT রিডিং শুরু করুন
+                    </button>
+                    <button type="button" onclick="openPracticeTypeModal()" class="btn-action-outline" title="পছন্দের প্রশ্ন টাইপ সিলেক্ট করুন">
+                        ⚙️ কনফিগার
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. LISTENING MODULE -->
+        <div class="cbt-card card-listening">
+            <div class="card-header-row">
+                <div class="card-icon-box">🎧</div>
+                <span class="status-tag">AUDIO CBT READY</span>
+            </div>
+            <div>
+                <h3 class="cbt-title">IELTS Official Listening</h3>
+                <p class="cbt-desc">
+                    ব্রিটিশ কাউন্সিল অফিশিয়াল অডিও প্লেয়ার, ৪টি সেকশনের ৪০টি প্রশ্ন টাইপ, ম্যাপ ও লেকচার নোট সহ স্বয়ংক্রিয় ব্যান্ড স্কোরার।
+                </p>
+            </div>
+
+            <div class="feature-list">
+                <div class="feat-item"><span>✓</span> ৪টি সেকশন (Section 1–4) ও অডিও সিক ট্র্যাকার</div>
+                <div class="feat-item"><span>✓</span> ফর্ম, ম্যাপ লেবেলিং, টেবিল ও লেকচার নোট কোয়েশ্চেন প্যালেট</div>
+                <div class="feat-item"><span>✓</span> Cambridge 14–19 এর অথেনটিক প্র্যাকটিস সেট ও অডিও লাইব্রেরি</div>
+                <div class="feat-item"><span>✓</span> তাৎক্ষণিক ব্যান্ড ক্যালকুলেটর ও স্পেলিং টলারেন্স স্কোরার</div>
+            </div>
+
+            <div class="interactive-control-box">
+                <div>
+                    <label style="font-size:0.78em; color:#94a3b8; font-weight:800; text-transform:uppercase;">লিসেনিং সেট বা সেকশন নির্বাচন করুন</label>
+                    <select id="lis-qtype-select" class="custom-select-dark" onchange="handleListeningSelectChange(this.value)">
+                        <option value="ai_fresh">✨ সম্পূর্ণ ৪-সেকশন AI আনলিমিটেড মক টেস্ট (৩০ মিনিট)</option>
+                        <option value="custom_modal">🎛️ ৪-সেকশন কাস্টমাইজার ও প্রশ্ন টাইপ বিল্ডার...</option>
+                        <optgroup label="🌟 সম্পূর্ণ ৪-সেকশন থিম্যাটিক মক টেস্ট (Full Tests)">
+                            <option value="lis_cb19_1">🤖 Cambridge 19 - Test 1 (Eco-Lodge & Farley Estate)</option>
+                            <option value="lis_cb18_2">🌱 Cambridge 18 - Test 2 (Greenwood Club & Nature Trail)</option>
+                            <option value="lis_cb17_3">🍱 Cambridge 17 - Test 3 (Riverfront Arts & Microplastics)</option>
+                            <option value="lis_cb16_4">🏛️ Cambridge 16 - Test 4 (Botanic Gardens & AI Ethics)</option>
+                            <option value="lis_cb15_1">🐅 Cambridge 15 - Test 1 (South Ridge & Antarctic Biology)</option>
+                            <option value="lis_cb14_2">🚲 Cambridge 14 - Test 2 (Riverside Trail & Smart Farming)</option>
+                            <option value="lis_random">🎲 নতুন র‍্যান্ডম ৪-সেকশন ফুল মক টেস্ট</option>
+                        </optgroup>
+                        <optgroup label="🗣️ Section 1: সামাজিক কথোপকথন ড্রিল">
+                            <option value="lis_s1_form">📝 Section 1: Form Completion (ফর্ম পূরণ)</option>
+                            <option value="lis_s1_note">📝 Section 1: Note Completion (সংক্ষিপ্ত নোট)</option>
+                            <option value="lis_s1_table">📋 Section 1: Table Completion (ফি ও শিডিউল)</option>
+                            <option value="lis_s1_short">❓ Section 1: Short Answer Questions</option>
+                        </optgroup>
+                        <optgroup label="🗺️ Section 2: গাইড ট্যুর ও স্থাপনা ড্রিল">
+                            <option value="lis_s2_map">🗺️ Section 2: Interactive Map Labelling</option>
+                            <option value="lis_s2_plan">🏢 Section 2: Plan & Diagram Labelling</option>
+                            <option value="lis_s2_mcq">🎯 Section 2: Multiple Choice Single (A-C)</option>
+                            <option value="lis_s2_matching">🔗 Section 2: Matching Information</option>
+                            <option value="lis_s2_flowchart">🔄 Section 2: Flow-chart Completion</option>
+                        </optgroup>
+                        <optgroup label="🎓 Section 3: একাডেমিক ডিসকাশন ড্রিল">
+                            <option value="lis_s3_mcq_single">🎯 Section 3: Multiple Choice Single (A-C)</option>
+                            <option value="lis_s3_mcq_multi">🎯 Section 3: Multiple Choice Multi (A-E)</option>
+                            <option value="lis_s3_matching">👥 Section 3: Matching Opinions & Research</option>
+                            <option value="lis_s3_flowchart">🔄 Section 3: Flow-chart Completion</option>
+                            <option value="lis_s3_sentence">📝 Section 3: Sentence Completion</option>
+                        </optgroup>
+                        <optgroup label="🔬 Section 4: ইউনিভার্সিটি লেকচার নোট ড্রিল">
+                            <option value="lis_s4_lecture_note">📝 Section 4: Lecture Notes Completion</option>
+                            <option value="lis_s4_summary">📋 Section 4: Summary Completion</option>
+                            <option value="lis_s4_table">📋 Section 4: Table Completion</option>
+                            <option value="lis_s4_flowchart">📊 Section 4: Flow-chart Completion</option>
+                            <option value="lis_s4_sentence">📝 Section 4: Sentence Completion</option>
+                        </optgroup>
+                    </select>
+                </div>
+                
+                <div style="display:grid; grid-template-columns: 1fr auto; gap:10px;">
+                    <button type="button" onclick="startSelectedListeningPractice()" class="btn-cbt-start">
+                        🎧 ব্রিটিশ কাউন্সিল CBT লিসেনিং শুরু করুন
+                    </button>
+                    <button type="button" onclick="openListeningTypeModal()" class="btn-action-outline" title="লিসেনিং প্রশ্ন টাইপ সিলেক্ট করুন">
+                        ⚙️ কনফিগার
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. WRITING MODULE -->
+        <div class="cbt-card card-writing">
+            <div class="card-header-row">
+                <div class="card-icon-box">✍️</div>
+                <span class="status-tag">AI EVALUATION</span>
+            </div>
+            <div>
+                <h3 class="cbt-title">IELTS Academic Writing</h3>
+                <p class="cbt-desc">
+                    রিয়েল-টাইম ওয়ার্ড কাউন্টার, অফিসিয়াল ব্রিটিশ কাউন্সিল ইন্টারফেস ও ৪-ক্রাইটেরিয়া (TA, CC, LR, GRA) ডিপ AI ব্যান্ড ইভ্যালুয়েশন।
+                </p>
+            </div>
+
+            <div class="feature-list">
+                <div class="feat-item"><span>✓</span> Task 1 (বার, লাইন, পাই, টেবিল, ম্যাপ ও প্রসেস ডায়াগ্রাম রিপোর্ট)</div>
+                <div class="feat-item"><span>✓</span> Task 2 (অপিনিয়ন, ডিসকাশন, প্রবলেম-সলিউশন ও অ্যাডভান্টেজ এসে)</div>
+                <div class="feat-item"><span>✓</span> লাইভ ওয়ার্ড কাউন্টার ও অটো-ড্রাফট সেভিং</div>
+                <div class="feat-item"><span>✓</span> ক্যামব্রিজ ৯-ব্যান্ড রুব্রিক অনুযায়ী বিস্তারিত ফিডব্যাক ও লাইন রিরাইট</div>
+            </div>
+
+            <div class="interactive-control-box">
+                <div>
+                    <label style="font-size:0.78em; color:#94a3b8; font-weight:800; text-transform:uppercase;">রাইটিং টাস্ক বা প্রম্পট নির্বাচন করুন</label>
+                    <select id="wr-qtype-select" class="custom-select-dark" onchange="handleWritingSelectChange(this.value)">
+                        <option value="ai_random">🎲 সম্পূর্ণ নতুন ফুল টেস্ট (Task 1 Report + Task 2 Essay)</option>
+                        <option value="custom_writing_modal">🛠️ পছন্দের টপিক ও প্রশ্ন টাইপ নিজের মতো বেছে নিন...</option>
+                        <optgroup label="📊 Task 1: Academic Report (রিপোর্ট টাইপস)">
+                            <option value="Task 1 - Bar Chart">📊 Task 1: Bar Chart (তুলনামূলক বার চার্ট)</option>
+                            <option value="Task 1 - Line Graph">📈 Task 1: Line Graph (ট্রেন্ড ও সময়কাল গ্রাফ)</option>
+                            <option value="Task 1 - Pie Chart">🥧 Task 1: Pie Chart (অনুপাত ও ভাগ চার্ট)</option>
+                            <option value="Task 1 - Table Data">📋 Task 1: Table Data (তথ্য ও পরিসংখ্যান টেবিল)</option>
+                            <option value="Task 1 - Process Diagram">🔄 Task 1: Process / Cycle Diagram (ম্যানুফ্যাকচারিং)</option>
+                            <option value="Task 1 - Map / Plan">🗺️ Task 1: Map Comparison (শহর উন্নয়ন ও পরিবর্তন)</option>
+                        </optgroup>
+                        <optgroup label="📝 Task 2: Academic Essay (এসে টাইপস)">
+                            <option value="Task 2 - Agree or Disagree">⚖️ Task 2: Opinion (Agree or Disagree)</option>
+                            <option value="Task 2 - Discussion (Both Views)">👥 Task 2: Discussion (Discuss Both Views + Opinion)</option>
+                            <option value="Task 2 - Problem & Solution">🚨 Task 2: Problem & Solution / Causes & Effects</option>
+                            <option value="Task 2 - Advantages & Disadvantages">⚖️ Task 2: Advantages vs. Disadvantages</option>
+                            <option value="Task 2 - Double Question">❓ Task 2: Direct / Double Question Essay</option>
+                        </optgroup>
+                    </select>
+                </div>
+                
+                <div style="display:grid; grid-template-columns: 1fr auto; gap:10px;">
+                    <button type="button" onclick="startSelectedWritingPractice()" class="btn-cbt-start">
+                        ✍️ ব্রিটিশ কাউন্সিল রাইটিং শুরু করুন
+                    </button>
+                    <button type="button" onclick="openWritingTypeModal()" class="btn-action-outline" title="রাইটিং প্রশ্ন টাইপ সিলেক্ট করুন">
+                        ⚙️ কনফিগার
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. SPEAKING MODULE -->
+        <div class="cbt-card card-speaking">
+            <div class="card-header-row">
+                <div class="card-icon-box">🗣️</div>
+                <span class="status-tag">SPEECH AI READY</span>
+            </div>
+            <div>
+                <h3 class="cbt-title">IELTS Speaking Interview</h3>
+                <p class="cbt-desc">
+                    ভার্চুয়াল এক্সামিনার ভয়েস ইন্টারভিউ, স্পিচ-টু-টেক্সট রিকগনিশন ও ৪-ক্রাইটেরিয়া (FC, LR, GRA, PR) ইনস্ট্যান্ট ব্যান্ড রিপোর্ট।
+                </p>
+            </div>
+
+            <div class="feature-list">
+                <div class="feat-item"><span>✓</span> Part 1 (ব্যক্তিগত পরিচিতি ও ব্যাকগ্রাউন্ড ইন্টারভিউ)</div>
+                <div class="feat-item"><span>✓</span> Part 2 (১ মিনিট প্রিপারেশন ও ২ মিনিট কিউ-কার্ড মনোলোগ)</div>
+                <div class="feat-item"><span>✓</span> Part 3 (অ্যাবস্ট্রাক্ট ডিপ অ্যানালিটিক্যাল ডিসকাশন)</div>
+                <div class="feat-item"><span>✓</span> উচ্চারণ, ব্যাকরণিক রেঞ্জ ও ফ্লুয়েন্সি অ্যানালাইসিস</div>
+            </div>
+
+            <div class="interactive-control-box">
+                <div>
+                    <label style="font-size:0.78em; color:#94a3b8; font-weight:800; text-transform:uppercase;">স্পিকিং টেস্ট বা ড্রিল নির্বাচন করুন</label>
+                    <select id="spk-qtype-select" class="custom-select-dark" onchange="handleSpeakingSelectChange(this.value)">
+                        <option value="full_mock">🎙️ সম্পূর্ণ ৩-পার্ট ফুল স্পিকিং মক টেস্ট (১৪ মিনিট)</option>
+                        <option value="ai_custom_spk">🎛️ ৩-পার্ট টপিক কাস্টমাইজার ও থিম বিল্ডার...</option>
+                        <optgroup label="🌟 Cambridge Official Speaking Tests">
+                            <option value="full_random">🎲 র‍্যান্ডম অফিসিয়াল ক্যামব্রিজ ফুল টেস্ট</option>
+                            <option value="full_cb19_1">🤖 Cambridge 19 Test 1 (AI & Eco-living)</option>
+                            <option value="full_cb18_1">🌿 Cambridge 18 Test 1 (Weather & Environment)</option>
+                            <option value="full_cb17_1">🍜 Cambridge 17 Test 1 (Food & Traditional Cuisine)</option>
+                            <option value="full_cb16_2">🧸 Cambridge 16 Test 2 (Childhood Memories & Games)</option>
+                            <option value="full_cb15_1">🐅 Cambridge 15 Test 1 (Animals & Natural Habitats)</option>
+                        </optgroup>
+                        <optgroup label="🎯 পার্ট-বাই-পার্ট ফোকাসড ড্রিল">
+                            <option value="p1_random">💬 Part 1 ফোকাস: ইন্টারভিউ ড্রিল</option>
+                            <option value="p2_random">🗣️ Part 2 ফোকাস: কিউ-কার্ড লং টার্ন ড্রিল</option>
+                            <option value="p3_random">🎓 Part 3 ফোকাস: অ্যানালিটিক্যাল ডিসকাশন ড্রিল</option>
+                        </optgroup>
+                    </select>
+                </div>
+                
+                <div style="display:grid; grid-template-columns: 1fr auto; gap:10px;">
+                    <button type="button" onclick="startSelectedSpeakingPractice()" class="btn-cbt-start">
+                        🎙️ ব্রিটিশ কাউন্সিল স্পিকিং শুরু করুন
+                    </button>
+                    <button type="button" onclick="openSpeakingTypeModal()" class="btn-action-outline" title="স্পিকিং টপিক ও পার্ট কনফিগার করুন">
+                        ⚙️ কনফিগার
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- CUSTOM QUESTION TYPE SELECTOR MODAL -->
+<div class="type-selector-modal" id="practiceTypeModal">
+    <div class="type-selector-card">
+        <div class="type-selector-header">
+            <div style="display:flex; align-items:center; gap:10px;">
+                <span style="font-size:1.3em;">⚙️</span>
+                <div>
+                    <h3 style="font-size:1.15em; font-weight:800; color:#fff;">কোশ্চেন টাইপ কাস্টমাইজার</h3>
+                    <p style="font-size:0.8em; color:#94a3b8; margin-top:2px;">প্যাসেজ ১, ২ এবং ৩ এর জন্য কোন কোন প্রশ্ন টাইপ চান তা নিজের মতো সিলেক্ট করুন</p>
+                </div>
+            </div>
+            <button onclick="closePracticeTypeModal()" style="background:none; border:none; color:#cbd5e1; font-size:1.2em; cursor:pointer;">✖</button>
+        </div>
+
+        <div class="type-selector-body">
+            <!-- PRESET BUTTONS -->
+            <div>
+                <label style="font-size:0.85em; font-weight:800; color:#cbd5e1; display:block; margin-bottom:8px;">⚡ দ্রুত প্রিসেট কম্বিনেশন বেছে নিন:</label>
+                <div class="preset-pills-row">
+                    <button type="button" class="preset-pill" onclick="applyPracticePreset('classic')">🌟 স্ট্যান্ডার্ড মিক্স</button>
+                    <button type="button" class="preset-pill" onclick="applyPracticePreset('headings_info')">🔍 হেডিংস ও ইনফরমেশন</button>
+                    <button type="button" class="preset-pill" onclick="applyPracticePreset('gap_fills')">📝 নোট, টেবিল ও ফ্লো-চার্ট</button>
+                    <button type="button" class="preset-pill" onclick="applyPracticePreset('facts_opinions')">⚖️ ট্রু/ফলস ও মতামত</button>
+                    <button type="button" class="preset-pill" onclick="applyPracticePreset('all_types')">🌈 সব ১৪টি টাইপ</button>
+                </div>
+            </div>
+
+            <!-- 3 PASSAGES GRID -->
+            <div class="passages-type-grid">
+                <!-- PASSAGE 1 -->
+                <div class="passage-type-col">
+                    <div class="passage-type-col-title">
+                        <span>📖 Passage 1 (Q1–13)</span>
+                        <span style="font-size:0.75em; color:#94a3b8; font-weight:normal;">Band 6.5</span>
+                    </div>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_p1_type" value="True / False / Not Given" checked> <span>True / False / Not Given</span></label>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_p1_type" value="Note Completion" checked> <span>Note Completion</span></label>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_p1_type" value="Table Completion"> <span>Table Completion</span></label>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_p1_type" value="Sentence Completion"> <span>Sentence Completion</span></label>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_p1_type" value="Short Answer Questions"> <span>Short Answer Questions</span></label>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_p1_type" value="Flow-chart Completion"> <span>Flow-chart Completion</span></label>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_p1_type" value="Multiple Choice"> <span>Multiple Choice (A-D)</span></label>
+                </div>
+
+                <!-- PASSAGE 2 -->
+                <div class="passage-type-col">
+                    <div class="passage-type-col-title">
+                        <span>🔬 Passage 2 (Q14–26)</span>
+                        <span style="font-size:0.75em; color:#94a3b8; font-weight:normal;">Band 7.0</span>
+                    </div>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_p2_type" value="Matching Headings" checked> <span>Matching Headings</span></label>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_p2_type" value="Matching Information"> <span>Matching Information</span></label>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_p2_type" value="Matching Features"> <span>Matching Features</span></label>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_p2_type" value="Summary Completion" checked> <span>Summary Completion</span></label>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_p2_type" value="Sentence Completion"> <span>Sentence Completion</span></label>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_p2_type" value="True / False / Not Given"> <span>True / False / Not Given</span></label>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_p2_type" value="Multiple Choice"> <span>Multiple Choice</span></label>
+                </div>
+
+                <!-- PASSAGE 3 -->
+                <div class="passage-type-col">
+                    <div class="passage-type-col-title">
+                        <span>🧠 Passage 3 (Q27–40)</span>
+                        <span style="font-size:0.75em; color:#94a3b8; font-weight:normal;">Band 8.0</span>
+                    </div>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_p3_type" value="Yes / No / Not Given" checked> <span>Yes / No / Not Given</span></label>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_p3_type" value="Multiple Choice" checked> <span>Multiple Choice</span></label>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_p3_type" value="Matching Sentence Endings" checked> <span>Matching Sentence Endings</span></label>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_p3_type" value="Matching Features"> <span>Matching Features</span></label>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_p3_type" value="Summary Completion"> <span>Summary Completion</span></label>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_p3_type" value="Table Completion"> <span>Table Completion</span></label>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_p3_type" value="Short Answer Questions"> <span>Short Answer Questions</span></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="type-selector-footer">
+            <button type="button" onclick="closePracticeTypeModal()" class="btn-action-outline">বাতিল</button>
+            <button type="button" onclick="submitPracticeCustomTypes('ai_gen')" class="btn-cbt-start" style="width:auto; padding:10px 24px;">
+                🚀 AI দিয়ে টেস্ট জেনারেট করে শুরু করুন
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- 2. LISTENING CUSTOM TYPE SELECTOR MODAL -->
+<div class="type-selector-modal" id="listeningTypeModal">
+    <div class="type-selector-card">
+        <div class="type-selector-header">
+            <div style="display:flex; align-items:center; gap:10px;">
+                <span style="font-size:1.3em;">🎧</span>
+                <div>
+                    <h3 style="font-size:1.15em; font-weight:800; color:#fff;">লিসেনিং কোশ্চেন টাইপ কাস্টমাইজার</h3>
+                    <p style="font-size:0.8em; color:#94a3b8; margin-top:2px;">সেকশন ১, ২, ৩ এবং ৪ এর জন্য নির্দিষ্ট প্রশ্ন টাইপ নির্বাচন করুন</p>
+                </div>
+            </div>
+            <button onclick="closeListeningTypeModal()" style="background:none; border:none; color:#cbd5e1; font-size:1.2em; cursor:pointer;">✖</button>
+        </div>
+
+        <div class="type-selector-body">
+            <!-- PRESETS -->
+            <div>
+                <label style="font-size:0.85em; font-weight:800; color:#cbd5e1; display:block; margin-bottom:8px;">⚡ দ্রুত প্রিসেট কম্বিনেশন বেছে নিন:</label>
+                <div class="preset-pills-row">
+                    <button type="button" class="preset-pill" onclick="applyListeningPreset('classic')">🌟 স্ট্যান্ডার্ড মিক্স</button>
+                    <button type="button" class="preset-pill" onclick="applyListeningPreset('map_plan')">🗺️ ম্যাপ ও প্ল্যান</button>
+                    <button type="button" class="preset-pill" onclick="applyListeningPreset('gap_fills')">📝 ফর্ম ও টেবিল নোট</button>
+                    <button type="button" class="preset-pill" onclick="applyListeningPreset('academic')">🎓 একাডেমিক এমসিকিউ</button>
+                    <button type="button" class="preset-pill" onclick="applyListeningPreset('all_types')">🌈 সব টাইপ</button>
+                </div>
+            </div>
+
+            <!-- 4 SECTIONS GRID -->
+            <div class="passages-type-grid" style="grid-template-columns: repeat(4, 1fr);">
+                <!-- SECTION 1 -->
+                <div class="passage-type-col">
+                    <div class="passage-type-col-title">
+                        <span>🗣️ Section 1</span>
+                        <span style="font-size:0.75em; color:#94a3b8;">সামাজিক</span>
+                    </div>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_lis_s1_type" value="Form Completion" checked> <span>Form Completion</span></label>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_lis_s1_type" value="Note Completion" checked> <span>Note Completion</span></label>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_lis_s1_type" value="Table Completion"> <span>Table Completion</span></label>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_lis_s1_type" value="Short Answer Questions"> <span>Short Answer Questions</span></label>
+                </div>
+
+                <!-- SECTION 2 -->
+                <div class="passage-type-col">
+                    <div class="passage-type-col-title">
+                        <span>🗺️ Section 2</span>
+                        <span style="font-size:0.75em; color:#94a3b8;">গাইড ট্যুর</span>
+                    </div>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_lis_s2_type" value="Map Labelling" checked> <span>Map Labelling</span></label>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_lis_s2_type" value="Plan Labelling"> <span>Plan Labelling</span></label>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_lis_s2_type" value="Multiple Choice" checked> <span>Multiple Choice</span></label>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_lis_s2_type" value="Matching Information"> <span>Matching Information</span></label>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_lis_s2_type" value="Flow-chart Completion"> <span>Flow-chart Completion</span></label>
+                </div>
+
+                <!-- SECTION 3 -->
+                <div class="passage-type-col">
+                    <div class="passage-type-col-title">
+                        <span>🎓 Section 3</span>
+                        <span style="font-size:0.75em; color:#94a3b8;">একাডেমিক</span>
+                    </div>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_lis_s3_type" value="Multiple Choice" checked> <span>Multiple Choice (Single)</span></label>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_lis_s3_type" value="Multiple Choice Multi" checked> <span>Multiple Choice (Multi)</span></label>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_lis_s3_type" value="Matching Opinions & Research"> <span>Matching Opinions</span></label>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_lis_s3_type" value="Flow-chart Completion"> <span>Flow-chart Completion</span></label>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_lis_s3_type" value="Sentence Completion"> <span>Sentence Completion</span></label>
+                </div>
+
+                <!-- SECTION 4 -->
+                <div class="passage-type-col">
+                    <div class="passage-type-col-title">
+                        <span>🔬 Section 4</span>
+                        <span style="font-size:0.75em; color:#94a3b8;">লেকচার</span>
+                    </div>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_lis_s4_type" value="Note Completion" checked> <span>Lecture Notes</span></label>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_lis_s4_type" value="Summary Completion"> <span>Summary Completion</span></label>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_lis_s4_type" value="Table Completion"> <span>Table Completion</span></label>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_lis_s4_type" value="Flow-chart Completion"> <span>Flow-chart & Process</span></label>
+                    <label class="type-checkbox-item"><input type="checkbox" name="modal_lis_s4_type" value="Sentence Completion"> <span>Sentence Completion</span></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="type-selector-footer">
+            <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-size:0.85em; color:#94a3b8;">অথবা Cambridge সেট:</span>
+                <select id="listeningModalPresetSelect" class="custom-select-dark" style="width:auto; padding:6px 10px;">
+                    <option value="A">Cambridge 19 (Eco-Lodge)</option>
+                    <option value="B">Cambridge 18 (Greenwood Trail)</option>
+                    <option value="C">Cambridge 17 (Riverfront Arts)</option>
+                    <option value="D">Cambridge 16 (Botanic Gardens)</option>
+                </select>
+                <button type="button" onclick="submitListeningCustomTypes('load_preset')" class="btn-action-outline">
+                    📚 লোড করুন
+                </button>
+            </div>
+            <div style="display:flex; gap:10px;">
+                <button type="button" onclick="closeListeningTypeModal()" class="btn-action-outline">বাতিল</button>
+                <button type="button" onclick="submitListeningCustomTypes('ai')" class="btn-cbt-start" style="width:auto; padding:10px 24px; background:linear-gradient(135deg, #7c3aed, #6d28d9);">
+                    🚀 AI দিয়ে টেস্ট ও অডিও তৈরি করুন
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 3. WRITING CUSTOM TYPE SELECTOR MODAL -->
+<div class="type-selector-modal" id="writingTypeModal">
+    <div class="type-selector-card">
+        <div class="type-selector-header">
+            <div style="display:flex; align-items:center; gap:10px;">
+                <span style="font-size:1.3em;">✍️</span>
+                <div>
+                    <h3 style="font-size:1.15em; font-weight:800; color:#fff;">IELTS Writing কোশ্চেন মেকার ও সিলেক্টর</h3>
+                    <p style="font-size:0.8em; color:#94a3b8; margin-top:2px;">Task 1 (রিপোর্ট) ও Task 2 (এসে)-এর জন্য পছন্দের প্রম্পট টাইপ ও থিম বেছে নিন</p>
+                </div>
+            </div>
+            <button onclick="closeWritingTypeModal()" style="background:none; border:none; color:#cbd5e1; font-size:1.2em; cursor:pointer;">✖</button>
+        </div>
+
+        <div class="type-selector-body">
+            <div style="display:flex; gap:8px; margin-bottom:12px;">
+                <button type="button" id="wrTabBtn1" class="preset-pill" style="background:#2563eb; color:#fff;" onclick="switchWrModalTab(1)">📊 Task 1: Academic Report</button>
+                <button type="button" id="wrTabBtn2" class="preset-pill" onclick="switchWrModalTab(2)">📝 Task 2: Academic Essay</button>
+                <button type="button" id="wrTabBtn3" class="preset-pill" onclick="switchWrModalTab(3)">✍️ কাস্টম প্রশ্ন এডিটর</button>
+            </div>
+
+            <!-- TAB 1: TASK 1 REPORT -->
+            <div id="wrModalTab1">
+                <label style="font-size:0.85em; font-weight:800; color:#cbd5e1; display:block; margin-bottom:10px;">📊 Task 1 প্রশ্ন টাইপ নির্বাচন করুন:</label>
+                <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:10px; margin-bottom:16px;">
+                    <label class="type-checkbox-item"><input type="radio" name="modal_wr_task" value="Task 1 - Bar Chart" checked> <span>Bar Chart (তুলনামূলক বার চার্ট)</span></label>
+                    <label class="type-checkbox-item"><input type="radio" name="modal_wr_task" value="Task 1 - Line Graph"> <span>Line Graph (ট্রেন্ড ও সময়কাল গ্রাফ)</span></label>
+                    <label class="type-checkbox-item"><input type="radio" name="modal_wr_task" value="Task 1 - Pie Chart"> <span>Pie Chart (অনুপাত ও ভাগ চার্ট)</span></label>
+                    <label class="type-checkbox-item"><input type="radio" name="modal_wr_task" value="Task 1 - Table Data"> <span>Table Data (তথ্য ও পরিসংখ্যান টেবিল)</span></label>
+                    <label class="type-checkbox-item"><input type="radio" name="modal_wr_task" value="Task 1 - Process Diagram"> <span>Process / Cycle Diagram (প্রক্রিয়া ডায়াগ্রাম)</span></label>
+                    <label class="type-checkbox-item"><input type="radio" name="modal_wr_task" value="Task 1 - Map / Plan"> <span>Map Comparison (শহর উন্নয়ন ও পরিবর্তন)</span></label>
+                </div>
+                <div>
+                    <label style="font-size:0.8em; color:#94a3b8; font-weight:700;">কাস্টম থিম (ঐচ্ছিক):</label>
+                    <input type="text" id="wrModalCustomTheme" class="custom-select-dark" placeholder="যেমন: Renewable Energy, Electric Cars, Tourism Trends..." style="margin-top:4px;">
+                </div>
+            </div>
+
+            <!-- TAB 2: TASK 2 ESSAY -->
+            <div id="wrModalTab2" style="display:none;">
+                <label style="font-size:0.85em; font-weight:800; color:#cbd5e1; display:block; margin-bottom:10px;">📝 Task 2 এসে টাইপ নির্বাচন করুন:</label>
+                <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:10px; margin-bottom:16px;">
+                    <label class="type-checkbox-item"><input type="radio" name="modal_wr_task" value="Task 2 - Agree or Disagree"> <span>Opinion: Agree or Disagree</span></label>
+                    <label class="type-checkbox-item"><input type="radio" name="modal_wr_task" value="Task 2 - Discussion (Both Views)"> <span>Discussion: Discuss Both Views + Opinion</span></label>
+                    <label class="type-checkbox-item"><input type="radio" name="modal_wr_task" value="Task 2 - Problem & Solution"> <span>Problem & Solution / Causes & Effects</span></label>
+                    <label class="type-checkbox-item"><input type="radio" name="modal_wr_task" value="Task 2 - Advantages & Disadvantages"> <span>Advantages vs. Disadvantages</span></label>
+                    <label class="type-checkbox-item"><input type="radio" name="modal_wr_task" value="Task 2 - Double Question"> <span>Direct / Double Question Essay</span></label>
+                </div>
+                <div>
+                    <label style="font-size:0.8em; color:#94a3b8; font-weight:700;">কাস্টম থিম (ঐচ্ছিক):</label>
+                    <input type="text" id="wrModalCustomTheme2" class="custom-select-dark" placeholder="যেমন: Artificial Intelligence Ethics, Higher Education, Global Warming..." style="margin-top:4px;">
+                </div>
+            </div>
+
+            <!-- TAB 3: MANUAL QUESTION -->
+            <div id="wrModalTab3" style="display:none; display:flex; flex-direction:column; gap:12px;">
+                <div>
+                    <label style="font-size:0.8em; color:#94a3b8; font-weight:700;">টাস্ক নম্বর:</label>
+                    <select id="manualTaskNum" class="custom-select-dark" style="margin-top:4px;">
+                        <option value="1">Task 1 (Academic Report)</option>
+                        <option value="2" selected>Task 2 (Academic Essay)</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="font-size:0.8em; color:#94a3b8; font-weight:700;">প্রম্পট টাইটেল:</label>
+                    <input type="text" id="manualPromptTitle" class="custom-select-dark" placeholder="যেমন: Renewable Energy in Europe" style="margin-top:4px;">
+                </div>
+                <div>
+                    <label style="font-size:0.8em; color:#94a3b8; font-weight:700;">সম্পূর্ণ প্রশ্ন স্টেটমেন্ট:</label>
+                    <textarea id="manualPromptStatement" class="custom-select-dark" rows="3" placeholder="প্রশ্নের সম্পূর্ণ বিবরণ এখানে পেস্ট করুন..." style="margin-top:4px;"></textarea>
+                </div>
+                <div>
+                    <label style="font-size:0.8em; color:#94a3b8; font-weight:700;">Task 1 SVG বা ইমেজ লিংক (ঐচ্ছিক):</label>
+                    <textarea id="manualChartSvg" class="custom-select-dark" rows="2" placeholder="SVG কোড বা ইমেজ URL..." style="margin-top:4px;"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="type-selector-footer">
+            <button type="button" onclick="closeWritingTypeModal()" class="btn-action-outline">বাতিল</button>
+            <button type="button" onclick="submitWritingModalGen()" class="btn-cbt-start" style="width:auto; padding:10px 24px; background:linear-gradient(135deg, #059669, #047857);">
+                🚀 প্রম্পট তৈরি করে টেস্ট শুরু করুন
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- 4. SPEAKING CUSTOM TYPE SELECTOR MODAL -->
+<div class="type-selector-modal" id="speakingTypeModal">
+    <div class="type-selector-card">
+        <div class="type-selector-header">
+            <div style="display:flex; align-items:center; gap:10px;">
+                <span style="font-size:1.3em;">🎙️</span>
+                <div>
+                    <h3 style="font-size:1.15em; font-weight:800; color:#fff;">IELTS Speaking ইন্টারভিউ কাস্টমাইজার</h3>
+                    <p style="font-size:0.8em; color:#94a3b8; margin-top:2px;">Part 1, Part 2 এবং Part 3 এর জন্য নির্দিষ্ট টপিক নির্বাচন করুন</p>
+                </div>
+            </div>
+            <button onclick="closeSpeakingTypeModal()" style="background:none; border:none; color:#cbd5e1; font-size:1.2em; cursor:pointer;">✖</button>
+        </div>
+
+        <div class="type-selector-body">
+            <div style="display:flex; gap:8px; margin-bottom:12px;">
+                <button type="button" id="spkTabBtn1" class="preset-pill" style="background:#8b5cf6; color:#fff;" onclick="switchSpkModalTab(1)">🎯 ৩-পার্ট টপিক সিলেকশন</button>
+                <button type="button" id="spkTabBtn2" class="preset-pill" onclick="switchSpkModalTab(2)">🌍 অল-ইন-ওয়ান থিম্যাটিক টেস্ট</button>
+            </div>
+
+            <!-- TAB 1: 3-PART CUSTOM -->
+            <div id="spkModalTab1">
+                <div class="passages-type-grid" style="grid-template-columns: repeat(3, 1fr);">
+                    <!-- PART 1 -->
+                    <div class="passage-type-col">
+                        <div class="passage-type-col-title">
+                            <span>💬 Part 1 Topics</span>
+                        </div>
+                        <label class="type-checkbox-item"><input type="radio" name="modal_spk_p1" value="p1_hometown" checked> <span>Hometown & Living</span></label>
+                        <label class="type-checkbox-item"><input type="radio" name="modal_spk_p1" value="p1_studies"> <span>Studies & Career</span></label>
+                        <label class="type-checkbox-item"><input type="radio" name="modal_spk_p1" value="p1_routine"> <span>Daily Routine & Leisure</span></label>
+                        <label class="type-checkbox-item"><input type="radio" name="modal_spk_p1" value="p1_tech"> <span>Modern Technology</span></label>
+                        <label class="type-checkbox-item"><input type="radio" name="modal_spk_p1" value="p1_food"> <span>Food & Cooking</span></label>
+                        <input type="text" id="customP1Input" class="custom-select-dark" placeholder="বা কাস্টম Part 1 টপিক..." style="margin-top:6px; font-size:0.8em; padding:6px 8px;">
+                    </div>
+
+                    <!-- PART 2 -->
+                    <div class="passage-type-col">
+                        <div class="passage-type-col-title">
+                            <span>🗣️ Part 2 Cue Cards</span>
+                        </div>
+                        <label class="type-checkbox-item"><input type="radio" name="modal_spk_p2" value="p2_person" checked> <span>Describe an Inspiring Person</span></label>
+                        <label class="type-checkbox-item"><input type="radio" name="modal_spk_p2" value="p2_place"> <span>Describe a Memorable Place</span></label>
+                        <label class="type-checkbox-item"><input type="radio" name="modal_spk_p2" value="p2_object"> <span>Describe a Useful Tech Device</span></label>
+                        <label class="type-checkbox-item"><input type="radio" name="modal_spk_p2" value="p2_env_proj"> <span>Describe an Eco Project</span></label>
+                        <label class="type-checkbox-item"><input type="radio" name="modal_spk_p2" value="p2_event"> <span>Describe an Important Journey</span></label>
+                        <input type="text" id="customP2Input" class="custom-select-dark" placeholder="বা কাস্টম Part 2 টপিক..." style="margin-top:6px; font-size:0.8em; padding:6px 8px;">
+                    </div>
+
+                    <!-- PART 3 -->
+                    <div class="passage-type-col">
+                        <div class="passage-type-col-title">
+                            <span>🎓 Part 3 Discussions</span>
+                        </div>
+                        <label class="type-checkbox-item"><input type="radio" name="modal_spk_p3" value="p3_ai" checked> <span>AI & Future Employment</span></label>
+                        <label class="type-checkbox-item"><input type="radio" name="modal_spk_p3" value="p3_climate"> <span>Climate & Green Cities</span></label>
+                        <label class="type-checkbox-item"><input type="radio" name="modal_spk_p3" value="p3_heritage"> <span>Cultural Heritage vs Modern</span></label>
+                        <label class="type-checkbox-item"><input type="radio" name="modal_spk_p3" value="p3_education"> <span>Higher Education Reform</span></label>
+                        <label class="type-checkbox-item"><input type="radio" name="modal_spk_p3" value="p3_fashion"> <span>Fast Fashion & Waste</span></label>
+                        <input type="text" id="customP3Input" class="custom-select-dark" placeholder="বা কাস্টম Part 3 টপিক..." style="margin-top:6px; font-size:0.8em; padding:6px 8px;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: UNIFIED THEMES -->
+            <div id="spkModalTab2" style="display:none;">
+                <label style="font-size:0.85em; font-weight:800; color:#cbd5e1; display:block; margin-bottom:10px;">🌍 সম্পূর্ণ ৩-পার্ট থিম্যাটিক টেস্ট বেছে নিন:</label>
+                <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:10px; margin-bottom:14px;">
+                    <label class="type-checkbox-item"><input type="radio" name="modal_spk_theme" value="Artificial Intelligence & Future Employment" checked> <span>AI & Future Employment</span></label>
+                    <label class="type-checkbox-item"><input type="radio" name="modal_spk_theme" value="Environmental Sustainability & Green Cities"> <span>Environment & Green Cities</span></label>
+                    <label class="type-checkbox-item"><input type="radio" name="modal_spk_theme" value="Food, Culinary Culture & Traditional Cuisine"> <span>Food Culture & Global Cuisine</span></label>
+                    <label class="type-checkbox-item"><input type="radio" name="modal_spk_theme" value="Photography, Visual Arts & Digital Media"> <span>Photography & Digital Media</span></label>
+                    <label class="type-checkbox-item"><input type="radio" name="modal_spk_theme" value="Childhood Toys, Street Games & Nostalgia"> <span>Childhood Memories & Games</span></label>
+                    <label class="type-checkbox-item"><input type="radio" name="modal_spk_theme" value="Wildlife Encounters, Animals & Biodiversity"> <span>Wildlife & Biodiversity</span></label>
+                </div>
+                <div>
+                    <label style="font-size:0.8em; color:#94a3b8; font-weight:700;">কাস্টম এআই থিম (ঐচ্ছিক):</label>
+                    <input type="text" id="spkModalCustomTheme" class="custom-select-dark" placeholder="যেমন: Space Exploration, Smart Cities, Traditional Festivals..." style="margin-top:4px;">
+                </div>
+            </div>
+        </div>
+
+        <div class="type-selector-footer">
+            <button type="button" onclick="closeSpeakingTypeModal()" class="btn-action-outline">বাতিল</button>
+            <button type="button" onclick="submitSpeakingModalGen()" class="btn-cbt-start" style="width:auto; padding:10px 24px; background:linear-gradient(135deg, #d97706, #b45309);">
+                🚀 ৩-পার্ট স্পিকিং টেস্ট শুরু করুন
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- AI GENERATING LOADING MODAL -->
+<div class="ai-loading-modal" id="practiceLoadingModal">
+    <div class="ai-loading-spinner"></div>
+    <h3 style="font-size:1.25em; font-weight:800; margin-bottom:8px;" id="practiceLoadingTitle">AI রিডিং টেস্ট প্রস্তুত হচ্ছে...</h3>
+    <p style="font-size:0.9em; color:#93c5fd; max-width:420px; text-align:center;" id="practiceLoadingDesc">
+        নির্বাচিত প্রশ্ন টাইপ ও প্যাসেজ তৈরি করা হচ্ছে। অনুগ্রহ করে কয়েক সেকেন্ড অপেক্ষা করুন।
+    </p>
+</div>
+
+<script>
+function handleReadingSelectChange(val) {
+    if (val === 'custom_modal') {
+        openPracticeTypeModal();
+    }
+}
+
+function openPracticeTypeModal() {
+    var m = document.getElementById('practiceTypeModal');
+    if (m) m.style.display = 'flex';
+}
+
+function closePracticeTypeModal() {
+    var m = document.getElementById('practiceTypeModal');
+    if (m) m.style.display = 'none';
+}
+
+function applyPracticePreset(presetName) {
+    document.querySelectorAll('input[name="modal_p1_type"], input[name="modal_p2_type"], input[name="modal_p3_type"]').forEach(function(cb) { cb.checked = false; });
+    var selectValues = function(name, vals) {
+        document.querySelectorAll('input[name="' + name + '"]').forEach(function(cb) {
+            if (vals.indexOf(cb.value) !== -1) cb.checked = true;
+        });
+    };
+
+    if (presetName === 'classic') {
+        selectValues('modal_p1_type', ['True / False / Not Given', 'Note Completion']);
+        selectValues('modal_p2_type', ['Matching Headings', 'Summary Completion']);
+        selectValues('modal_p3_type', ['Yes / No / Not Given', 'Multiple Choice', 'Matching Sentence Endings']);
+    } else if (presetName === 'headings_info') {
+        selectValues('modal_p1_type', ['Sentence Completion', 'Short Answer Questions']);
+        selectValues('modal_p2_type', ['Matching Headings', 'Matching Information', 'Matching Features']);
+        selectValues('modal_p3_type', ['Yes / No / Not Given', 'Multiple Choice']);
+    } else if (presetName === 'gap_fills') {
+        selectValues('modal_p1_type', ['Note Completion', 'Table Completion']);
+        selectValues('modal_p2_type', ['Sentence Completion', 'Summary Completion']);
+        selectValues('modal_p3_type', ['Flow-chart Completion', 'Table Completion', 'Short Answer Questions']);
+    } else if (presetName === 'facts_opinions') {
+        selectValues('modal_p1_type', ['True / False / Not Given', 'Short Answer Questions']);
+        selectValues('modal_p2_type', ['True / False / Not Given', 'Multiple Choice']);
+        selectValues('modal_p3_type', ['Yes / No / Not Given', 'Matching Sentence Endings']);
+    } else if (presetName === 'all_types') {
+        document.querySelectorAll('input[name="modal_p1_type"], input[name="modal_p2_type"], input[name="modal_p3_type"]').forEach(function(cb) { cb.checked = true; });
+    }
+}
+
+function getPracticeModalSelectedTypes() {
+    var getChecked = function(name) {
+        var arr = [];
+        document.querySelectorAll('input[name="' + name + '"]:checked').forEach(function(cb) { arr.push(cb.value); });
+        return arr;
+    };
+    return {
+        P1: getChecked('modal_p1_type'),
+        P2: getChecked('modal_p2_type'),
+        P3: getChecked('modal_p3_type')
+    };
+}
+
+async function startSelectedReadingPractice() {
+    var sel = document.getElementById('rd-qtype-select').value;
+    if (sel === 'custom_modal') {
+        openPracticeTypeModal();
+        return;
+    }
+
+    var modal = document.getElementById('practiceLoadingModal');
+    if (modal) modal.style.display = 'flex';
+
+    try {
+        if (sel === 'ai_fresh') {
+            document.getElementById('practiceLoadingTitle').textContent = 'AI নতুন টেস্ট তৈরি করছে...';
+            await fetch('/api/v1/reading/generate-practice', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({})
+            });
+            window.location.href = '/reading-cbt?id=1';
+        } else if (sel === 'p1_tf_notes') {
+            document.getElementById('practiceLoadingTitle').textContent = 'Passage 1 Focus টেস্ট তৈরি হচ্ছে...';
+            await fetch('/api/v1/reading/generate-practice', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ custom_types: { P1: ['True / False / Not Given', 'Note Completion', 'Table Completion'], P2: ['Matching Headings'], P3: ['Multiple Choice'] } })
+            });
+            window.location.href = '/reading-cbt?id=1';
+        } else if (sel === 'p2_headings_info') {
+            document.getElementById('practiceLoadingTitle').textContent = 'Matching Headings Focus টেস্ট তৈরি হচ্ছে...';
+            await fetch('/api/v1/reading/generate-practice', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ custom_types: { P1: ['Sentence Completion'], P2: ['Matching Headings', 'Matching Information', 'Summary Completion'], P3: ['Yes / No / Not Given'] } })
+            });
+            window.location.href = '/reading-cbt?id=1';
+        } else if (sel === 'p3_yn_mcq') {
+            document.getElementById('practiceLoadingTitle').textContent = 'Yes/No/NG Focus টেস্ট তৈরি হচ্ছে...';
+            await fetch('/api/v1/reading/generate-practice', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ custom_types: { P1: ['Note Completion'], P2: ['Matching Features'], P3: ['Yes / No / Not Given', 'Multiple Choice', 'Matching Sentence Endings'] } })
+            });
+            window.location.href = '/reading-cbt?id=1';
+        } else if (sel === 'gap_fills') {
+            document.getElementById('practiceLoadingTitle').textContent = 'Gap-Fill Mastery টেস্ট তৈরি হচ্ছে...';
+            await fetch('/api/v1/reading/generate-practice', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ custom_types: { P1: ['Note Completion', 'Table Completion'], P2: ['Sentence Completion', 'Summary Completion'], P3: ['Flow-chart Completion', 'Short Answer Questions'] } })
+            });
+            window.location.href = '/reading-cbt?id=1';
+        } else if (sel === 'matching_focus') {
+            document.getElementById('practiceLoadingTitle').textContent = 'Matching Mastery টেস্ট তৈরি হচ্ছে...';
+            await fetch('/api/v1/reading/generate-practice', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ custom_types: { P1: ['Matching Information'], P2: ['Matching Headings', 'Matching Features'], P3: ['Matching Sentence Endings', 'Multiple Choice'] } })
+            });
+            window.location.href = '/reading-cbt?id=1';
+        } else {
+            window.location.href = '/reading-cbt?id=1';
+        }
+    } catch(e) {
+        if (modal) modal.style.display = 'none';
+        window.location.href = '/reading-cbt?id=1';
+    }
+}
+
+async function submitPracticeCustomTypes(mode) {
+    var selected = getPracticeModalSelectedTypes();
+    if (selected.P1.length === 0 || selected.P2.length === 0 || selected.P3.length === 0) {
+        alert('অনুগ্রহ করে প্রতিটি প্যাসেজের (Passage 1, 2, 3) জন্য অন্তত ১টি প্রশ্ন টাইপ সিলেক্ট করুন!');
+        return;
+    }
+
+    closePracticeTypeModal();
+    var modal = document.getElementById('practiceLoadingModal');
+    if (modal) modal.style.display = 'flex';
+
+    try {
+        document.getElementById('practiceLoadingTitle').textContent = 'নির্বাচিত টাইপ দিয়ে AI টেস্ট তৈরি হচ্ছে...';
+        await fetch('/api/v1/reading/generate-practice', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ custom_types: selected })
+        });
+        window.location.href = '/reading-cbt?id=1';
+    } catch(e) {
+        if (modal) modal.style.display = 'none';
+        window.location.href = '/reading-cbt?id=1';
+    }
+}
+
+function handleListeningSelectChange(val) {
+    if (val === 'custom_modal') {
+        openListeningTypeModal();
+        document.getElementById('lis-qtype-select').value = 'ai_fresh';
+    }
+}
+
+function openListeningTypeModal() {
+    var modal = document.getElementById('listeningTypeModal');
+    if (modal) modal.style.display = 'flex';
+}
+
+function closeListeningTypeModal() {
+    var modal = document.getElementById('listeningTypeModal');
+    if (modal) modal.style.display = 'none';
+}
+
+function applyListeningPreset(preset) {
+    var s1 = document.querySelectorAll('input[name="modal_lis_s1_type"]');
+    var s2 = document.querySelectorAll('input[name="modal_lis_s2_type"]');
+    var s3 = document.querySelectorAll('input[name="modal_lis_s3_type"]');
+    var s4 = document.querySelectorAll('input[name="modal_lis_s4_type"]');
+
+    s1.forEach(el => el.checked = false);
+    s2.forEach(el => el.checked = false);
+    s3.forEach(el => el.checked = false);
+    s4.forEach(el => el.checked = false);
+
+    if (preset === 'classic') {
+        s1.forEach(el => { if (['Form Completion', 'Note Completion'].includes(el.value)) el.checked = true; });
+        s2.forEach(el => { if (['Multiple Choice', 'Map Labelling'].includes(el.value)) el.checked = true; });
+        s3.forEach(el => { if (['Multiple Choice', 'Sentence Completion'].includes(el.value)) el.checked = true; });
+        s4.forEach(el => { if (['Note Completion', 'Summary Completion'].includes(el.value)) el.checked = true; });
+    } else if (preset === 'map_plan') {
+        s1.forEach(el => { if (['Form Completion'].includes(el.value)) el.checked = true; });
+        s2.forEach(el => { if (['Map Labelling', 'Matching Information'].includes(el.value)) el.checked = true; });
+        s3.forEach(el => { if (['Matching Features'].includes(el.value)) el.checked = true; });
+        s4.forEach(el => { if (['Note Completion'].includes(el.value)) el.checked = true; });
+    } else if (preset === 'gap_fills') {
+        s1.forEach(el => { if (['Form Completion', 'Table Completion'].includes(el.value)) el.checked = true; });
+        s2.forEach(el => { if (['Flow-chart Completion'].includes(el.value)) el.checked = true; });
+        s3.forEach(el => { if (['Sentence Completion', 'Table Completion'].includes(el.value)) el.checked = true; });
+        s4.forEach(el => { if (['Note Completion', 'Sentence Completion'].includes(el.value)) el.checked = true; });
+    } else if (preset === 'academic') {
+        s1.forEach(el => { if (['Note Completion'].includes(el.value)) el.checked = true; });
+        s2.forEach(el => { if (['Multiple Choice'].includes(el.value)) el.checked = true; });
+        s3.forEach(el => { if (['Multiple Choice', 'Sentence Completion', 'Matching Features'].includes(el.value)) el.checked = true; });
+        s4.forEach(el => { if (['Note Completion', 'Summary Completion'].includes(el.value)) el.checked = true; });
+    } else if (preset === 'all_types') {
+        s1.forEach(el => el.checked = true);
+        s2.forEach(el => el.checked = true);
+        s3.forEach(el => el.checked = true);
+        s4.forEach(el => el.checked = true);
+    }
+}
+
+function getListeningModalSelectedTypes() {
+    var getChecked = name => Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(el => el.value);
+    return {
+        S1: getChecked('modal_lis_s1_type'),
+        S2: getChecked('modal_lis_s2_type'),
+        S3: getChecked('modal_lis_s3_type'),
+        S4: getChecked('modal_lis_s4_type')
+    };
+}
+
+async function submitListeningCustomTypes(mode) {
+    var selected = getListeningModalSelectedTypes();
+    if (mode !== 'load_preset' && (selected.S1.length === 0 || selected.S2.length === 0 || selected.S3.length === 0 || selected.S4.length === 0)) {
+        alert('অনুগ্রহ করে প্রতিটি সেকশনের (Section 1, 2, 3, 4) জন্য অন্তত ১টি প্রশ্ন টাইপ সিলেক্ট করুন!');
+        return;
+    }
+
+    closeListeningTypeModal();
+    var modal = document.getElementById('practiceLoadingModal');
+    if (modal) modal.style.display = 'flex';
+
+    try {
+        if (mode === 'load_preset') {
+            var sel = document.getElementById('listeningModalPresetSelect');
+            var setName = sel ? sel.value : 'A';
+            document.getElementById('practiceLoadingTitle').textContent = 'Cambridge ' + (setName === 'A' ? '19' : (setName === 'B' ? '18' : (setName === 'C' ? '17' : '16'))) + ' লোড হচ্ছে...';
+            await fetch('/api/v1/listening/switch-set', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ set_name: setName })
+            });
+        } else {
+            document.getElementById('practiceLoadingTitle').textContent = 'AI দিয়ে নতুন লিসেনিং টেস্ট ও অডিও তৈরি হচ্ছে...';
+            await fetch('/api/v1/listening/generate-practice', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ custom_types: selected })
+            });
+        }
+        window.location.href = '/listening-cbt';
+    } catch(e) {
+        if (modal) modal.style.display = 'none';
+        window.location.href = '/listening-cbt';
+    }
+}
+
+async function startSelectedListeningPractice() {
+    var sel = document.getElementById('lis-qtype-select').value;
+    var modal = document.getElementById('practiceLoadingModal');
+    
+    if (sel === 'ai_fresh') {
+        if (modal) {
+            document.getElementById('practiceLoadingTitle').textContent = 'AI নতুন লিসেনিং টেস্ট জেনারেট হচ্ছে...';
+            modal.style.display = 'flex';
+        }
+        try {
+            await fetch('/api/v1/listening/generate-practice', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({}) });
+        } catch(e) {}
+        window.location.href = '/listening-cbt';
+    } else if (sel === 'custom_modal') {
+        openListeningTypeModal();
+    } else if (sel === 'sec_1') {
+        window.location.href = '/listening-cbt?section=1';
+    } else if (sel === 'sec_2') {
+        window.location.href = '/listening-cbt?section=2';
+    } else if (sel === 'sec_3') {
+        window.location.href = '/listening-cbt?section=3';
+    } else if (sel === 'sec_4') {
+        window.location.href = '/listening-cbt?section=4';
+    } else if (sel === 'gap_fills' || sel === 'map_mcq_focus' || sel === 'academic_focus') {
+        openListeningTypeModal();
+        if (sel === 'gap_fills') applyListeningPreset('gap_fills');
+        if (sel === 'map_mcq_focus') applyListeningPreset('map_plan');
+        if (sel === 'academic_focus') applyListeningPreset('academic');
+    } else {
+        window.location.href = '/listening-cbt';
+    }
+}
+
+function handleWritingSelectChange(val) {
+    if (val === 'custom_writing_modal') {
+        openWritingTypeModal();
+        document.getElementById('wr-qtype-select').value = 'ai_random';
+    }
+}
+
+function openWritingTypeModal() {
+    var m = document.getElementById('writingTypeModal');
+    if (m) {
+        m.style.display = 'flex';
+        switchWrModalTab(1);
+    }
+}
+
+function closeWritingTypeModal() {
+    var m = document.getElementById('writingTypeModal');
+    if (m) m.style.display = 'none';
+}
+
+var currentWrTab = 1;
+function switchWrModalTab(tabNum) {
+    currentWrTab = tabNum;
+    document.getElementById('wrTabBtn1').style.background = (tabNum === 1 ? '#2563eb' : '#1e293b');
+    document.getElementById('wrTabBtn1').style.color = (tabNum === 1 ? '#fff' : '#cbd5e1');
+    document.getElementById('wrTabBtn2').style.background = (tabNum === 2 ? '#2563eb' : '#1e293b');
+    document.getElementById('wrTabBtn2').style.color = (tabNum === 2 ? '#fff' : '#cbd5e1');
+    document.getElementById('wrTabBtn3').style.background = (tabNum === 3 ? '#2563eb' : '#1e293b');
+    document.getElementById('wrTabBtn3').style.color = (tabNum === 3 ? '#fff' : '#cbd5e1');
+
+    document.getElementById('wrModalTab1').style.display = (tabNum === 1 ? 'block' : 'none');
+    document.getElementById('wrModalTab2').style.display = (tabNum === 2 ? 'block' : 'none');
+    document.getElementById('wrModalTab3').style.display = (tabNum === 3 ? 'block' : 'none');
+}
+
+async function submitWritingModalGen() {
+    if (currentWrTab === 3) {
+        // Student Manual Question
+        var taskNum = document.getElementById('manualTaskNum').value;
+        var title = document.getElementById('manualPromptTitle').value.trim() || 'Custom Student Prompt';
+        var statement = document.getElementById('manualPromptStatement').value.trim();
+        var svg = (document.getElementById('manualChartSvg') ? document.getElementById('manualChartSvg').value.trim() : '');
+
+        if (!statement) {
+            alert('অনুগ্রহ করে আপনার প্রশ্নের স্টেটমেন্ট/প্রম্পট লিখুন!');
+            return;
+        }
+
+        closeWritingTypeModal();
+        var modal = document.getElementById('practiceLoadingModal');
+        if (modal) {
+            modal.style.display = 'flex';
+            document.getElementById('practiceLoadingTitle').textContent = 'আপনার লেখা প্রশ্ন সেভ করে টেস্ট লোড হচ্ছে...';
+        }
+
+        try {
+            var res = await fetch('/api/v1/writing/save-custom-prompt', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    task_num: parseInt(taskNum),
+                    title: title,
+                    question_type: (taskNum === '1' ? 'Academic Task 1 Custom' : 'Task 2 Custom Essay'),
+                    prompt_statement: statement,
+                    chart_svg_or_img: svg
+                })
+            });
+            var data = await res.json();
+            if (data.id) {
+                window.location.href = '/writing-practice?id=' + data.id;
+                return;
+            }
+            window.location.href = '/writing-practice';
+        } catch(e) {
+            window.location.href = '/writing-practice';
+        }
+        return;
+    }
+
+    // AI Generation from Tab 1 or Tab 2
+    var selectedRadio = document.querySelector('input[name="modal_wr_task"]:checked');
+    var taskType = selectedRadio ? selectedRadio.value : 'Task 2 - Agree or Disagree';
+    var customTheme = '';
+    if (currentWrTab === 1 && document.getElementById('wrModalCustomTheme')) {
+        customTheme = document.getElementById('wrModalCustomTheme').value.trim();
+    } else if (currentWrTab === 2 && document.getElementById('wrModalCustomTheme2')) {
+        customTheme = document.getElementById('wrModalCustomTheme2').value.trim();
+    }
+
+    closeWritingTypeModal();
+    var modal = document.getElementById('practiceLoadingModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        document.getElementById('practiceLoadingTitle').textContent = 'AI দিয়ে সম্পূর্ণ নতুন Writing প্রম্পট তৈরি হচ্ছে...';
+    }
+
+    try {
+        var res = await fetch('/api/v1/writing/generate-topic', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ task_type: taskType, custom_theme: customTheme })
+        });
+        var data = await res.json();
+        if (data.data && data.data.db_id) {
+            window.location.href = '/writing-practice?id=' + data.data.db_id;
+            return;
+        }
+        window.location.href = '/writing-practice';
+    } catch(e) {
+        window.location.href = '/writing-practice';
+    }
+}
+
+async function startSelectedWritingPractice() {
+    var sel = document.getElementById('wr-qtype-select').value;
+    if (sel === 'custom_writing_modal') {
+        openWritingTypeModal();
+        return;
+    }
+
+    var modal = document.getElementById('practiceLoadingModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        document.getElementById('practiceLoadingTitle').textContent = (sel === 'ai_random' ? 'AI সম্পূর্ণ নতুন ফুল Writing সেট (Task 1 + Task 2) তৈরি করছে...' : 'AI দিয়ে সম্পূর্ণ নতুন Writing প্রম্পট তৈরি হচ্ছে...');
+    }
+
+    try {
+        if (sel === 'ai_random') {
+            var res = await fetch('/api/v1/writing/generate-full-set', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            });
+            var data = await res.json();
+            if (data.data && data.data.t1_id && data.data.t2_id) {
+                window.location.href = '/writing-practice?t1_id=' + data.data.t1_id + '&t2_id=' + data.data.t2_id;
+                return;
+            }
+        } else {
+            var res = await fetch('/api/v1/writing/generate-topic', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ task_type: sel, custom_theme: '' })
+            });
+            var data = await res.json();
+            if (data.data && data.data.db_id) {
+                window.location.href = '/writing-practice?id=' + data.data.db_id;
+                return;
+            }
+        }
+        window.location.href = '/writing-practice';
+    } catch(e) {
+        window.location.href = '/writing-practice';
+    }
+}
+
+function handleSpeakingSelectChange(val) {
+    if (val === 'ai_custom_spk') {
+        openSpeakingTypeModal();
+    }
+}
+
+function openSpeakingTypeModal() {
+    var m = document.getElementById('speakingTypeModal');
+    if (m) m.style.display = 'flex';
+}
+
+function closeSpeakingTypeModal() {
+    var m = document.getElementById('speakingTypeModal');
+    if (m) m.style.display = 'none';
+}
+
+var currentSpkTab = 1;
+function switchSpkModalTab(tabNum) {
+    currentSpkTab = tabNum;
+    document.getElementById('spkModalTab1').style.display = (tabNum === 1 ? 'block' : 'none');
+    var tab2 = document.getElementById('spkModalTab2');
+    if (tab2) tab2.style.display = (tabNum === 2 ? 'block' : 'none');
+
+    for (var i = 1; i <= 2; i++) {
+        var btn = document.getElementById('spkTabBtn' + i);
+        if (btn) {
+            btn.style.background = (i === tabNum ? '#8b5cf6' : '#1e293b');
+            btn.style.color = (i === tabNum ? '#fff' : '#cbd5e1');
+            btn.style.borderColor = (i === tabNum ? '#a78bfa' : 'rgba(255,255,255,0.2)');
+        }
+    }
+}
+
+var SPK_THEME_MAP = {
+    "full_mock": "IELTS Academic Full Mock Simulation",
+    "theme_ai": "Artificial Intelligence & Future Employment",
+    "theme_climate": "Environmental Sustainability & Green Cities",
+    "theme_food": "Food, Culinary Culture & Traditional Cuisine",
+    "theme_weather": "Weather Patterns, Seasons & Living Habits",
+    "theme_photo": "Photography, Visual Arts & Digital Media",
+    "theme_childhood": "Childhood Toys, Street Games & Nostalgia",
+    "theme_shopping": "Shopping Habits, Footwear & Fast Fashion",
+    "theme_wildlife": "Wildlife Encounters, Animals & Biodiversity",
+    "theme_heritage": "Ancient Architecture & Cultural Heritage",
+    "theme_education": "Higher Education, University & Global Careers",
+    
+    // Part 1 specific topics
+    "p1_hometown": "Hometown, Housing & Living Environment",
+    "p1_studies": "Studies, Academic Goals & Career Choices",
+    "p1_routine": "Daily Routine, Time Management & Leisure",
+    "p1_tech": "Modern Technology, Smartphones & Gadgets",
+    "p1_art": "Art, Music, Literature & Entertainment",
+    "p1_sports": "Sports, Physical Fitness & Healthy Diet",
+    "p1_weather": "Weather, Rainy Days & Seasonal Changes",
+    "p1_food": "Food, Home Cooking & Traditional Meals",
+    
+    // Part 2 specific topics
+    "p2_person": "Describe an Inspiring Person (Mentor, Teacher or Leader)",
+    "p2_place": "Describe a Memorable Place (Historical City or Natural Habitat)",
+    "p2_object": "Describe an Important Object or Tech Device",
+    "p2_event": "Describe a Significant Event, Celebration or Travel Journey",
+    "p2_activity": "Describe a Personal Activity, Hobby or New Skill Learned",
+    "p2_situation": "Describe a Difficult Decision or Meaningful Life Memory",
+    "p2_tech_prob": "Describe a Problem Solved using Modern Technology",
+    "p2_env_proj": "Describe an Environmental Conservation Project",
+    
+    // Part 3 specific topics
+    "p3_ai": "Artificial Intelligence, Automation & Future Employment",
+    "p3_climate": "Climate Action, Environmental Policies & Green Cities",
+    "p3_heritage": "Cultural Heritage Preservation vs Modern Architecture",
+    "p3_social": "Social Media, Digital Life & Human Interpersonal Psychology",
+    "p3_education": "Higher Education Reform, Global Economy & Lifelong Learning",
+    "p3_fashion": "Fast Fashion, Consumerism Psychology & Ecological Waste",
+    "p3_biodiversity": "Biodiversity Loss, Zoos Ethics & Wildlife Protection"
+};
+
+async function submitSpeakingModalGen() {
+    closeSpeakingTypeModal();
+
+    var payload = {};
+    var descText = "";
+
+    if (currentSpkTab === 1) {
+        var p1Sel = document.querySelector('input[name="modal_spk_p1"]:checked');
+        var p2Sel = document.querySelector('input[name="modal_spk_p2"]:checked');
+        var p3Sel = document.querySelector('input[name="modal_spk_p3"]:checked');
+
+        var p1Custom = document.getElementById('customP1Input') ? document.getElementById('customP1Input').value.trim() : "";
+        var p2Custom = document.getElementById('customP2Input') ? document.getElementById('customP2Input').value.trim() : "";
+        var p3Custom = document.getElementById('customP3Input') ? document.getElementById('customP3Input').value.trim() : "";
+
+        var p1Topic = p1Custom || (p1Sel ? p1Sel.value : "");
+        var p2Topic = p2Custom || (p2Sel ? p2Sel.value : "");
+        var p3Topic = p3Custom || (p3Sel ? p3Sel.value : "");
+
+        payload = {
+            p1_topic: p1Topic,
+            p2_topic: p2Topic,
+            p3_topic: p3Topic
+        };
+        descText = 'Part 1: ' + p1Topic + ' | Part 2: ' + p2Topic + ' | Part 3: ' + p3Topic;
+    } else if (currentSpkTab === 2) {
+        var selRadio = document.querySelector('input[name="modal_spk_theme"]:checked');
+        var theme = selRadio ? selRadio.value : "";
+        payload = { theme: theme };
+        descText = 'নির্বাচিত থিম: ' + theme;
+    } else {
+        var theme = document.getElementById('spkModalCustomTheme') ? document.getElementById('spkModalCustomTheme').value.trim() : '';
+        payload = { theme: theme };
+        descText = 'কাস্টম এআই থিম: ' + (theme || "IELTS Speaking Practice");
+    }
+
+    var modal = document.getElementById('practiceLoadingModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        document.getElementById('practiceLoadingTitle').textContent = 'AI দিয়ে ৩-পার্ট Speaking টেস্ট প্রস্তুত হচ্ছে...';
+        document.getElementById('practiceLoadingDesc').textContent = descText;
+    }
+
+    try {
+        var res = await fetch('/api/v1/speaking/generate-set', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        var data = await res.json();
+        if (data && data.part1) {
+            sessionStorage.setItem('ai_speaking_set', JSON.stringify(data));
+            window.location.href = '/speaking-practice?ai_live=1';
+            return;
+        }
+    } catch(e) {
+        // fallback
+    }
+    window.location.href = '/speaking-practice';
+}
+
+var PRACTICE_HUB_SPK_MAP = {
+    "full_mock": "/speaking-practice",
+    "full_random": "/speaking-practice?random=1",
+    "full_cb19_1": "/speaking-practice?book=19&test=1",
+    "full_cb18_2": "/speaking-practice?book=18&test=2",
+    "full_cb18_1": "/speaking-practice?book=18&test=1",
+    "full_cb17_1": "/speaking-practice?book=17&test=1",
+    "full_cb17_3": "/speaking-practice?book=17&test=3",
+    "full_cb16_2": "/speaking-practice?book=16&test=2",
+    "full_cb16_3": "/speaking-practice?book=16&test=3",
+    "full_cb15_1": "/speaking-practice?book=15&test=1",
+    
+    // Part 1 Drills
+    "p1_random": "/speaking-practice?part=1&random=1",
+    "p1_hometown": "/speaking-practice?part=1&book=19&test=1",
+    "p1_studies": "/speaking-practice?part=1&book=18&test=2",
+    "p1_home": "/speaking-practice?part=1&book=18&test=1",
+    "p1_food": "/speaking-practice?part=1&book=17&test=1",
+    "p1_photo": "/speaking-practice?part=1&book=17&test=3",
+    "p1_childhood": "/speaking-practice?part=1&book=16&test=2",
+    "p1_shopping": "/speaking-practice?part=1&book=16&test=3",
+    "p1_animals": "/speaking-practice?part=1&book=15&test=1",
+    
+    // Part 2 Cue Cards
+    "p2_random": "/speaking-practice?part=2&random=1",
+    "p2_tech": "/speaking-practice?part=2&book=19&test=1",
+    "p2_climate": "/speaking-practice?part=2&book=18&test=2",
+    "p2_weather": "/speaking-practice?part=2&book=18&test=1",
+    "p2_food": "/speaking-practice?part=2&book=17&test=1",
+    "p2_photo": "/speaking-practice?part=2&book=17&test=3",
+    "p2_childhood": "/speaking-practice?part=2&book=16&test=2",
+    "p2_shopping": "/speaking-practice?part=2&book=16&test=3",
+    "p2_animals": "/speaking-practice?part=2&book=15&test=1",
+    
+    // Part 3 Discussions
+    "p3_random": "/speaking-practice?part=3&random=1",
+    "p3_ai": "/speaking-practice?part=3&book=19&test=1",
+    "p3_climate": "/speaking-practice?part=3&book=18&test=2",
+    "p3_weather": "/speaking-practice?part=3&book=18&test=1",
+    "p3_food": "/speaking-practice?part=3&book=17&test=1",
+    "p3_photo": "/speaking-practice?part=3&book=17&test=3",
+    "p3_childhood": "/speaking-practice?part=3&book=16&test=2",
+    "p3_shopping": "/speaking-practice?part=3&book=16&test=3",
+    "p3_animals": "/speaking-practice?part=3&book=15&test=1"
+};
+
+function startSelectedSpeakingPractice() {
+    var sel = document.getElementById('spk-qtype-select').value;
+    if (sel === 'ai_custom_spk') {
+        openSpeakingTypeModal();
+        return;
+    }
+
+    if (PRACTICE_HUB_SPK_MAP[sel]) {
+        window.location.href = PRACTICE_HUB_SPK_MAP[sel];
+        return;
+    }
+    
+    window.location.href = '/speaking-practice';
+}
+</script>
+{% endblock %}

@@ -1,0 +1,2382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Official British Council & IDP CD-IELTS Speaking Examination</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Arial:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bc-top-bg: #0b0f19;
+            --bc-top-text: #ffffff;
+            --bc-bottom-bg: #0b0f19;
+            --bc-bottom-text: #cbd5e1;
+            --bc-pane-bg: #ffffff;
+            --bc-text: #0f172a;
+            --bc-border: #cbd5e1;
+            --bc-accent: #8b5cf6;
+            --bc-accent-hover: #7c3aed;
+            --bc-red: #e11d48;
+            --bc-emerald: #10b981;
+            --bc-amber: #f59e0b;
+            --bc-font-scale: 14px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        html, body { 
+            height: 100vh; width: 100vw; overflow: hidden; 
+            background: #0f172a; font-size: var(--bc-font-scale); color: var(--bc-text);
+        }
+
+        /* OFFICIAL CD-IELTS THEMES */
+        body.theme-sepia {
+            --bc-pane-bg: #fbf0d9; --bc-text: #433422; --bc-border: #d4c5a9; background: #e8dbc3;
+        }
+        body.theme-dark {
+            --bc-pane-bg: #1e293b; --bc-text: #f1f5f9; --bc-border: #334155; background: #0b0f19;
+        }
+
+        /* 1. TOP BAR (OFFICIAL BRITISH COUNCIL CBT HEADER) */
+        .bc-top-bar {
+            height: 46px; background: var(--bc-top-bg); color: var(--bc-top-text);
+            display: flex; justify-content: space-between; align-items: center; padding: 0 14px;
+            border-bottom: 2px solid var(--bc-accent); flex-shrink: 0;
+            white-space: nowrap; overflow: hidden;
+        }
+        .bc-brand-group { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+        .bc-logo-text { font-size: 1.15em; font-weight: 900; color: #fff; letter-spacing: -0.5px; }
+        .bc-logo-sub { 
+            font-size: 0.68em; font-weight: 700; background: var(--bc-accent); color: #fff; 
+            padding: 2px 6px; border-radius: 3px; text-transform: uppercase; 
+        }
+        .bc-official-tag { font-size: 0.76em; color: #cbd5e1; font-weight: 600; }
+
+        .bc-candidate-info { font-size: 0.76em; color: #cbd5e1; display: flex; gap: 12px; flex-shrink: 1; overflow: hidden; }
+        .bc-candidate-info b { color: #fff; }
+
+        .bc-top-controls { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+        .time-customizer-box {
+            display: flex; align-items: center; gap: 6px;
+            background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.2);
+            padding: 3px 8px; border-radius: 5px; flex-shrink: 0;
+        }
+        .bc-clock-display {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.95em; font-weight: 700; color: #c084fc;
+        }
+
+        .bc-btn-small {
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+            color: #fff; padding: 5px 10px; border-radius: 4px; font-size: 0.75em; font-weight: 700;
+            cursor: pointer; display: inline-flex; align-items: center; gap: 5px; transition: 0.15s;
+            flex-shrink: 0; text-decoration: none;
+        }
+        .bc-btn-small:hover { background: rgba(255,255,255,0.2); }
+        .bc-btn-custom { background: linear-gradient(135deg, #7c3aed, #6d28d9); border-color: #8b5cf6; color: #fff; }
+        .bc-btn-custom:hover { background: #8b5cf6; }
+
+        @media (max-width: 1250px) {
+            .bc-candidate-info { display: none !important; }
+            .bc-official-tag { display: none !important; }
+        }
+
+        /* 2. TASK TABS HEADER */
+        .bc-task-tabs-bar {
+            background: #181f2f; color: #fff; padding: 6px 14px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1); flex-shrink: 0;
+        }
+        .task-tabs-group { display: flex; gap: 6px; }
+        .task-tab-btn {
+            background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2);
+            color: #cbd5e1; padding: 6px 14px; border-radius: 5px; font-size: 0.8em; font-weight: 700;
+            cursor: pointer; display: flex; align-items: center; gap: 6px; transition: 0.2s;
+        }
+        .task-tab-btn:hover { background: rgba(255,255,255,0.15); color: #fff; }
+        .task-tab-btn.active {
+            background: var(--bc-accent); color: #fff; border-color: var(--bc-accent); 
+            box-shadow: 0 0 10px rgba(139,92,246,0.4);
+        }
+
+        /* 3. SPLIT PANE CONTAINER */
+        .bc-split-container {
+            display: grid; grid-template-columns: 460px 1fr;
+            height: calc(100vh - 46px - 40px - 48px);
+            background: #0f172a; gap: 6px; padding: 6px; overflow: hidden;
+        }
+        @media (max-width: 1080px) {
+            .bc-split-container { grid-template-columns: 380px 1fr; }
+        }
+
+        /* 4. LEFT PANE: AI EXAMINER SUITE */
+        .bc-pane-left {
+            background: var(--bc-pane-bg); color: var(--bc-text);
+            border: 1px solid var(--bc-border); border-radius: 8px;
+            display: flex; flex-direction: column; overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+        }
+        .examiner-video-frame {
+            position: relative; width: 100%; height: 230px; background: #000;
+            overflow: hidden; display: flex; align-items: center; justify-content: center;
+        }
+        .examiner-video-frame video, .examiner-video-frame img {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+        .examiner-video-frame.speaking-live {
+            box-shadow: inset 0 0 0 3px #10b981;
+        }
+        .examiner-name-tag {
+            position: absolute; bottom: 8px; left: 10px;
+            background: rgba(11, 15, 25, 0.85); backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 14px;
+            font-size: 0.75em; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 6px;
+        }
+        .examiner-live-status {
+            position: absolute; top: 8px; right: 10px;
+            background: rgba(11, 15, 25, 0.85); backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 14px;
+            font-size: 0.72em; font-weight: 800; text-transform: uppercase; display: flex; align-items: center; gap: 6px;
+        }
+        .examiner-live-status.speaking { color: #34d399; border-color: rgba(16,185,129,0.4); }
+        .examiner-live-status.listening { color: #f87171; border-color: rgba(239,68,68,0.4); }
+        .examiner-live-status.prep { color: #fbbf24; border-color: rgba(245,158,11,0.4); }
+
+        .pulse-dot { width: 8px; height: 8px; border-radius: 50%; }
+        .pulse-dot.green { background: #10b981; box-shadow: 0 0 8px #10b981; animation: pulse 1.2s infinite; }
+        .pulse-dot.red { background: #ef4444; box-shadow: 0 0 8px #ef4444; animation: pulse 1.2s infinite; }
+        .pulse-dot.amber { background: #f59e0b; box-shadow: 0 0 8px #f59e0b; animation: pulse 1.2s infinite; }
+
+        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.3); opacity: 0.5; } }
+
+        .examiner-dialogue-pane {
+            flex: 1; padding: 14px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;
+            background: rgba(0,0,0,0.02);
+        }
+        .prompt-official-box {
+            background: rgba(139,92,246,0.06); border: 1px solid rgba(139,92,246,0.25);
+            border-radius: 8px; padding: 12px 14px; position: relative;
+        }
+        .prompt-official-label {
+            font-size: 0.72em; font-weight: 800; color: #a78bfa; text-transform: uppercase;
+            letter-spacing: 0.5px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center;
+        }
+        .prompt-speech-text {
+            font-size: 1.05em; font-weight: 700; color: var(--bc-text); line-height: 1.45;
+        }
+        .prompt-bn-box {
+            margin-top: 8px; padding-top: 6px; border-top: 1px dashed rgba(255,255,255,0.15);
+            font-size: 0.85em; color: #94a3b8; line-height: 1.4; display: none;
+        }
+
+        .examiner-controls-row {
+            display: flex; gap: 8px; flex-wrap: wrap; margin-top: auto;
+        }
+        .btn-prompt-ctrl {
+            background: rgba(0,0,0,0.05); border: 1px solid var(--bc-border);
+            color: var(--bc-text); padding: 6px 12px; border-radius: 6px; font-size: 0.78em; font-weight: 700;
+            cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: 0.15s;
+        }
+        .btn-prompt-ctrl:hover { background: rgba(139,92,246,0.15); border-color: #8b5cf6; }
+
+        /* 5. RIGHT PANE: CANDIDATE INTERACTION STATION */
+        .bc-pane-right {
+            background: var(--bc-pane-bg); color: var(--bc-text);
+            border: 1px solid var(--bc-border); border-radius: 8px;
+            display: flex; flex-direction: column; overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+        }
+        .station-header-bar {
+            padding: 10px 16px; background: rgba(0,0,0,0.03); border-bottom: 1px solid var(--bc-border);
+            display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;
+        }
+        .station-badge-step {
+            font-size: 0.75em; font-weight: 800; background: rgba(139,92,246,0.15);
+            color: #8b5cf6; border: 1px solid rgba(139,92,246,0.3); padding: 3px 10px; border-radius: 12px;
+        }
+
+        .station-scroll-content {
+            flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px;
+        }
+
+        /* ACTIVE QUESTION CARD (FOCUSED STEPPER) */
+        .active-question-banner {
+            background: linear-gradient(135deg, rgba(139,92,246,0.12), rgba(59,130,246,0.08));
+            border: 1.5px solid rgba(139,92,246,0.35); border-radius: 10px; padding: 16px;
+            position: relative;
+        }
+        .active-q-num-tag {
+            display: inline-block; font-size: 0.72em; font-weight: 800; text-transform: uppercase;
+            background: #8b5cf6; color: #fff; padding: 3px 8px; border-radius: 4px; margin-bottom: 8px;
+        }
+        .active-q-text {
+            font-size: 1.18em; font-weight: 800; color: var(--bc-text); line-height: 1.4;
+        }
+
+        /* CAMBRIDGE CUE CARD BOOKLET */
+        .cambridge-cuecard-booklet {
+            background: rgba(245,158,11,0.06); border: 2px solid rgba(245,158,11,0.35);
+            border-radius: 8px; padding: 18px; line-height: 1.55;
+        }
+        .cambridge-cuecard-booklet h4 { font-size: 1.15em; font-weight: 800; color: var(--bc-text); margin-bottom: 8px; }
+        .cambridge-cuecard-booklet ul { margin: 8px 0 12px 24px; }
+        .cambridge-cuecard-booklet li { margin-bottom: 4px; font-size: 0.92em; }
+
+        .prep-countdown-bar {
+            background: rgba(0,0,0,0.03); border: 1px solid var(--bc-border); border-radius: 8px;
+            padding: 10px 14px; display: flex; justify-content: space-between; align-items: center;
+        }
+        .prep-pill-clock {
+            font-family: 'JetBrains Mono', monospace; font-size: 1.25em; font-weight: 900; color: #f59e0b;
+        }
+
+        .notes-scratchpad-area textarea {
+            width: 100%; height: 90px; background: rgba(0,0,0,0.03);
+            border: 1px solid var(--bc-border); border-radius: 6px; padding: 10px;
+            font-size: 0.88em; color: var(--bc-text); outline: none; resize: none;
+        }
+
+        /* LIVE TRANSCRIPTION CARD */
+        .live-speech-card {
+            background: rgba(0,0,0,0.02); border: 1px solid var(--bc-border);
+            border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 8px;
+        }
+        .speech-header-row {
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.76em; font-weight: 700; color: #94a3b8; text-transform: uppercase;
+        }
+        .speech-transcript-box {
+            min-height: 80px; max-height: 120px; overflow-y: auto;
+            background: rgba(0,0,0,0.04); border: 1px dashed var(--bc-border);
+            border-radius: 6px; padding: 10px 12px; font-size: 0.95em; line-height: 1.5; color: var(--bc-text);
+        }
+        .speech-transcript-box.empty { color: #94a3b8; font-style: italic; }
+
+        /* MIC & DOCK CONTROL */
+        .mic-control-dock {
+            padding: 10px 16px; background: rgba(0,0,0,0.04); border-top: 1px solid var(--bc-border);
+            display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;
+        }
+        .btn-record-main {
+            background: #ef4444; color: #fff; border: none; padding: 9px 20px;
+            border-radius: 30px; font-size: 0.9em; font-weight: 800; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 8px; transition: 0.2s; box-shadow: 0 4px 14px rgba(239,68,68,0.35);
+        }
+        .btn-record-main:hover { background: #dc2626; transform: scale(1.02); }
+        .btn-record-main.recording {
+            background: #10b981; box-shadow: 0 0 18px rgba(16,185,129,0.5);
+            animation: recordPulse 1.5s infinite;
+        }
+        @keyframes recordPulse {
+            0%, 100% { box-shadow: 0 0 8px rgba(16,185,129,0.4); }
+            50% { box-shadow: 0 0 22px rgba(16,185,129,0.8); }
+        }
+
+        .btn-advance-q {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: #fff; border: none;
+            padding: 9px 18px; border-radius: 8px; font-size: 0.88em; font-weight: 800;
+            cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: 0.2s;
+        }
+        .btn-advance-q:hover { background: #8b5cf6; transform: translateY(-1px); }
+
+        /* 6. BOTTOM BAR */
+        .bc-bottom-bar {
+            height: 48px; background: var(--bc-bottom-bg); color: var(--bc-bottom-text);
+            display: flex; justify-content: space-between; align-items: center; padding: 0 14px;
+            border-top: 1px solid rgba(255,255,255,0.1); flex-shrink: 0;
+        }
+        .bc-nav-btn {
+            background: var(--bc-accent); color: #fff; border: 1px solid var(--bc-accent);
+            padding: 7px 16px; border-radius: 5px; font-size: 0.82em; font-weight: 700;
+            cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: 0.15s;
+        }
+        .bc-nav-btn:hover { background: var(--bc-accent-hover); }
+        .bc-nav-btn.secondary { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: #fff; }
+        .bc-nav-btn.secondary:hover { background: rgba(255,255,255,0.2); }
+        .bc-nav-btn.submit { background: #10b981; border-color: #10b981; color: #000; font-weight: 800; }
+        .bc-nav-btn.submit:hover { background: #059669; }
+
+        /* MODALS */
+        .cbt-modal-backdrop {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 99999;
+            align-items: center; justify-content: center; backdrop-filter: blur(6px);
+        }
+        .cbt-modal-card {
+            background: #0f172a; color: #fff; width: 92%; max-width: 820px; max-height: 88vh;
+            border-radius: 12px; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+            display: flex; flex-direction: column; overflow: hidden;
+        }
+        .cbt-modal-header {
+            padding: 16px 20px; background: #1e293b; border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .cbt-modal-body {
+            padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px;
+        }
+        .cbt-modal-footer {
+            padding: 12px 20px; background: #1e293b; border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex; justify-content: flex-end; gap: 10px;
+        }
+        .band-score-pill {
+            font-size: 2.2em; font-weight: 900; color: #c084fc; text-align: center;
+            background: rgba(139,92,246,0.15); border: 2px solid rgba(139,92,246,0.4);
+            border-radius: 12px; padding: 12px; margin-bottom: 12px;
+        }
+        .rubric-grid-4 {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+        }
+        .rubric-card {
+            background: #1e293b; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 12px;
+        }
+        .rubric-card h5 { font-size: 0.85em; color: #c084fc; font-weight: 800; margin-bottom: 4px; display: flex; justify-content: space-between; }
+        .rubric-card p { font-size: 0.82em; color: #cbd5e1; line-height: 1.45; }
+
+        /* LOADING OVERLAY */
+        .cbt-loading-overlay {
+            position: fixed; inset: 0; background: rgba(11, 15, 25, 0.92); z-index: 100000;
+            display: none; align-items: center; justify-content: center; flex-direction: column; gap: 14px; color: #fff;
+        }
+        .cbt-spinner {
+            width: 48px; height: 48px; border: 4px solid rgba(139,92,246,0.2);
+            border-top-color: #8b5cf6; border-radius: 50%; animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        /* ===== CONFIGURE MODAL STYLES ===== */
+        .cfg-modal-backdrop {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.8); z-index: 9998;
+            align-items: center; justify-content: center;
+            backdrop-filter: blur(6px);
+        }
+        .cfg-modal-card {
+            background: #0f172a; color: #f1f5f9;
+            width: 94%; max-width: 740px; max-height: 90vh;
+            border-radius: 16px; border: 1px solid rgba(139,92,246,0.4);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 60px rgba(139,92,246,0.15);
+            display: flex; flex-direction: column; overflow: hidden;
+        }
+        .cfg-modal-header {
+            padding: 18px 22px 14px;
+            background: linear-gradient(135deg, #1e1b4b 0%, #1e293b 100%);
+            border-bottom: 1px solid rgba(139,92,246,0.3);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .cfg-modal-body {
+            padding: 20px 22px; overflow-y: auto;
+            display: flex; flex-direction: column; gap: 20px;
+        }
+        .cfg-section-label {
+            font-size: 0.72em; font-weight: 800; color: #8b5cf6;
+            text-transform: uppercase; letter-spacing: 1px;
+            margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
+        }
+        /* Mode Cards */
+        .cfg-mode-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+        }
+        @media (max-width: 640px) { .cfg-mode-grid { grid-template-columns: repeat(2, 1fr); } }
+        .cfg-mode-card {
+            background: rgba(255,255,255,0.04); border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 12px; padding: 14px 10px; text-align: center; cursor: pointer;
+            transition: all 0.2s; display: flex; flex-direction: column; align-items: center; gap: 6px;
+        }
+        .cfg-mode-card:hover { background: rgba(139,92,246,0.15); border-color: #8b5cf6; transform: translateY(-1px); }
+        .cfg-mode-card.selected {
+            background: rgba(139,92,246,0.25); border-color: #8b5cf6;
+            box-shadow: 0 0 20px rgba(139,92,246,0.3);
+        }
+        .cfg-mode-icon { font-size: 1.8em; }
+        .cfg-mode-title { font-size: 0.8em; font-weight: 800; color: #f1f5f9; }
+        .cfg-mode-sub { font-size: 0.7em; color: #94a3b8; font-weight: 600; }
+        .cfg-mode-badge {
+            font-size: 0.65em; font-weight: 800; text-transform: uppercase;
+            padding: 2px 6px; border-radius: 8px; margin-top: 2px;
+        }
+        .cfg-mode-badge.full { background: rgba(16,185,129,0.2); color: #34d399; border: 1px solid #10b981; }
+        .cfg-mode-badge.solo { background: rgba(56,189,248,0.2); color: #7dd3fc; border: 1px solid #38bdf8; }
+
+        /* Cambridge Test Selector */
+        .cfg-cambridge-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;
+        }
+        .cfg-cambridge-item {
+            background: rgba(255,255,255,0.04); border: 1.5px solid rgba(255,255,255,0.1);
+            border-radius: 10px; padding: 10px 14px; cursor: pointer; transition: all 0.2s;
+            display: flex; align-items: flex-start; gap: 10px;
+        }
+        .cfg-cambridge-item:hover { background: rgba(139,92,246,0.12); border-color: #8b5cf6; }
+        .cfg-cambridge-item.selected { background: rgba(139,92,246,0.22); border-color: #8b5cf6; }
+        .cfg-camb-book-badge {
+            background: rgba(139,92,246,0.3); border: 1px solid #8b5cf6;
+            color: #c084fc; font-size: 0.68em; font-weight: 800;
+            padding: 3px 8px; border-radius: 6px; white-space: nowrap; flex-shrink: 0; margin-top: 1px;
+        }
+        .cfg-camb-info-title { font-size: 0.8em; font-weight: 700; color: #e2e8f0; line-height: 1.3; }
+        .cfg-camb-info-sub { font-size: 0.7em; color: #94a3b8; margin-top: 2px; }
+
+        /* Apply Button */
+        .cfg-apply-btn {
+            background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+            color: #fff; border: none; border-radius: 10px;
+            padding: 12px 28px; font-size: 1em; font-weight: 800;
+            cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
+            box-shadow: 0 4px 20px rgba(139,92,246,0.4);
+        }
+        .cfg-apply-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 28px rgba(139,92,246,0.55); }
+        .cfg-cancel-btn {
+            background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+            color: #cbd5e1; border-radius: 10px; padding: 12px 20px;
+            font-size: 0.9em; font-weight: 700; cursor: pointer; transition: 0.15s;
+        }
+        .cfg-cancel-btn:hover { background: rgba(255,255,255,0.15); }
+        .cfg-modal-footer {
+            padding: 14px 22px;
+            background: rgba(0,0,0,0.3);
+            border-top: 1px solid rgba(255,255,255,0.08);
+            display: flex; justify-content: flex-end; align-items: center; gap: 10px;
+        }
+        /* Active topic bar */
+        .cfg-active-bar {
+            background: rgba(139,92,246,0.12); border: 1px solid rgba(139,92,246,0.25);
+            border-radius: 8px; padding: 8px 14px;
+            display: flex; align-items: center; gap: 10px; font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. OFFICIAL BRITISH COUNCIL HEADER -->
+    <header class="bc-top-bar">
+        <div class="bc-brand-group">
+            <span class="bc-logo-text">IELTS</span>
+            <span class="bc-logo-sub">SPEAKING CBT</span>
+            <span class="bc-official-tag">| British Council & IDP Simulation</span>
+        </div>
+
+        <div class="bc-candidate-info">
+            <span>Candidate: <b>STUDENT, ACADEMIC</b></span>
+            <span>Number: <b>029481</b></span>
+            <span>Center: <b>BD001 (Dhaka)</b></span>
+        </div>
+
+            <!-- 🎯 Comprehensive Speaking Dropdown Selector -->
+            <select class="timer-select-control" id="headerQuickTopicSelector" style="background:#1e293b; color:#cbd5e1; border:1px solid rgba(139,92,246,0.5); padding:4px 10px; border-radius:6px; font-size:0.75em; font-weight:700; cursor:pointer; outline:none; max-width:280px;" onchange="handleHeaderTopicChange(this.value)">
+                <optgroup label="🏆 Cambridge Official Full Mock Tests (3-Part Tests)">
+                    <option value="full_random">🎲 নতুন র‍্যান্ডম ৩-পার্ট ফুল মক টেস্ট</option>
+                    <option value="cambridge_19_1" {{ 'selected' if not is_solo_part and active_book == '19' and active_test == 1 else '' }}>🤖 AI, Automation & Smart Transport</option>
+                    <option value="cambridge_18_2" {{ 'selected' if not is_solo_part and active_book == '18' and active_test == 2 else '' }}>🌱 Climate Change, Green Cities & Policy</option>
+                    <option value="cambridge_18_1" {{ 'selected' if not is_solo_part and active_book == '18' and active_test == 1 else '' }}>🌧️ Weather, Seasons & Urban Living</option>
+                    <option value="cambridge_17_1" {{ 'selected' if not is_solo_part and active_book == '17' and active_test == 1 else '' }}>🍱 Food, Cooking & Global Nutrition</option>
+                    <option value="cambridge_17_3" {{ 'selected' if not is_solo_part and active_book == '17' and active_test == 3 else '' }}>📸 Photography, Visual Arts & Media</option>
+                    <option value="cambridge_16_2" {{ 'selected' if not is_solo_part and active_book == '16' and active_test == 2 else '' }}>🧸 Childhood, Parenting & Education</option>
+                    <option value="cambridge_16_3" {{ 'selected' if not is_solo_part and active_book == '16' and active_test == 3 else '' }}>👟 Shopping, Fast Fashion & Ethics</option>
+                    <option value="cambridge_15_1" {{ 'selected' if not is_solo_part and active_book == '15' and active_test == 1 else '' }}>🐅 Wildlife, Animals & Conservation</option>
+                </optgroup>
+
+                <optgroup label="🗣️ Part 1: Everyday Interview Topics (20+ Topics)">
+                    <option value="part_1_random">🎲 Part 1: র‍্যান্ডম AI ড্রিল (নতুন প্রশ্ন)</option>
+                    <option value="part_1_hometown" {{ 'selected' if is_solo_part and active_part == 1 and (active_book == '19' or topic_key == 'part_1_hometown') else '' }}>🏠 Part 1: Hometown & Neighbourhood (বাড়ি ও শহর)</option>
+                    <option value="part_1_studies" {{ 'selected' if is_solo_part and active_part == 1 and (active_book == '18' and active_test == 2 or topic_key == 'part_1_studies') else '' }}>💼 Part 1: Work or Studies (পড়াশোনা বা চাকরি)</option>
+                    <option value="part_1_home" {{ 'selected' if is_solo_part and active_part == 1 and (active_book == '18' and active_test == 1 or topic_key == 'part_1_home') else '' }}>🏡 Part 1: Home & Accommodation (বাসস্থান ও বাড়ি)</option>
+                    <option value="part_1_food" {{ 'selected' if is_solo_part and active_part == 1 and (active_book == '17' and active_test == 1 or topic_key == 'part_1_food') else '' }}>🍱 Part 1: Food & Cooking (খাবার ও রান্নাবান্না)</option>
+                    <option value="part_1_tech" {{ 'selected' if topic_key == 'part_1_tech' else '' }}>📱 Part 1: Technology & Smartphones (প্রযুক্তি ও গ্যাজেট)</option>
+                    <option value="part_1_weather" {{ 'selected' if topic_key == 'part_1_weather' else '' }}>🌧️ Part 1: Weather & Seasons (আবহাওয়া ও ঋতু)</option>
+                    <option value="part_1_sports" {{ 'selected' if topic_key == 'part_1_sports' else '' }}>⚽ Part 1: Sports & Exercise (খেলাধুলা ও শরীরচর্চা)</option>
+                    <option value="part_1_music" {{ 'selected' if topic_key == 'part_1_music' else '' }}>🎵 Part 1: Music & Entertainment (সঙ্গীত ও বিনোদন)</option>
+                    <option value="part_1_travel" {{ 'selected' if topic_key == 'part_1_travel' else '' }}>✈️ Part 1: Travel & Holidays (ভ্রমণ ও ছুটি)</option>
+                    <option value="part_1_childhood" {{ 'selected' if is_solo_part and active_part == 1 and (active_book == '16' and active_test == 2 or topic_key == 'part_1_childhood') else '' }}>🧸 Part 1: Childhood & Memories (শৈশব ও স্মৃতি)</option>
+                    <option value="part_1_photo" {{ 'selected' if is_solo_part and active_part == 1 and (active_book == '17' and active_test == 3 or topic_key == 'part_1_photo') else '' }}>📸 Part 1: Photography & Visual Art (ফটোগ্রাফি ও ছবি)</option>
+                    <option value="part_1_shopping" {{ 'selected' if is_solo_part and active_part == 1 and (active_book == '16' and active_test == 3 or topic_key == 'part_1_shopping') else '' }}>🛍️ Part 1: Shopping & Fashion (কেনাকাটা ও পোশাক)</option>
+                    <option value="part_1_animals" {{ 'selected' if is_solo_part and active_part == 1 and (active_book == '15' and active_test == 1 or topic_key == 'part_1_animals') else '' }}>🐅 Part 1: Animals & Wildlife (পশুপাখি ও প্রকৃতি)</option>
+                    <option value="part_1_books" {{ 'selected' if topic_key == 'part_1_books' else '' }}>📚 Part 1: Reading & Literature (বই পড়া ও সাহিত্য)</option>
+                    <option value="part_1_routine" {{ 'selected' if topic_key == 'part_1_routine' else '' }}>⏰ Part 1: Daily Routine & Habits (দৈনন্দিন রুটিন ও সময়)</option>
+                    <option value="part_1_cinema" {{ 'selected' if topic_key == 'part_1_cinema' else '' }}>🎬 Part 1: Cinema & Movies (চলচ্চিত্র ও সিনেমা)</option>
+                    <option value="part_1_friends" {{ 'selected' if topic_key == 'part_1_friends' else '' }}>👥 Part 1: Friends & Social Connections (বন্ধু ও সামাজিক সম্পর্ক)</option>
+                    <option value="part_1_nature" {{ 'selected' if topic_key == 'part_1_nature' else '' }}>🌳 Part 1: Parks & Green Spaces (পার্ক ও প্রকৃতি)</option>
+                    <option value="part_1_transport" {{ 'selected' if topic_key == 'part_1_transport' else '' }}>🚗 Part 1: Public Transport & Commute (যাতায়াত ব্যবস্থা)</option>
+                    <option value="part_1_history" {{ 'selected' if topic_key == 'part_1_history' else '' }}>🏛️ Part 1: Museums & Historical Places (জাদুঘর ও ইতিহাস)</option>
+                </optgroup>
+
+                <optgroup label="🎴 Part 2: Cue Card 2-Min Speech Topics (12+ Cue Cards)">
+                    <option value="part_2_random">🎲 Part 2: র‍্যান্ডম কিউ কার্ড (নতুন)</option>
+                    <option value="part_2_influential_person" {{ 'selected' if topic_key == 'part_2_influential_person' else '' }}>👤 Part 2: Describe an Influential Person (প্রভাবশালী ব্যক্তি)</option>
+                    <option value="part_2_interesting_place" {{ 'selected' if topic_key == 'part_2_interesting_place' else '' }}>🏰 Part 2: Describe an Interesting Place (আকর্ষণীয় স্থান)</option>
+                    <option value="part_2_meaningful_object" {{ 'selected' if topic_key == 'part_2_meaningful_object' else '' }}>🎁 Part 2: Describe a Meaningful Object (মূল্যবান বস্তু)</option>
+                    <option value="part_2_happy_milestone" {{ 'selected' if topic_key == 'part_2_happy_milestone' else '' }}>🏆 Part 2: Describe a Happy Milestone (স্মরণীয় সাফল্য)</option>
+                    <option value="part_2_useful_skill" {{ 'selected' if topic_key == 'part_2_useful_skill' else '' }}>💡 Part 2: Describe a Useful Skill Learned (দরকারী দক্ষতা)</option>
+                    <option value="part_2_problem_solved" {{ 'selected' if is_solo_part and active_part == 2 and (active_book == '19' or topic_key == 'part_2_problem_solved') else '' }}>🧩 Part 2: Describe a Problem Successfully Solved (সমস্যা সমাধান)</option>
+                    <option value="part_2_memorable_journey" {{ 'selected' if topic_key == 'part_2_memorable_journey' else '' }}>🚂 Part 2: Describe a Memorable Journey (স্মরণীয় ভ্রমণ)</option>
+                    <option value="part_2_useful_app" {{ 'selected' if topic_key == 'part_2_useful_app' else '' }}>📱 Part 2: Describe a Useful Website or App (দরকারী অ্যাপ)</option>
+                    <option value="part_2_environmental_project" {{ 'selected' if is_solo_part and active_part == 2 and (active_book == '18' and active_test == 2 or topic_key == 'part_2_environmental_project') else '' }}>🌱 Part 2: Describe an Environmental Initiative (পরিবেশ প্রজেক্ট)</option>
+                    <option value="part_2_favourite_book" {{ 'selected' if topic_key == 'part_2_favourite_book' else '' }}>📚 Part 2: Describe a Book That Impressed You (স্মরণীয় বই)</option>
+                    <option value="part_2_traditional_meal" {{ 'selected' if is_solo_part and active_part == 2 and (active_book == '17' and active_test == 1 or topic_key == 'part_2_traditional_meal') else '' }}>🍱 Part 2: Describe a Traditional Cuisine Meal (ঐতিহ্যবাহী খাবার)</option>
+                    <option value="part_2_cherished_photo" {{ 'selected' if is_solo_part and active_part == 2 and (active_book == '17' and active_test == 3 or topic_key == 'part_2_cherished_photo') else '' }}>📸 Part 2: Describe a Cherished Photograph (স্মরণীয় ছবি)</option>
+                </optgroup>
+
+                <optgroup label="🧠 Part 3: Deep Analytical Discussion Themes (8+ Themes)">
+                    <option value="part_3_random">🎲 Part 3: র‍্যান্ডম ডিসকাশন ড্রিল (নতুন)</option>
+                    <option value="part_3_ai" {{ 'selected' if is_solo_part and active_part == 3 and (active_book == '19' or topic_key == 'part_3_ai') else '' }}>🤖 Part 3: AI, Automation & Society (এআই, অটোমেশন ও সমাজ)</option>
+                    <option value="part_3_climate" {{ 'selected' if is_solo_part and active_part == 3 and (active_book == '18' and active_test == 2 or topic_key == 'part_3_climate') else '' }}>🌍 Part 3: Environmental Sustainability & Policy (জলবায়ু ও নীতি)</option>
+                    <option value="part_3_education" {{ 'selected' if topic_key == 'part_3_education' else '' }}>🎓 Part 3: Education Reform & Future Skills (শিক্ষা ও ভবিষ্যত দক্ষতা)</option>
+                    <option value="part_3_health" {{ 'selected' if topic_key == 'part_3_health' else '' }}>🏥 Part 3: Public Health, Lifestyle & Wellbeing (জনস্বাস্থ্য ও জীবনযাপন)</option>
+                    <option value="part_3_heritage" {{ 'selected' if topic_key == 'part_3_heritage' else '' }}>🏛️ Part 3: Cultural Heritage & Globalisation (ঐতিহ্য ও বিশ্বায়ন)</option>
+                    <option value="part_3_urban" {{ 'selected' if topic_key == 'part_3_urban' else '' }}>🏙️ Part 3: Urbanisation & Smart Cities (নগরায়ন ও স্মার্ট সিটি)</option>
+                    <option value="part_3_media" {{ 'selected' if is_solo_part and active_part == 3 and (active_book == '17' and active_test == 3 or topic_key == 'part_3_media') else '' }}>🌐 Part 3: Mass Media & Digital Information (মিডিয়া ও ডিজিটাল তথ্য)</option>
+                    <option value="part_3_economy" {{ 'selected' if topic_key == 'part_3_economy' else '' }}>🤝 Part 3: Global Economy, Tourism & Culture (আন্তর্জাতিক অর্থনীতি ও ভ্রমণ)</option>
+                </optgroup>
+            </select>
+
+            <!-- ⚙️ Configure Mode Button -->
+            <button class="bc-btn-small" onclick="openConfigureModal()" id="configModeBtn" style="background:rgba(139,92,246,0.25); border:1px solid #8b5cf6; color:#c084fc; font-weight:800; padding:5px 12px;">
+                <i class="fas fa-sliders-h"></i> <span id="configModeBtnLabel">⚙️ কনফিগার</span>
+            </button>
+
+            <button class="bc-btn-small" onclick="generateNewRandomSet()" style="background:rgba(16,185,129,0.2); border-color:#10b981; color:#34d399;" title="নতুন র‍্যান্ডম প্রশ্ন সেট লোড করুন">
+                <i class="fas fa-dice"></i> <span>নতুন সেট</span>
+            </button>
+
+            <button class="bc-btn-small bc-btn-custom" onclick="openTopicMakerModal()" style="background:rgba(56,189,248,0.2); border-color:#38bdf8; color:#7dd3fc;">
+                <i class="fas fa-magic"></i> <span>AI Generate</span>
+            </button>
+
+            <div class="time-customizer-box" id="headerGlobalClockBox" style="display:none;">
+                <i class="far fa-clock" style="color:#c084fc; font-size:0.85em;"></i>
+                <span class="bc-clock-display" id="examClockDisplay">14:00</span>
+            </div>
+            <button class="bc-btn-small" onclick="cycleTheme()" title="Contrast / Theme">
+                <i class="fas fa-adjust"></i>
+            </button>
+            <button class="bc-btn-small" onclick="cycleFontSize()" title="Text Size">
+                <i class="fas fa-text-height"></i>
+            </button>
+            {% if not is_exam_mode %}
+            <button class="bc-btn-small" onclick="toggleModelAnswerModal()">
+                <i class="fas fa-crown" style="color:#fbbf24;"></i> <span>Band 9</span>
+            </button>
+            {% endif %}
+            <a href="/practice" class="bc-btn-small" style="background:var(--bc-red); border-color:var(--bc-red); color:#fff;">
+                <i class="fas fa-home"></i> <span>হাব</span>
+            </a>
+        </div>
+    </header>
+
+    {% if is_full_mock %}
+    <!-- 🏆 FULL 4-MODULE MOCK EXAM PROGRESS STEPPER -->
+    <div style="background:#0b0f19; border-bottom:2px solid #ec4899; padding:6px 14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; font-size:0.78em; color:#cbd5e1;">
+        <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-weight:900; color:#fbbf24; text-transform:uppercase; letter-spacing:0.5px;">🏆 Official 4-Module Academic Mock:</span>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:8px; font-weight:800;">
+            <!-- STEP 1: LISTENING (DONE) -->
+            <div style="display:flex; align-items:center; gap:5px; padding:3px 10px; border-radius:6px; background:rgba(16,185,129,0.15); border:1px solid #10b981; color:#34d399;">
+                <span>✅ 1. Listening</span>
+            </div>
+            <span style="color:#64748b;">➔</span>
+
+            <!-- STEP 2: READING (DONE) -->
+            <div style="display:flex; align-items:center; gap:5px; padding:3px 10px; border-radius:6px; background:rgba(16,185,129,0.15); border:1px solid #10b981; color:#34d399;">
+                <span>✅ 2. Reading</span>
+            </div>
+            <span style="color:#64748b;">➔</span>
+
+            <!-- STEP 3: WRITING (DONE) -->
+            <div style="display:flex; align-items:center; gap:5px; padding:3px 10px; border-radius:6px; background:rgba(16,185,129,0.15); border:1px solid #10b981; color:#34d399;">
+                <span>✅ 3. Writing</span>
+            </div>
+            <span style="color:#64748b;">➔</span>
+
+            <!-- STEP 4: SPEAKING (ACTIVE) -->
+            <div style="display:flex; align-items:center; gap:5px; padding:3px 10px; border-radius:6px; background:rgba(236,72,153,0.3); border:1.5px solid #ec4899; color:#fbcfe8;">
+                <span style="width:7px; height:7px; border-radius:50%; background:#ec4899; display:inline-block; animation:pulse 1.5s infinite;"></span>
+                <span>🗣️ 4. Speaking (ফাইনাল ধাপ)</span>
+            </div>
+        </div>
+
+        <div>
+            <span style="background:rgba(236,72,153,0.2); color:#f472b6; border:1px solid #ec4899; padding:2px 8px; border-radius:10px; font-weight:800;">
+                🏆 শেষ ধাপ ৪/৪ • Speaking শেষেই ফাইনাল 9-Band Official TRF রেজাল্ট পাবেন!
+            </span>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- 2. TASK TABS HEADER -->
+    <div class="bc-task-tabs-bar">
+        <div class="task-tabs-group">
+            <button class="task-tab-btn active" id="partTab1" onclick="switchSpeakingPart(1)">
+                <i class="fas fa-comments"></i> Part 1: Everyday Interview (4-5 Mins)
+            </button>
+            <button class="task-tab-btn" id="partTab2" onclick="switchSpeakingPart(2)">
+                <i class="fas fa-id-card"></i> Part 2: Cue Card Long Turn (3-4 Mins)
+            </button>
+            <button class="task-tab-btn" id="partTab3" onclick="switchSpeakingPart(3)">
+                <i class="fas fa-brain"></i> Part 3: In-Depth Discussion (4-5 Mins)
+            </button>
+        </div>
+        <div style="font-size:0.78em; color:#94a3b8; display:flex; align-items:center; gap:8px;">
+            <span>📖 Active Topic: <b style="color:#c084fc;" id="activeThemeHeader">{{ test_set.theme if test_set else 'IELTS Speaking CBT' }}</b></span>
+            <span>|</span>
+            <span>⏱️ 11 to 14 Mins Official Standard</span>
+        </div>
+    </div>
+
+    <!-- 3. MAIN SPLIT PANE CONTAINER -->
+    <!-- AUDIO UNLOCK OVERLAY (browser autoplay unlock) -->
+    <div id="audioUnlockOverlay" style="
+        position:fixed; inset:0; z-index:9999;
+        background:rgba(10,10,20,0.85);
+        display:flex; flex-direction:column;
+        align-items:center; justify-content:center; gap:24px;
+        backdrop-filter:blur(8px);
+    ">
+        <img src="/static/images/dr_sarah_idle.jpg?v=2" style="width:200px; height:130px; object-fit:cover; object-position:center top; border-radius:16px; border:3px solid #6366f1; box-shadow:0 0 40px #6366f188;">
+        <div style="text-align:center;">
+            <div style="font-size:1.5rem; font-weight:800; color:#fff; margin-bottom:8px;">Dr. Sarah Jenkins</div>
+            <div style="color:#a5b4fc; font-size:1rem;">Senior British Council IELTS Examiner</div>
+        </div>
+        <button onclick="unlockAndStartExam()" style="
+            background:linear-gradient(135deg,#6366f1,#8b5cf6);
+            color:#fff; border:none; border-radius:50px;
+            padding:18px 48px; font-size:1.2rem; font-weight:700;
+            cursor:pointer; box-shadow:0 8px 30px #6366f166;
+            transition:transform 0.2s;
+        " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            🎙️ Start IELTS Speaking Exam
+        </button>
+        <div style="color:#64748b; font-size:0.85rem;">Click to enable voice & begin your session</div>
+    </div>
+
+    <main class="bc-split-container">
+        
+        <!-- LEFT PANE: AI EXAMINER VIDEO & DIALOGUE -->
+        <section class="bc-pane-left">
+            <div class="examiner-video-frame" id="examinerVideoBox">
+                <img id="examinerIdleImg" src="/static/images/dr_sarah_idle.jpg?v=2" alt="Dr. Sarah Jenkins — Examiner" style="width:100%; height:100%; object-fit:cover; object-position:center top; display:block;">
+                <video id="examinerVideoPlayer" loop muted playsinline preload="auto" poster="/static/images/dr_sarah_idle.jpg?v=2" style="width:100%; height:100%; object-fit:cover; object-position:center top; display:none;">
+                    <source src="/static/videos/dr_sarah_teacher.mp4" type="video/mp4">
+                    <source src="/static/videos/dr_sarah_loop.mp4" type="video/mp4">
+                </video>
+                <audio id="examinerAudioPlayer" preload="auto"></audio>
+                <div class="examiner-name-tag">
+                    <i class="fas fa-user-tie" style="color:#c084fc;"></i>
+                    <span>Dr. Sarah Jenkins — Senior British Council Examiner</span>
+                </div>
+                <div class="examiner-live-status speaking" id="examinerStateBadge">
+                    <span class="pulse-dot green" id="examinerPulseDot"></span>
+                    <span id="examinerStateText">EXAMINER CONNECTED</span>
+                </div>
+            </div>
+
+            <div class="examiner-dialogue-pane">
+                <div class="prompt-official-box">
+                    <div class="prompt-official-label">
+                        <span>Current Examiner Prompt</span>
+                        <button onclick="toggleBengaliPrompt()" style="background:none; border:none; color:var(--bc-accent); font-size:0.9em; cursor:pointer; font-weight:700;">বাংলায় অর্থ</button>
+                    </div>
+                    <div class="prompt-speech-text" id="activeQuestionText">
+                        "Good day. My name is Dr. Sarah Jenkins. Welcome to the IELTS Speaking examination. In this first part, I'd like to ask you some questions about yourself."
+                    </div>
+                    <div class="prompt-bn-box" id="activeQuestionBn">
+                        "শুভ দিন। আমার নাম ড. সারাহ জেনকিন্স। আইইএলটিএস স্পিকিং পরীক্ষায় আপনাকে স্বাগতম।"
+                    </div>
+                </div>
+
+                <div class="examiner-controls-row">
+                    <button class="btn-prompt-ctrl" onclick="replayCurrentQuestionAudio()">
+                        <i class="fas fa-redo-alt" style="color:#38bdf8;"></i> Pardon? (আবার শুনুন)
+                    </button>
+                    <button class="btn-prompt-ctrl" onclick="toggleExaminerVoice()" id="voiceToggleBtn">
+                        <i class="fas fa-volume-up" style="color:#10b981;"></i> <span>ভয়েস: চালু</span>
+                    </button>
+                    <button class="btn-prompt-ctrl" onclick="toggleSubtitleMode()" id="subToggleBtn">
+                        <i class="fas fa-closed-captioning" style="color:#fbbf24;"></i> <span>সাবটাইটেল: চালু</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- RIGHT PANE: CANDIDATE INTERACTION STATION -->
+        <section class="bc-pane-right">
+            <div class="station-header-bar">
+                <div style="font-size:0.85em; font-weight:800; color:var(--bc-text);" id="stationSectionTitle">
+                    Part 1: Introduction & Everyday Q&A
+                </div>
+                <span class="station-badge-step" id="stationStepTag">Question 1 of 4</span>
+            </div>
+
+            <div class="station-scroll-content">
+                
+                <!-- PART 1 & 3 FOCUSED ACTIVE QUESTION -->
+                <div id="part1And3Card" class="active-question-banner">
+                    <div class="active-q-num-tag" id="activeStepPill">Question 1</div>
+                    <div class="active-q-text" id="activeCandidatePromptDisplay">Loading examiner prompt...</div>
+                </div>
+
+                <!-- PART 2 CUE CARD -->
+                <div id="part2Container" style="display:none; flex-direction:column; gap:12px;">
+                    <div class="cambridge-cuecard-booklet" id="p2CueCardBox"></div>
+
+                    <div class="prep-countdown-bar">
+                        <div>
+                            <div style="font-size:0.72em; color:#64748b; font-weight:700; text-transform:uppercase;">1-Minute Official Preparation Time</div>
+                            <div style="font-size:0.82em; color:var(--bc-text);">Use the digital scratchpad below to organize your 2-minute speech.</div>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <button class="btn-prompt-ctrl" style="background:var(--bc-amber); color:#000; font-weight:800; padding:5px 12px;" onclick="startPart2PrepTimer()" id="prepTimerBtn">
+                                ⏱️ Start 1-Min Prep
+                            </button>
+                            <span class="prep-pill-clock" id="prepTimerDisplay">01:00</span>
+                        </div>
+                    </div>
+
+                    <div class="notes-scratchpad-area">
+                        <label style="font-size:0.72em; color:#64748b; font-weight:700; text-transform:uppercase; margin-bottom:4px; display:block;">📝 Digital Notes Scratchpad (Your preparation notes)</label>
+                        <textarea id="p2NotesInput" placeholder="Type key bullet points, idioms, and vocabulary to structure your 2-minute speech..."></textarea>
+                    </div>
+
+                    <!-- Part 2 Candidate 2-Minute Live Speech Target Bar -->
+                    <div id="p2SpeechTimerBar" style="display:none; background:rgba(139,92,246,0.1); border:1px solid rgba(139,92,246,0.3); border-radius:10px; padding:10px 14px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                            <span style="font-size:0.82em; font-weight:800; color:#c084fc;">
+                                <i class="fas fa-stopwatch"></i> Part 2 Speech Target: <span id="p2LiveSpeechClock">00:00</span> / 02:00
+                            </span>
+                            <span id="p2SpeechTargetBadge" style="font-size:0.75em; font-weight:700; color:#94a3b8;">🎯 Aim for 1 to 2 minutes</span>
+                        </div>
+                        <div style="width:100%; height:6px; background:rgba(255,255,255,0.1); border-radius:3px; overflow:hidden;">
+                            <div id="p2SpeechProgressBar" style="width:0%; height:100%; background:linear-gradient(90deg, #8b5cf6, #3b82f6); transition:width 0.5s;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LIVE SPEECH TRANSCRIPTION -->
+                <div class="live-speech-card">
+                    <div class="speech-header-row">
+                        <span style="display:flex; align-items:center; gap:6px;">
+                            <span>🎙️ Candidate Speech / Response</span>
+                            <span id="micStatusText" style="font-size:0.85em; color:#10b981; font-weight:700; text-transform:none;">(Mic Ready / Editable)</span>
+                        </span>
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <span id="wordCountLive" style="font-weight:800; color:#38bdf8;">Words: 0</span>
+                        </div>
+                    </div>
+                    <div class="speech-transcript-box empty" id="speechTranscriptDisplay" contenteditable="true" oninput="handleManualTranscriptInput()" onfocus="handleTranscriptFocus()" placeholder="Speak aloud or click here to type your answer...">
+                        Tap "Start Speaking" or click here to type your response...
+                    </div>
+                    <!-- Filler Word Alert -->
+                    <div id="fillerWordAlert" style="display:none; margin-top:6px; padding:5px 10px; background:rgba(251,191,36,0.12); border:1px solid rgba(251,191,36,0.3); border-radius:6px; font-size:0.78em; color:#fbbf24;">
+                        ⚠️ <span id="fillerWordMsg"></span>
+                    </div>
+                </div>
+
+                <!-- AI HINT PANEL (on-demand) -->
+                <div id="aiHintPanel" class="ai-hint-panel-box">
+                    <div style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="toggleHintExpand()">
+                        <span class="hint-header-title">💡 AI Hint — Key Points &amp; Vocabulary</span>
+                        <div style="display:flex; gap:8px; align-items:center;">
+                            <button onclick="event.stopPropagation(); fetchAIHint()" id="hintLoadBtn" style="background:#4f46e5; border:none; color:#ffffff; font-size:0.75em; font-weight:800; padding:4px 12px; border-radius:12px; cursor:pointer; box-shadow:0 2px 6px rgba(79,70,229,0.3);">✨ Load Hint</button>
+                            <span id="hintChevron" style="color:#4f46e5; font-size:0.9em; font-weight:800;">▼</span>
+                        </div>
+                    </div>
+                    <div id="hintContent" style="display:none; margin-top:10px;">
+                        <div id="hintInner" style="font-size:0.82em;">
+                            <div style="text-align:center; color:#475569; font-weight:600; padding:8px;">Click "✨ Load Hint" to get AI-powered key points and vocabulary</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI FEEDBACK PANEL (after answer) -->
+                <div id="aiFeedbackPanel" style="display:none; background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.25); border-radius:10px; padding:14px; margin-top:8px;">
+                    <div style="font-size:0.85em; font-weight:800; color:#34d399; margin-bottom:10px;">📊 AI Examiner Feedback</div>
+                    <div id="aiFeedbackInner"></div>
+                </div>
+
+            </div>
+
+            <!-- MIC CONTROL DOCK -->
+            <div class="mic-control-dock">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <button class="btn-record-main" id="micRecordBtn" onclick="toggleSpeechRecording()">
+                        <i class="fas fa-microphone"></i>
+                        <span id="micRecordLabel">Start Speaking</span>
+                    </button>
+                    <!-- Animated sound waves when recording -->
+                    <div id="micLiveMeter" style="display:none; align-items:center; gap:3px; height:18px; padding:0 4px;">
+                        <div class="sound-wave-bar"></div>
+                        <div class="sound-wave-bar"></div>
+                        <div class="sound-wave-bar"></div>
+                        <div class="sound-wave-bar"></div>
+                    </div>
+                    <span style="font-family:'JetBrains Mono', monospace; font-size:0.9em; font-weight:700; color:var(--bc-text);" id="recDurationDisplay">00:00</span>
+                </div>
+
+                <div style="display:flex; gap:6px; align-items:center;">
+                    <button id="getAIFeedbackBtn" onclick="requestAIEvaluation()" style="background:rgba(16,185,129,0.2); border:1px solid #10b981; color:#34d399; font-size:0.78em; font-weight:700; padding:7px 14px; border-radius:8px; cursor:pointer; display:none;">
+                        📊 Get AI Feedback
+                    </button>
+                    <button class="btn-advance-q" onclick="advanceToNextQuestion()">
+                        <span>Next Question / Done</span> <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+
+
+    </main>
+
+    <!-- 4. OFFICIAL CD-IELTS FOOTER -->
+    <footer class="bc-bottom-bar">
+        <div>
+            <span style="font-size:0.78em; color:#cbd5e1;">
+                ● Audio: <b id="micStatusText" style="color:#10b981;">Connected</b> &nbsp;|&nbsp; Examiner: <b style="color:#c084fc;">Certified BC AI Examiner</b>
+            </span>
+        </div>
+        <div style="display:flex; gap:8px;">
+            <button class="bc-nav-btn secondary" onclick="prevSpeakingPart()">
+                <i class="fas fa-arrow-left"></i> Previous Part
+            </button>
+            <button class="bc-nav-btn secondary" onclick="nextSpeakingPart()">
+                Next Part <i class="fas fa-arrow-right"></i>
+            </button>
+            <button class="bc-nav-btn submit" onclick="submitFullSpeakingExam()">
+                <i class="fas fa-check-circle"></i> Submit & Grade Band Score
+            </button>
+        </div>
+    </footer>
+
+    <!-- EVALUATION RESULT MODAL -->
+    <div class="cbt-modal-backdrop" id="speakingEvalModal">
+        <div class="cbt-modal-card">
+            <div class="cbt-modal-header">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span style="font-size:1.2em;">📊</span>
+                    <div>
+                        <h3 style="font-size:1.1em; font-weight:800; color:#c084fc;">Cambridge IELTS Speaking Band Evaluation</h3>
+                        <p style="font-size:0.75em; color:#94a3b8; margin-top:2px;">Official 4-Criteria Rubric Assessment by Senior AI Examiner</p>
+                    </div>
+                </div>
+                <button onclick="closeSpeakingEvalModal()" style="background:none; border:none; color:#cbd5e1; font-size:1.2em; cursor:pointer;">✖</button>
+            </div>
+
+            <div class="cbt-modal-body" id="speakingEvalBody"></div>
+
+            <div class="cbt-modal-footer">
+                <a href="/analytics" class="bc-nav-btn secondary" style="text-decoration:none;">📈 অ্যানালিটিক্স দেখুন</a>
+                <button class="bc-nav-btn" style="background:var(--bc-accent); color:#fff;" onclick="closeSpeakingEvalModal()">প্র্যাকটিস চালিয়ে যান</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- BAND 9 MODEL MODAL -->
+    <div class="cbt-modal-backdrop" id="modelAnswerModal">
+        <div class="cbt-modal-card" style="max-width:760px;">
+            <div class="cbt-modal-header">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span style="font-size:1.2em;">👑</span>
+                    <div>
+                        <h3 style="font-size:1.1em; font-weight:800; color:#fbbf24;">Band 9.0 Cambridge Model Speech</h3>
+                        <p style="font-size:0.75em; color:#94a3b8; margin-top:2px;">Official benchmark responses for this prompt</p>
+                    </div>
+                </div>
+                <button onclick="toggleModelAnswerModal()" style="background:none; border:none; color:#cbd5e1; font-size:1.2em; cursor:pointer;">✖</button>
+            </div>
+            <div class="cbt-modal-body" id="modelAnswerBody"></div>
+            <div class="cbt-modal-footer">
+                <button class="bc-nav-btn secondary" onclick="toggleModelAnswerModal()">বন্ধ করুন</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOPIC MAKER MODAL -->
+    <div class="cbt-modal-backdrop" id="topicMakerModal">
+        <div class="cbt-modal-card" style="max-width:620px;">
+            <div class="cbt-modal-header">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span style="font-size:1.2em;">🎨</span>
+                    <div>
+                        <h3 style="font-size:1.1em; font-weight:800; color:#38bdf8;">AI Speaking কোয়েশ্চেন মেকার</h3>
+                        <p style="font-size:0.75em; color:#94a3b8; margin-top:2px;">যেকোনো টপিকের ওপর নতুন ৩-পার্ট ক্যামব্রিজ স্পিকিং টেস্ট তৈরি করুন</p>
+                    </div>
+                </div>
+                <button onclick="closeTopicMakerModal()" style="background:none; border:none; color:#cbd5e1; font-size:1.2em; cursor:pointer;">✖</button>
+            </div>
+            <div class="cbt-modal-body">
+                <div>
+                    <label style="font-size:0.78em; font-weight:700; color:#cbd5e1; text-transform:uppercase;">কাস্টম টপিক বা থিম লিখুন</label>
+                    <input type="text" id="customSpeakingThemeInput" placeholder="যেমন: Artificial Intelligence, Climate Migration, Space Exploration, Food Culture..." 
+                           style="width:100%; background:#1e293b; border:1px solid rgba(255,255,255,0.15); border-radius:6px; padding:8px 12px; color:#fff; font-size:0.88em; margin-top:6px; outline:none;">
+                </div>
+
+                <div style="margin-top:10px;">
+                    <div style="font-size:0.75em; color:#94a3b8; font-weight:700; text-transform:uppercase; margin-bottom:6px;">বা জনপ্রিয় টপিক বেছে নিন:</div>
+                    <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                        <span onclick="selectThemePill('Artificial Intelligence & Future Jobs')" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); padding:4px 10px; border-radius:14px; font-size:0.76em; cursor:pointer;">🤖 AI & Future Jobs</span>
+                        <span onclick="selectThemePill('Environmental Sustainability & Climate')" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); padding:4px 10px; border-radius:14px; font-size:0.76em; cursor:pointer;">🌱 Climate & Nature</span>
+                        <span onclick="selectThemePill('Food, Cooking & Traditional Cuisine')" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); padding:4px 10px; border-radius:14px; font-size:0.76em; cursor:pointer;">🍱 Food & Cooking</span>
+                        <span onclick="selectThemePill('Weather Patterns, Seasons & Living')" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); padding:4px 10px; border-radius:14px; font-size:0.76em; cursor:pointer;">🌧️ Weather & Living</span>
+                        <span onclick="selectThemePill('Photography, Visual Arts & Media')" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); padding:4px 10px; border-radius:14px; font-size:0.76em; cursor:pointer;">📸 Photography & Art</span>
+                        <span onclick="selectThemePill('Childhood Toys, Memories & Nostalgia')" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); padding:4px 10px; border-radius:14px; font-size:0.76em; cursor:pointer;">🧸 Childhood & Toys</span>
+                    </div>
+                </div>
+            </div>
+            <div class="cbt-modal-footer">
+                <button class="bc-nav-btn secondary" onclick="closeTopicMakerModal()">Cancel</button>
+                <button class="bc-nav-btn" style="background:#38bdf8; color:#000; font-weight:800;" onclick="generateCustomSpeakingTest()">
+                    ✨ AI টেস্ট তৈরি ও শুরু করুন
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== ⚙️ CONFIGURE PRACTICE MODAL ===== -->
+    <div class="cfg-modal-backdrop" id="configureModal" onclick="closeConfigureModal(event)">
+        <div class="cfg-modal-card" onclick="event.stopPropagation()">
+            <!-- Header -->
+            <div class="cfg-modal-header">
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <div style="width:40px; height:40px; border-radius:10px; background:rgba(139,92,246,0.25); border:1px solid #8b5cf6; display:flex; align-items:center; justify-content:center; font-size:1.2em;">⚙️</div>
+                    <div>
+                        <div style="font-size:1.05em; font-weight:900; color:#c084fc;">Practice Configure</div>
+                        <div style="font-size:0.75em; color:#94a3b8; margin-top:2px;">মোড, টপিক ও পার্ট বেছে নিন</div>
+                    </div>
+                </div>
+                <button onclick="closeConfigureModal()" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:#cbd5e1; width:32px; height:32px; border-radius:8px; cursor:pointer; font-size:1em;">✕</button>
+            </div>
+
+            <!-- Body -->
+            <div class="cfg-modal-body">
+
+                <!-- Active Session Bar -->
+                <div class="cfg-active-bar">
+                    <i class="fas fa-circle" style="color:#10b981; font-size:0.6em;"></i>
+                    <span style="color:#94a3b8; font-weight:600;">বর্তমান সেশন:</span>
+                    <span style="color:#c084fc; font-weight:800;" id="cfgActiveSessionLabel">Full 3-Part Mock Test</span>
+                </div>
+
+                <!-- Section 1: Practice Mode -->
+                <div>
+                    <div class="cfg-section-label">
+                        <i class="fas fa-play-circle"></i> Step 1 — Practice Mode বেছে নিন
+                    </div>
+                    <div class="cfg-mode-grid">
+                        <div class="cfg-mode-card selected" id="cfgMode_full" onclick="selectCfgMode('full')">
+                            <div class="cfg-mode-icon">🏆</div>
+                            <div class="cfg-mode-title">Full Mock Test</div>
+                            <div class="cfg-mode-sub">Part 1 + 2 + 3</div>
+                            <div class="cfg-mode-badge full">~14 Min</div>
+                        </div>
+                        <div class="cfg-mode-card" id="cfgMode_part1" onclick="selectCfgMode('part1')">
+                            <div class="cfg-mode-icon">🗣️</div>
+                            <div class="cfg-mode-title">Solo Part 1</div>
+                            <div class="cfg-mode-sub">Everyday Interview</div>
+                            <div class="cfg-mode-badge solo">4–5 Min</div>
+                        </div>
+                        <div class="cfg-mode-card" id="cfgMode_part2" onclick="selectCfgMode('part2')">
+                            <div class="cfg-mode-icon">🎴</div>
+                            <div class="cfg-mode-title">Solo Part 2</div>
+                            <div class="cfg-mode-sub">Cue Card 2-Min Speech</div>
+                            <div class="cfg-mode-badge solo">3–4 Min</div>
+                        </div>
+                        <div class="cfg-mode-card" id="cfgMode_part3" onclick="selectCfgMode('part3')">
+                            <div class="cfg-mode-icon">🧠</div>
+                            <div class="cfg-mode-title">Solo Part 3</div>
+                            <div class="cfg-mode-sub">Deep Discussion</div>
+                            <div class="cfg-mode-badge solo">4–5 Min</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Cambridge Test Set Picker -->
+                <div>
+                    <div class="cfg-section-label">
+                        <i class="fas fa-book"></i> Step 2 — Cambridge Test Set বেছে নিন
+                    </div>
+                    <div class="cfg-cambridge-grid" id="cfgCambridgeGrid">
+                        <!-- Populated by JS from allTestsList -->
+                        <div class="cfg-cambridge-item selected" id="cfgCamb_random" onclick="selectCfgCambridge('random')">
+                            <div class="cfg-camb-book-badge">🎲 Random</div>
+                            <div>
+                                <div class="cfg-camb-info-title">র‍্যান্ডম নতুন সেট</div>
+                                <div class="cfg-camb-info-sub">প্রতিবার নতুন প্রশ্ন</div>
+                            </div>
+                        </div>
+                        {% if all_tests_list %}
+                        {% for t in all_tests_list %}
+                        <div class="cfg-cambridge-item" id="cfgCamb_cambridge_{{ t.book }}_{{ t.test }}" onclick="selectCfgCambridge('cambridge_{{ t.book }}_{{ t.test }}')">
+                            <div class="cfg-camb-book-badge">Full Mock</div>
+                            <div>
+                                <div class="cfg-camb-info-title">{{ t.title }}</div>
+                                <div class="cfg-camb-info-sub">Full Authentic 3-Part Set</div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Section 3: Timer Setting -->
+                <div>
+                    <div class="cfg-section-label">
+                        <i class="fas fa-stopwatch"></i> Step 3 — টাইমার সেটিং
+                    </div>
+                    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                        <label style="display:flex; align-items:center; gap:8px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); border-radius:8px; padding:8px 14px; cursor:pointer;">
+                            <input type="radio" name="cfgTimer" value="14" checked style="accent-color:#8b5cf6;">
+                            <span style="font-size:0.82em; font-weight:700;">⏱️ 14 মিনিট (Full Mock)</span>
+                        </label>
+                        <label style="display:flex; align-items:center; gap:8px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); border-radius:8px; padding:8px 14px; cursor:pointer;">
+                            <input type="radio" name="cfgTimer" value="5" style="accent-color:#8b5cf6;">
+                            <span style="font-size:0.82em; font-weight:700;">⏱️ 5 মিনিট (Solo Part)</span>
+                        </label>
+                        <label style="display:flex; align-items:center; gap:8px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); border-radius:8px; padding:8px 14px; cursor:pointer;">
+                            <input type="radio" name="cfgTimer" value="0" style="accent-color:#8b5cf6;">
+                            <span style="font-size:0.82em; font-weight:700;">⏱️ No Timer (Practice Mode)</span>
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Footer -->
+            <div class="cfg-modal-footer">
+                <button class="cfg-cancel-btn" onclick="closeConfigureModal()">বাতিল করুন</button>
+                <button class="cfg-apply-btn" onclick="applyConfigure()">
+                    <i class="fas fa-check-circle"></i> Apply & Start Practice
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOADING OVERLAY -->
+    <div class="cbt-loading-overlay" id="speakingLoadingOverlay">
+        <div class="cbt-spinner"></div>
+        <h3 style="font-size:1.1em; font-weight:800; margin-bottom:4px;" id="loadingOverlayTitle">AI এক্সামিনার রেডি হচ্ছে...</h3>
+        <p style="font-size:0.82em; color:#c084fc; max-width:360px; text-align:center;" id="loadingOverlayDesc">
+            অফিশিয়াল ক্যামব্রিজ স্পিকিং টেস্ট ও এআই এক্সামিনার অডিও লোড করা হচ্ছে।
+        </p>
+    </div>
+
+    <!-- JAVASCRIPT ENGINE -->
+    <script>
+    /* ========= BUILT-IN QUESTION BANK (Official 2-Frame Part 1) ========= */
+    var QUESTION_BANK = {
+        part1_mandatory: [
+            {
+                topic: "Hometown & Neighbourhood",
+                topicBn: "বাড়ি ও শহর",
+                questions: [
+                    "Can you tell me about the town or city where you grew up?",
+                    "What do you like most about living in your hometown?",
+                    "Has your hometown changed much since you were a child?",
+                    "Would you say your neighbourhood is a good place to live? Why?",
+                    "Do you think you will stay in your hometown in the future?"
+                ]
+            },
+            {
+                topic: "Work or Studies",
+                topicBn: "পড়াশোনা বা চাকরি",
+                questions: [
+                    "Are you currently studying or do you have a job?",
+                    "What inspired you to choose your current subject or career path?",
+                    "What do you find most interesting about your daily work or studies?",
+                    "How do you usually organize your schedule to stay productive?",
+                    "Do you see yourself staying in this career path in the future?"
+                ]
+            },
+            {
+                topic: "Home & Accommodation",
+                topicBn: "বাসস্থান ও বাড়ি",
+                questions: [
+                    "Do you live in a house or an apartment?",
+                    "What is your favourite room in your home and why?",
+                    "How long have you lived in your current home?",
+                    "Is there anything you would like to change or improve about your home?",
+                    "What do you like most about the area around your home?"
+                ]
+            }
+        ],
+        part1_secondary: [
+            {
+                topic: "Food & Cooking",
+                topicBn: "খাবার ও রান্নাবান্না",
+                questions: [
+                    "What is your favourite type of food, and how often do you eat it?",
+                    "Do you enjoy cooking meals at home or do you prefer dining out?",
+                    "Did your family eat meals together when you were growing up?",
+                    "Have your eating habits changed much in recent years?"
+                ]
+            },
+            {
+                topic: "Technology & Smartphones",
+                topicBn: "প্রযুক্তি ও স্মার্টফোন",
+                questions: [
+                    "How often do you use your mobile phone during the day?",
+                    "Do you think people today are too dependent on digital technology?",
+                    "What mobile apps do you use most frequently and why?",
+                    "Has modern technology improved communication in your opinion?"
+                ]
+            },
+            {
+                topic: "Weather & Seasons",
+                topicBn: "আবহাওয়া ও ঋতু",
+                questions: [
+                    "What kind of weather do you enjoy the most, and why?",
+                    "Does the weather ever influence your mood or daily productivity?",
+                    "What do you usually do when it rains heavily outside?",
+                    "Has the climate in your country changed noticeably compared to your childhood?"
+                ]
+            },
+            {
+                topic: "Sports & Physical Exercise",
+                topicBn: "খেলাধুলা ও শরীরচর্চা",
+                questions: [
+                    "Do you do any sports or physical activities regularly?",
+                    "Do you prefer watching sports or participating in them? Why?",
+                    "Do you think sport is important for children growing up? Why?",
+                    "What sports were popular when you were growing up?"
+                ]
+            },
+            {
+                topic: "Music & Entertainment",
+                topicBn: "সঙ্গীত ও বিনোদন",
+                questions: [
+                    "What kind of music do you enjoy listening to?",
+                    "Did you learn to play any musical instruments when you were young?",
+                    "Do you prefer listening to music alone or with others? Why?",
+                    "How does music affect your mood and concentration?"
+                ]
+            },
+            {
+                topic: "Travel & Holidays",
+                topicBn: "ভ্রমণ ও ছুটি",
+                questions: [
+                    "Do you enjoy travelling? Where have you visited recently?",
+                    "Do you prefer travelling alone or with friends or family? Why?",
+                    "What is your ideal type of holiday destination?",
+                    "How do you usually plan and organize your trips?"
+                ]
+            },
+            {
+                topic: "Childhood & Growing Up",
+                topicBn: "শৈশব ও স্মৃতি",
+                questions: [
+                    "What was your favourite toy or game when you were a child?",
+                    "Did you prefer playing outdoors or staying indoors when you were young?",
+                    "Do you still keep in touch with any friends from your childhood?",
+                    "Do you think children today have different childhoods compared to previous generations?"
+                ]
+            },
+            {
+                topic: "Photography & Art",
+                topicBn: "ফটোগ্রাফি ও ছবি তোলা",
+                questions: [
+                    "How often do you take photographs using your smartphone or camera?",
+                    "Do you prefer taking photos of landscapes and nature, or pictures of people?",
+                    "Do you print out physical photo albums or store everything digitally?",
+                    "Do you think people spend too much time taking photos instead of enjoying the moment?"
+                ]
+            },
+            {
+                topic: "Shopping & Personal Style",
+                topicBn: "কেনাকাটা ও পোশাক",
+                questions: [
+                    "Do you enjoy shopping for clothes and footwear?",
+                    "Do you prefer shopping at physical brick-and-mortar stores or online websites?",
+                    "How important is comfort versus style when choosing what shoes or clothes to buy?",
+                    "Do you tend to keep items for a long time or replace them frequently?"
+                ]
+            },
+            {
+                topic: "Animals & Wildlife",
+                topicBn: "পশুপাখি ও বন্যপ্রাণী",
+                questions: [
+                    "Did you have any pets when you were growing up?",
+                    "What is your favourite wild animal, and why?",
+                    "Have you ever visited a wildlife conservation sanctuary or zoo?",
+                    "Do you think it is important for children to learn about wildlife conservation?"
+                ]
+            }
+        ],
+        part2: [
+            {
+                topic: "Describe a Person",
+                cue_card_prompt: "<h4>📌 Describe a person who has had a great influence on you.</h4><p>You should say:</p><ul><li>Who this person is</li><li>How you know this person</li><li>What qualities this person has</li><li>And explain how this person has influenced you</li></ul>"
+            },
+            {
+                topic: "Describe a Place",
+                cue_card_prompt: "<h4>📌 Describe a place you have visited that you found particularly interesting.</h4><p>You should say:</p><ul><li>Where this place is</li><li>When you went there</li><li>What you did or saw there</li><li>And explain why you found it interesting</li></ul>"
+            },
+            {
+                topic: "Describe an Object",
+                cue_card_prompt: "<h4>📌 Describe an object that is important to you.</h4><p>You should say:</p><ul><li>What it is</li><li>Where you got it from</li><li>How often you use it</li><li>And explain why it is important to you</li></ul>"
+            },
+            {
+                topic: "Describe an Event",
+                cue_card_prompt: "<h4>📌 Describe an important event in your life that made you happy.</h4><p>You should say:</p><ul><li>What the event was</li><li>When it happened</li><li>Who was involved</li><li>And explain why it made you happy</li></ul>"
+            },
+            {
+                topic: "Describe an Activity",
+                cue_card_prompt: "<h4>📌 Describe a hobby or leisure activity that you enjoy.</h4><p>You should say:</p><ul><li>What the activity is</li><li>Where and when you do it</li><li>Who you do it with</li><li>And explain why you enjoy it</li></ul>"
+            },
+            {
+                topic: "Describe a Skill",
+                cue_card_prompt: "<h4>📌 Describe a skill that you have learned which you think is very useful.</h4><p>You should say:</p><ul><li>What the skill is</li><li>How and when you learned it</li><li>How often you use it</li><li>And explain why you think it is useful</li></ul>"
+            }
+        ],
+        part3: [
+            {
+                topic: "Technology & Society",
+                questions: [
+                    "Do you think technology has made people's lives better or worse overall?",
+                    "How has social media changed the way people communicate with each other?",
+                    "Do you think artificial intelligence will have a positive or negative impact on jobs?",
+                    "Should children be given smartphones at a young age? Why or why not?",
+                    "In what ways has technology affected traditional cultural practices?"
+                ]
+            },
+            {
+                topic: "Environment & Climate",
+                questions: [
+                    "How serious do you think the problem of climate change is today?",
+                    "What do you think governments should do to address environmental problems?",
+                    "Do individuals have a responsibility to protect the environment? Why?",
+                    "Is it realistic for countries to completely switch to renewable energy? Why?",
+                    "How can education play a role in solving environmental issues?"
+                ]
+            },
+            {
+                topic: "Education & Learning",
+                questions: [
+                    "Do you think the education system in your country prepares young people well for adult life?",
+                    "What are the advantages and disadvantages of studying abroad?",
+                    "How important is it for universities to focus on practical skills rather than academic knowledge?",
+                    "Should education be free for all citizens? What are the arguments for and against?",
+                    "How has online learning changed the nature of education globally?"
+                ]
+            },
+            {
+                topic: "Health & Lifestyle",
+                questions: [
+                    "Why do you think so many people today struggle to maintain a healthy lifestyle?",
+                    "What responsibilities do governments have in promoting public health?",
+                    "Is it fair that people who lead unhealthy lifestyles receive the same healthcare as those who do not?",
+                    "How has modern life affected people's mental health?",
+                    "What role should schools play in teaching young people about health and wellbeing?"
+                ]
+            },
+            {
+                topic: "Culture & Globalisation",
+                questions: [
+                    "How has globalisation affected local cultures around the world?",
+                    "Do you think it is important for countries to preserve their traditional cultures? Why?",
+                    "In what ways has immigration enriched the cultures of host countries?",
+                    "Do you think English becoming a global language is a positive development?",
+                    "How can a society balance modernisation with the preservation of cultural heritage?"
+                ]
+            }
+        ]
+    };
+
+    function pickRandomTestSet() {
+        // Frame 1: Mandatory Baseline (Hometown / Work & Studies / Accommodation)
+        var mandPool = QUESTION_BANK.part1_mandatory;
+        var mand = mandPool[Math.floor(Math.random() * mandPool.length)];
+        var mandQuestions = shuffleArray(mand.questions).slice(0, 2);
+
+        // Frame 2: Secondary Specialized Topic
+        var secPool = QUESTION_BANK.part1_secondary;
+        var sec = secPool[Math.floor(Math.random() * secPool.length)];
+        var secQuestions = shuffleArray(sec.questions).slice(0, 2);
+
+        var p2Pool = QUESTION_BANK.part2;
+        var p3Pool = QUESTION_BANK.part3;
+
+        var p2 = p2Pool[Math.floor(Math.random() * p2Pool.length)];
+        var p3 = p3Pool[Math.floor(Math.random() * p3Pool.length)];
+
+        return {
+            theme: mand.topic + " → " + sec.topic,
+            part1: {
+                topic: mand.topic + " → " + sec.topic,
+                mandatory_topic: mand.topic,
+                secondary_topic: sec.topic,
+                questions: [mandQuestions[0], mandQuestions[1], secQuestions[0], secQuestions[1]]
+            },
+            part2: { topic: p2.topic, cue_card_prompt: p2.cue_card_prompt },
+            part3: { topic: p3.topic, questions: shuffleArray(p3.questions) }
+        };
+    }
+
+    function shuffleArray(arr) {
+        var a = arr.slice();
+        for (var i = a.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+        }
+        return a;
+    }
+
+    /* Pick a fresh random set each session unless an AI-generated set was passed in */
+    var _serverSet = {{ test_set | tojson | safe if test_set else '{}' }};
+    var currentTestSet = (_serverSet && _serverSet.part1) ? _serverSet : pickRandomTestSet();
+    var currentPart = {{ active_part | default(1) }};
+    var currentQuestionIdx = 0;
+    var allTranscripts = { p0: [], p1: [], p2: "", p3: [] };
+    var _currentAIQuestion = "";
+    var _currentAIPart = 1;
+    var _selectedCfgMode = 'full';
+    var _selectedCfgCamb = 'random';
+    var isVoiceEnabled = true;
+    var isSubtitlesVisible = true;
+    var isRecording = false;
+    var recTimerInterval = null;
+    var recSeconds = 0;
+    var recognition = null;
+    var examSeconds = 840; // 14 mins
+    var examTimerInterval = null;
+    var prepSeconds = 60;
+    var prepTimerInterval = null;
+
+
+    var currentThemeIndex = 0;
+    var themes = ['', 'theme-sepia', 'theme-dark'];
+    var currentFontIndex = 0;
+    var fontSizes = ['14px', '16px', '18px'];
+
+    // Authentic Examiner Transitions & Interjections
+    var EXAMINER_BRIDGES = [
+        "Thank you.",
+        "Right, that's very clear.",
+        "I see, thank you.",
+        "Alright, let's move on to the next question.",
+        "Thank you. Now let's consider this..."
+    ];
+
+    function cycleTheme() {
+        currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+        document.body.className = themes[currentThemeIndex];
+    }
+
+    function cycleFontSize() {
+        currentFontIndex = (currentFontIndex + 1) % fontSizes.length;
+        document.documentElement.style.setProperty('--bc-font-scale', fontSizes[currentFontIndex]);
+    }
+
+    function generateNewRandomSet() {
+        _stopAll();
+        currentTestSet = pickRandomTestSet();
+        currentQuestionIdx = 0;
+        allTranscripts = { p0: [], p1: [], p2: "", p3: [] };
+        var hdr = document.getElementById('activeThemeHeader');
+        if (hdr) hdr.textContent = currentTestSet.theme || 'IELTS Speaking CBT';
+        switchSpeakingPart(0);
+    }
+
+
+    var examStarted = false;
+
+    function unlockAndStartExam() {
+        if (examStarted) return;
+        examStarted = true;
+
+        // Hide overlay
+        var overlay = document.getElementById('audioUnlockOverlay');
+        if (overlay) overlay.style.display = 'none';
+
+        // Unlock speechSynthesis (must happen inside a user gesture)
+        if ('speechSynthesis' in window) {
+            var unlock = new SpeechSynthesisUtterance('');
+            window.speechSynthesis.speak(unlock);
+            window.speechSynthesis.cancel();
+        }
+
+        initVoices();
+
+        // Load AI set if present
+        var aiLiveSet = sessionStorage.getItem('ai_speaking_set');
+        if (window.location.search.indexOf('ai_live=1') !== -1 && aiLiveSet) {
+            try {
+                var parsed = JSON.parse(aiLiveSet);
+                if (parsed && parsed.part1) {
+                    currentTestSet = parsed;
+                    if (document.getElementById('activeThemeHeader')) {
+                        document.getElementById('activeThemeHeader').textContent = parsed.theme || "IELTS Speaking CBT";
+                    }
+                }
+            } catch(e){}
+        }
+
+        initSpeechRecognition();
+        startExamClock();
+        switchSpeakingPart(currentPart);
+    }
+
+    window.onload = function() {
+        // Show overlay immediately - don't auto-start
+        // Everything starts from unlockAndStartExam() on button click
+    };
+
+
+    function startExamClock() {
+        if (examTimerInterval) clearInterval(examTimerInterval);
+        examTimerInterval = setInterval(function() {
+            if (examSeconds > 0) {
+                examSeconds--;
+                var m = Math.floor(examSeconds / 60);
+                var s = examSeconds % 60;
+                document.getElementById('examClockDisplay').textContent = (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s);
+            }
+        }, 1000);
+    }
+
+    function switchSpeakingPart(partNum) {
+        saveCurrentTranscript();
+        currentPart = (partNum >= 1 && partNum <= 3) ? partNum : 1;
+        currentQuestionIdx = 0;
+
+        document.getElementById('partTab1').className = 'task-tab-btn' + (currentPart === 1 ? ' active' : '');
+        document.getElementById('partTab2').className = 'task-tab-btn' + (currentPart === 2 ? ' active' : '');
+        document.getElementById('partTab3').className = 'task-tab-btn' + (currentPart === 3 ? ' active' : '');
+
+        document.getElementById('part1And3Card').style.display = (currentPart === 2 ? 'none' : 'block');
+        document.getElementById('part2Container').style.display = (currentPart === 2 ? 'flex' : 'none');
+
+        renderCurrentPart();
+    }
+
+    function renderCurrentPart() {
+        if (currentPart === 1) {
+            var p1Questions = (currentTestSet.part1 && currentTestSet.part1.questions) ? currentTestSet.part1.questions : ["Tell me about your hometown."];
+            var qText = p1Questions[currentQuestionIdx] || "Tell me about your daily routine.";
+            var mandTopic = (currentTestSet.part1 && currentTestSet.part1.mandatory_topic) || "Your Background";
+            var secTopic = (currentTestSet.part1 && currentTestSet.part1.secondary_topic) || (currentTestSet.part1 && currentTestSet.part1.topic) || "General Topics";
+            var activeTopic = (currentQuestionIdx < 2) ? mandTopic : secTopic;
+            
+            document.getElementById('stationSectionTitle').textContent = "Part 1: " + activeTopic;
+            document.getElementById('stationStepTag').textContent = "Question " + (currentQuestionIdx + 1) + " of " + p1Questions.length;
+            document.getElementById('activeStepPill').textContent = (currentQuestionIdx < 2 ? "📌 Baseline: " : "🎯 Topic: ") + activeTopic;
+            
+            var spokenText = qText;
+            var bnText = "বিষয়: " + activeTopic + " — প্রশ্ন " + (currentQuestionIdx + 1);
+            
+            if (currentQuestionIdx === 0 && !allTranscripts.p1_intro_played) {
+                allTranscripts.p1_intro_played = true;
+                spokenText = "Good day. My name is Dr. Sarah Jenkins. Welcome to your IELTS Speaking test. In this first part, I'd like to ask you some questions about yourself. " + qText;
+                bnText = "শুভ দিন। আমার নাম ড. সারাহ জেনকিন্স। আইইএলটিএস স্পিকিং পরীক্ষায় স্বাগতম। প্রথম অংশে আপনাকে নিজের সম্পর্কে কিছু প্রশ্ন করব: " + mandTopic;
+            } else if (currentQuestionIdx === 1) {
+                spokenText = "Thank you. That's very clear. Now, " + qText;
+                bnText = "ধন্যবাদ। এবার বলুন: " + qText;
+            } else if (currentQuestionIdx === 2) {
+                spokenText = "Thank you. Now let's move on to talk about " + secTopic + ". " + qText;
+                bnText = "ধন্যবাদ। এবার আসুন " + secTopic + " নিয়ে কথা বলি: " + qText;
+            } else if (currentQuestionIdx > 2) {
+                spokenText = "Right, thank you. And " + qText;
+                bnText = "ধন্যবাদ। এবার শেষ প্রশ্ন: " + qText;
+            }
+            
+            document.getElementById('activeCandidatePromptDisplay').textContent = qText;
+            setCurrentAIContext(qText, 1);
+            setExaminerQuestion(spokenText, bnText);
+            loadSavedTranscript();
+        } else if (currentPart === 2) {
+            document.getElementById('stationSectionTitle').textContent = "Part 2: Cue Card Long Turn (2-Minute Speech)";
+            document.getElementById('stationStepTag').textContent = "1-Min Prep + 2-Min Speech";
+            
+            var p2Cue = (currentTestSet.part2 && currentTestSet.part2.cue_card_prompt) ? currentTestSet.part2.cue_card_prompt : "<h4>Describe a memorable journey.</h4>";
+            document.getElementById('p2CueCardBox').innerHTML = p2Cue;
+
+            var p2IntroScript = "Thank you very much. Now, I'm going to give you a topic, and I'd like you to talk about it for one to two minutes. Before you talk, you'll have one minute to think about what you're going to say. You can make some notes if you wish. Here is your cue card.";
+            var p2Topic = (currentTestSet.part2 && currentTestSet.part2.topic) ? currentTestSet.part2.topic : "Cue Card Topic";
+            var p2Bn = "পার্ট ২: কিউ কার্ড — আপনাকে ১ মিনিট প্রস্তুতি নেওয়ার সময় দেওয়া হবে এবং তারপর ১ থেকে ২ মিনিট টানা বলতে হবে।";
+            setCurrentAIContext(p2Topic, 2);
+            setExaminerQuestion(p2IntroScript, p2Bn);
+            loadSavedTranscript();
+        } else if (currentPart === 3) {
+            var p3Questions = (currentTestSet.part3 && currentTestSet.part3.questions) ? currentTestSet.part3.questions : ["What are the future developments in this field?"];
+            var qText = p3Questions[currentQuestionIdx] || "Discuss your perspective on modern social trends.";
+            var topic = (currentTestSet.part3 && currentTestSet.part3.topic) || "Analytical Issues";
+            
+            document.getElementById('stationSectionTitle').textContent = "Part 3: In-Depth Discussion (" + topic + ")";
+            document.getElementById('stationStepTag').textContent = "Question " + (currentQuestionIdx + 1) + " of " + p3Questions.length;
+            document.getElementById('activeStepPill').textContent = "Discussion Point " + (currentQuestionIdx + 1);
+            
+            var spokenText = qText;
+            var bnText = "পার্ট ৩ বিশ্লেষণমূলক আলোচনা (" + topic + ") — প্রশ্ন " + (currentQuestionIdx + 1);
+            
+            if (currentQuestionIdx === 0 && !allTranscripts.p3_intro_played) {
+                allTranscripts.p3_intro_played = true;
+                spokenText = "Thank you. We've been talking about " + ((currentTestSet.part2 && currentTestSet.part2.topic) ? currentTestSet.part2.topic.toLowerCase() : "that topic") + ", and now I'd like to discuss with you one or two more general questions related to this. " + qText;
+                bnText = "ধন্যবাদ। এতক্ষণ আমরা নির্দিষ্ট বিষয়ে কথা বললাম, এবার এই সংক্রান্ত কিছু বিশ্লেষণমূলক সাধারণ প্রশ্ন নিয়ে আলোচনা করা যাক।";
+            } else if (currentQuestionIdx === 1) {
+                spokenText = "I see. That's a thoughtful point. And " + qText;
+            } else if (currentQuestionIdx === 2) {
+                spokenText = "Thank you. How about this: " + qText;
+            } else if (currentQuestionIdx > 2) {
+                spokenText = "Right. Finally, " + qText;
+            }
+            
+            document.getElementById('activeCandidatePromptDisplay').textContent = qText;
+            setCurrentAIContext(qText, 3);
+            setExaminerQuestion(spokenText, bnText);
+            loadSavedTranscript();
+        }
+    }
+
+    function setExaminerQuestion(text, bnText) {
+        document.getElementById('activeQuestionText').textContent = text;
+        var bnBox = document.getElementById('activeQuestionBn');
+        if (bnBox) {
+            bnBox.textContent = bnText || "প্রশ্নটির বাংলায় অনুবাদ লোড হচ্ছে...";
+            bnBox.style.display = 'none';
+        }
+        speakExaminerQuestion(text);
+    }
+
+    function toggleBengaliPrompt() {
+        var box = document.getElementById('activeQuestionBn');
+        box.style.display = (box.style.display === 'none' ? 'block' : 'none');
+    }
+
+    function toggleSubtitleMode() {
+        isSubtitlesVisible = !isSubtitlesVisible;
+        var btn = document.getElementById('subToggleBtn');
+        var promptText = document.getElementById('activeQuestionText');
+        var rightDisplay = document.getElementById('activeCandidatePromptDisplay');
+        
+        if (isSubtitlesVisible) {
+            btn.innerHTML = '<i class="fas fa-closed-captioning" style="color:#fbbf24;"></i> <span>সাবটাইটেল: চালু</span>';
+            promptText.style.filter = 'none';
+            if (rightDisplay) rightDisplay.style.filter = 'none';
+        } else {
+            btn.innerHTML = '<i class="fas fa-eye-slash" style="color:#94a3b8;"></i> <span>সাবটাইটেল: লুকানো</span>';
+            promptText.style.filter = 'blur(6px)';
+            if (rightDisplay) rightDisplay.style.filter = 'blur(6px)';
+        }
+    }
+
+    function replayCurrentQuestionAudio() {
+        var text = document.getElementById('activeQuestionText').textContent;
+        var courtesy = "Certainly. Let me repeat: " + text;
+        speakExaminerQuestion(courtesy);
+    }
+
+    function toggleExaminerVoice() {
+        isVoiceEnabled = !isVoiceEnabled;
+        var btn = document.getElementById('voiceToggleBtn');
+        if (isVoiceEnabled) {
+            btn.innerHTML = '<i class="fas fa-volume-up" style="color:#10b981;"></i> <span>ভয়েস: চালু</span>';
+        } else {
+            btn.innerHTML = '<i class="fas fa-volume-mute" style="color:#ef4444;"></i> <span>ভয়েস: বন্ধ</span>';
+            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+            stopExaminerVideo();
+        }
+    }
+
+    /* ===== SINGLE AUDIO CONTROLLER — natural female voice, no overlap ===== */
+    var _ttsPlayer  = null;   // server-side audio element
+    var _utterance  = null;   // Web Speech utterance
+    var _isSpeaking = false;
+    var _femaleVoice = null;
+
+    function initVoices() {
+        var tryLoad = function() {
+            var v = _pickFemaleVoice();
+            if (v) { _femaleVoice = v; }
+        };
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.onvoiceschanged = tryLoad;
+            tryLoad();
+        }
+    }
+
+    function _pickFemaleVoice() {
+        if (!('speechSynthesis' in window)) return null;
+        var vs = window.speechSynthesis.getVoices();
+        if (!vs || !vs.length) return null;
+
+        // 1. Natural / Online British Female voices (Edge/Chrome highest quality neural)
+        var naturalGB = vs.find(v => (v.name.includes('Natural') || v.name.includes('Online')) && v.lang.startsWith('en-GB') && !v.name.includes('George') && !v.name.includes('David') && !v.name.includes('Ryan'));
+        if (naturalGB) return naturalGB;
+
+        // 2. Google UK English Female
+        var googleGB = vs.find(v => v.name.includes('Google UK English Female') || (v.lang === 'en-GB' && v.name.includes('Female')));
+        if (googleGB) return googleGB;
+
+        // 3. Named British Female voices
+        var FEMALE_NAMES = ['Libby', 'Sonia', 'Mia', 'Hazel', 'Susan', 'Serena', 'Stephanie', 'Emily', 'Victoria'];
+        for (var fn of FEMALE_NAMES) {
+            var f = vs.find(v => v.lang.startsWith('en-GB') && v.name.includes(fn));
+            if (f) return f;
+        }
+
+        // 4. Any British voice (excluding explicit male names)
+        var anyGB = vs.find(v => v.lang.startsWith('en-GB') && !v.name.includes('George') && !v.name.includes('David') && !v.name.includes('Oliver'));
+        if (anyGB) return anyGB;
+
+        // 5. Natural / Online English Female (e.g. Jenny, Aria)
+        var naturalUS = vs.find(v => (v.name.includes('Natural') || v.name.includes('Online')) && v.lang.startsWith('en') && (v.name.includes('Jenny') || v.name.includes('Aria') || v.name.includes('Natasha') || v.name.includes('Clara')));
+        if (naturalUS) return naturalUS;
+
+        // 6. Any other English female voice
+        for (var fn of ['Samantha', 'Jenny', 'Aria', 'Karen', 'Zira', 'Female']) {
+            var f = vs.find(v => v.lang.startsWith('en') && v.name.includes(fn));
+            if (f) return f;
+        }
+
+        return vs.find(v => v.lang.startsWith('en')) || null;
+    }
+
+    function _stopAll() {
+        // Kill Web Speech
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+        }
+        _utterance = null;
+        // Kill server audio
+        if (_ttsPlayer) {
+            _ttsPlayer.pause();
+            _ttsPlayer.src = '';
+            _ttsPlayer = null;
+        }
+        _isSpeaking = false;
+        stopExaminerVideo();
+        setExaminerBadgeState('listening', 'CANDIDATE TURN');
+    }
+
+    function speakExaminerQuestion(text) {
+        if (!isVoiceEnabled || !text || !text.trim()) return;
+        _stopAll();   // always cancel anything playing first
+
+        if (!_femaleVoice) _femaleVoice = _pickFemaleVoice();
+
+        // Try Web Speech API
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.resume();
+            _utterance = new SpeechSynthesisUtterance(text);
+            if (_femaleVoice) {
+                _utterance.voice = _femaleVoice;
+            }
+            _utterance.lang   = 'en-GB';
+            _utterance.rate   = 0.93;
+            _utterance.pitch  = 1.05;
+            _utterance.volume = 1.0;
+
+            var started = false;
+
+            // 'boundary' fires on first word — tighter than onstart
+            _utterance.onboundary = function(e) {
+                if (!started && e.charIndex === 0) {
+                    started = true;
+                    _isSpeaking = true;
+                    _syncVideoOn();
+                }
+            };
+            _utterance.onstart = function() {
+                setTimeout(function() {
+                    if (!started) {
+                        started = true;
+                        _isSpeaking = true;
+                        _syncVideoOn();
+                    }
+                }, 80);
+            };
+            _utterance.onend = function() {
+                _isSpeaking = false;
+                _syncVideoOff();
+            };
+            _utterance.onerror = function(e) {
+                if (e.error === 'interrupted') return;
+                _isSpeaking = false;
+                _syncVideoOff();
+                _playServerTTS(text);
+            };
+            window.speechSynthesis.speak(_utterance);
+
+            // If browser silently ignored us (autoplay block), fall back after 1 s
+            setTimeout(function() {
+                if (!started && isVoiceEnabled) { _playServerTTS(text); }
+            }, 1000);
+        } else {
+            _playServerTTS(text);
+        }
+    }
+
+    function _playServerTTS(text) {
+        if (!isVoiceEnabled || !text || !text.trim()) return;
+        _stopAll();
+        var clean = encodeURIComponent(text.trim());
+        _ttsPlayer = new Audio('/api/tts?tl=en-GB&q=' + clean);
+        _ttsPlayer.preload = 'auto';
+
+        var videoStarted = false;
+        _ttsPlayer.addEventListener('timeupdate', function() {
+            if (!videoStarted && _ttsPlayer.currentTime > 0) {
+                videoStarted = true;
+                _syncVideoOn();
+            }
+        });
+        _ttsPlayer.onended  = function() { _isSpeaking = false; _syncVideoOff(); };
+        _ttsPlayer.onerror  = function() { _isSpeaking = false; _syncVideoOff(); };
+        _ttsPlayer.play().catch(function() { _syncVideoOff(); });
+    }
+
+    function getFemaleExaminerVoice() { return _pickFemaleVoice(); } // compat alias
+
+    /* ===== GUARANTEED SYNC HELPERS ===== */
+    function _syncVideoOn() {
+        var v   = document.getElementById('examinerVideoPlayer');
+        var img = document.getElementById('examinerIdleImg');
+        var box = document.getElementById('examinerVideoBox');
+        if (box) box.classList.add('speaking-live');
+        setExaminerBadgeState('speaking', 'EXAMINER SPEAKING');
+
+        if (v) {
+            v.currentTime = 0;
+            var playPromise = v.play();
+            if (playPromise !== undefined) {
+                playPromise.then(function() {
+                    // Video is actively playing Dr. Sarah speaking
+                    if (img) img.style.display = 'none';
+                    v.style.display = 'block';
+                }).catch(function(err) {
+                    // Video autoplay blocked - fallback to image
+                    if (img) img.style.display = 'block';
+                    v.style.display = 'none';
+                });
+            } else {
+                if (img) img.style.display = 'none';
+                v.style.display = 'block';
+            }
+        }
+    }
+
+    function _syncVideoOff() {
+        var v   = document.getElementById('examinerVideoPlayer');
+        var img = document.getElementById('examinerIdleImg');
+        var box = document.getElementById('examinerVideoBox');
+        if (v) {
+            v.pause();
+            v.currentTime = 0;
+            v.style.display = 'none';
+        }
+        if (img) {
+            img.src = '/static/images/dr_sarah_idle.jpg?v=2';
+            img.style.display = 'block';
+        }
+        if (box) box.classList.remove('speaking-live');
+        setExaminerBadgeState('listening', 'CANDIDATE TURN');
+    }
+
+    // Public wrappers (used by other parts of the code)
+    function startExaminerVideo() { _syncVideoOn(); }
+    function stopExaminerVideo()  { _syncVideoOff(); }
+
+    function setExaminerBadgeState(state, text) {
+        var badge = document.getElementById('examinerStateBadge');
+        var dot = document.getElementById('examinerPulseDot');
+        var txt = document.getElementById('examinerStateText');
+
+        badge.className = 'examiner-live-status ' + state;
+        dot.className = 'pulse-dot ' + (state === 'speaking' ? 'green' : (state === 'prep' ? 'amber' : 'red'));
+        txt.textContent = text;
+    }
+
+    var _sessionBaseTranscript = '';
+
+    function initSpeechRecognition() {
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            var SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRec();
+            recognition.continuous = true;
+            recognition.interimResults = true;
+            recognition.lang = 'en-US';
+
+            recognition.onresult = function(e) {
+                var sessionText = '';
+                for (var i = 0; i < e.results.length; i++) {
+                    sessionText += e.results[i][0].transcript + ' ';
+                }
+                var full = (_sessionBaseTranscript + sessionText).trim();
+                var display = document.getElementById('speechTranscriptDisplay');
+                display.textContent = full;
+                display.classList.remove('empty');
+                updateTranscriptWordCount();
+                detectFillerWords(full);   // AI Help: detect filler words live
+                showAIFeedbackBtn();       // AI Help: show feedback button once candidate starts speaking
+            };
+
+            recognition.onerror = function() {
+                document.getElementById('micStatusText').textContent = 'Mic Active';
+                document.getElementById('micStatusText').style.color = '#10b981';
+            };
+        } else {
+            document.getElementById('micStatusText').textContent = 'Manual Input Mode';
+            document.getElementById('micStatusText').style.color = '#f59e0b';
+        }
+    }
+
+    function toggleSpeechRecording() {
+        isRecording = !isRecording;
+        var btn = document.getElementById('micRecordBtn');
+        var label = document.getElementById('micRecordLabel');
+
+        if (isRecording) {
+            btn.className = 'btn-record-main recording';
+            label.textContent = 'Stop Speaking';
+            setExaminerBadgeState('listening', 'RECORDING CANDIDATE SPEECH');
+            recSeconds = 0;
+            recTimerInterval = setInterval(function() {
+                recSeconds++;
+                var m = Math.floor(recSeconds / 60);
+                var s = recSeconds % 60;
+                document.getElementById('recDurationDisplay').textContent = (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s);
+            }, 1000);
+
+            var display = document.getElementById('speechTranscriptDisplay');
+            if (display.classList.contains('empty')) {
+                display.textContent = '';
+                display.classList.remove('empty');
+                _sessionBaseTranscript = '';
+            } else {
+                _sessionBaseTranscript = display.textContent.trim() ? (display.textContent.trim() + ' ') : '';
+            }
+
+            if (recognition) { try { recognition.start(); } catch(e){} }
+        } else {
+            btn.className = 'btn-record-main';
+            label.textContent = 'Start Speaking';
+            clearInterval(recTimerInterval);
+            if (recognition) { try { recognition.stop(); } catch(e){} }
+            saveCurrentTranscript();
+        }
+    }
+
+    function updateTranscriptWordCount() {
+        var text = document.getElementById('speechTranscriptDisplay').textContent.trim();
+        var words = text ? text.split(/\s+/).length : 0;
+        document.getElementById('wordCountLive').textContent = "Words: " + words;
+    }
+
+    function advanceToNextQuestion() {
+        if (isRecording) toggleSpeechRecording();
+        saveCurrentTranscript();
+
+        if (currentPart === 1) {
+            var qLen = (currentTestSet.part1 && currentTestSet.part1.questions) ? currentTestSet.part1.questions.length : 4;
+            if (currentQuestionIdx < qLen - 1) {
+                currentQuestionIdx++;
+                speakExaminerBridgeThenNext();
+            } else {
+                // Move to Part 2
+                switchSpeakingPart(2);
+            }
+        } else if (currentPart === 2) {
+            // Move to Part 3
+            switchSpeakingPart(3);
+        } else if (currentPart === 3) {
+            var qLen = (currentTestSet.part3 && currentTestSet.part3.questions) ? currentTestSet.part3.questions.length : 4;
+            if (currentQuestionIdx < qLen - 1) {
+                currentQuestionIdx++;
+                speakExaminerBridgeThenNext();
+            } else {
+                // Completed All Parts!
+                submitFullSpeakingExam();
+            }
+        }
+    }
+
+    function speakExaminerBridgeThenNext() {
+        var bridge = EXAMINER_BRIDGES[Math.floor(Math.random() * EXAMINER_BRIDGES.length)];
+        renderCurrentPart();
+    }
+
+    function saveCurrentTranscript() {
+        var display = document.getElementById('speechTranscriptDisplay');
+        if (!display) return;
+        var text = display.textContent.trim();
+        if (text.startsWith('Tap "Start Speaking"') || text.startsWith('Speak aloud')) text = '';
+
+        if (!allTranscripts.p1) allTranscripts.p1 = [];
+        if (!allTranscripts.p3) allTranscripts.p3 = [];
+
+        if (currentPart === 1) {
+            allTranscripts.p1[currentQuestionIdx] = text;
+        } else if (currentPart === 2) {
+            allTranscripts.p2 = text;
+        } else if (currentPart === 3) {
+            allTranscripts.p3[currentQuestionIdx] = text;
+        }
+    }
+
+    function loadSavedTranscript() {
+        var display = document.getElementById('speechTranscriptDisplay');
+        if (!display) return;
+        var saved = '';
+        if (currentPart === 1 && allTranscripts.p1) {
+            saved = allTranscripts.p1[currentQuestionIdx] || '';
+        } else if (currentPart === 2) {
+            saved = allTranscripts.p2 || '';
+        } else if (currentPart === 3 && allTranscripts.p3) {
+            saved = allTranscripts.p3[currentQuestionIdx] || '';
+        }
+
+        if (saved) {
+            display.textContent = saved;
+            display.classList.remove('empty');
+        } else {
+            display.textContent = 'Tap "Start Speaking" or click here to type your response...';
+            display.classList.add('empty');
+        }
+        updateTranscriptWordCount();
+    }
+
+    function startPart2PrepTimer() {
+        var btn = document.getElementById('prepTimerBtn');
+        btn.disabled = true;
+        btn.style.opacity = '0.6';
+        prepSeconds = 60;
+        setExaminerBadgeState('prep', '1-MIN PREPARATION TIME');
+
+        if (prepTimerInterval) clearInterval(prepTimerInterval);
+        prepTimerInterval = setInterval(function() {
+            if (prepSeconds > 0) {
+                prepSeconds--;
+                var m = Math.floor(prepSeconds / 60);
+                var s = prepSeconds % 60;
+                document.getElementById('prepTimerDisplay').textContent = (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s);
+            } else {
+                clearInterval(prepTimerInterval);
+                document.getElementById('prepTimerDisplay').textContent = '00:00';
+                setExaminerBadgeState('listening', '2-MIN SPEECH TIME');
+                speakExaminerQuestion("Your one minute preparation time is now up. Please start speaking now.");
+                if (!isRecording) toggleSpeechRecording();
+            }
+        }, 1000);
+    }
+
+    function prevSpeakingPart() {
+        if (currentPart > 0) switchSpeakingPart(currentPart - 1);
+    }
+
+    function nextSpeakingPart() {
+        if (currentPart < 3) switchSpeakingPart(currentPart + 1);
+    }
+
+    async function submitFullSpeakingExam() {
+        saveCurrentTranscript();
+        if (isRecording) toggleSpeechRecording();
+
+        var overlay = document.getElementById('speakingLoadingOverlay');
+        overlay.style.display = 'flex';
+        document.getElementById('loadingOverlayTitle').textContent = 'AI এক্সামিনার আপনার ব্যান্ড স্কোর মূল্যায়ন করছে...';
+        document.getElementById('loadingOverlayDesc').textContent = 'Fluency (FC), Lexical Resource (LR), Grammar (GRA) ও Pronunciation (PR) বিশ্লেষণ করা হচ্ছে...';
+
+        var combinedTranscript = "Part 1 Responses:\n";
+        for (var k in allTranscripts.p1) {
+            combinedTranscript += (parseInt(k) + 1) + ". " + allTranscripts.p1[k] + "\n";
+        }
+        combinedTranscript += "\nPart 2 Response:\n" + allTranscripts.p2 + "\n\nPart 3 Responses:\n";
+        for (var k in allTranscripts.p3) {
+            combinedTranscript += (parseInt(k) + 1) + ". " + allTranscripts.p3[k] + "\n";
+        }
+
+        try {
+            var res = await fetch('/api/v1/speaking/evaluate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user_id: 1,
+                    part_number: currentPart,
+                    prompt_title: currentTestSet.theme || "Cambridge Speaking Test",
+                    prompt_text: JSON.stringify(currentTestSet),
+                    transcript: combinedTranscript,
+                    time_spent_seconds: (840 - examSeconds)
+                })
+            });
+            var data = await res.json();
+            overlay.style.display = 'none';
+            renderEvaluationModal(data);
+        } catch(e) {
+            overlay.style.display = 'none';
+            alert('মূল্যায়ন সম্পন্ন হয়েছে। মডেল উত্তর দেখতে Band 9 বাটনে ক্লিক করুন।');
+        }
+    }
+
+    function renderEvaluationModal(data) {
+        var overall = data.overall_score || data.band_score || 7.0;
+        var fc = data.fc_score || data.fluency_score || 7.0;
+        var lr = data.lr_score || data.lexical_score || 7.0;
+        var gra = data.gra_score || data.grammar_score || 6.5;
+        var pr = data.pr_score || data.pronunciation_score || 7.0;
+        var feedback = data.feedback || data.general_feedback || "Very good coherence and range of ideas. Focus on expanding complex compound clauses in Part 3.";
+
+        var html = `
+            <div class="band-score-pill">
+                <div style="font-size:0.4em; text-transform:uppercase; color:#94a3b8; letter-spacing:1px; margin-bottom:2px;">IELTS Speaking Overall Band</div>
+                Band ${overall}
+            </div>
+
+            <div class="rubric-grid-4">
+                <div class="rubric-card">
+                    <h5><span>Fluency & Coherence</span> <span>Band ${fc}</span></h5>
+                    <p>Smooth continuity with natural conversational discourse markers.</p>
+                </div>
+                <div class="rubric-card">
+                    <h5><span>Lexical Resource</span> <span>Band ${lr}</span></h5>
+                    <p>Rich thematic vocabulary and natural idiomatic collocations.</p>
+                </div>
+                <div class="rubric-card">
+                    <h5><span>Grammar Range</span> <span>Band ${gra}</span></h5>
+                    <p>Good control over varied complex structures and tenses.</p>
+                </div>
+                <div class="rubric-card">
+                    <h5><span>Pronunciation</span> <span>Band ${pr}</span></h5>
+                    <p>Clear intonation, rhythm, and syllable stress patterns.</p>
+                </div>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:8px; padding:14px;">
+                <div style="font-size:0.78em; font-weight:800; color:#c084fc; text-transform:uppercase; margin-bottom:6px;">Senior Examiner Comprehensive Feedback</div>
+                <p style="font-size:0.88em; line-height:1.5; color:#cbd5e1;">${feedback}</p>
+            </div>
+        `;
+
+        document.getElementById('speakingEvalBody').innerHTML = html;
+        document.getElementById('speakingEvalModal').style.display = 'flex';
+    }
+
+    function closeSpeakingEvalModal() {
+        document.getElementById('speakingEvalModal').style.display = 'none';
+    }
+
+    function toggleModelAnswerModal() {
+        var modal = document.getElementById('modelAnswerModal');
+        if (modal.style.display === 'flex') {
+            modal.style.display = 'none';
+        } else {
+            var body = document.getElementById('modelAnswerBody');
+            var html = '';
+
+            if (currentPart === 1 && currentTestSet.part1 && currentTestSet.part1.model_answers) {
+                html += '<h4 style="color:#fbbf24; font-size:1em; margin-bottom:8px;">Part 1 Band 9.0 Answers:</h4>';
+                currentTestSet.part1.questions.forEach((q, i) => {
+                    html += `<div style="margin-bottom:10px; padding:10px; background:rgba(255,255,255,0.03); border-radius:6px;">
+                        <b style="color:#fff; font-size:0.9em;">Q${i+1}: ${q}</b>
+                        <p style="color:#93c5fd; font-size:0.85em; margin-top:4px; line-height:1.4;">${currentTestSet.part1.model_answers[i] || 'High band response...'}</p>
+                    </div>`;
+                });
+            } else if (currentPart === 2 && currentTestSet.part2) {
+                html += `<h4 style="color:#fbbf24; font-size:1em; margin-bottom:8px;">Part 2 Band 9.0 Cue Card Model:</h4>
+                <div style="padding:12px; background:rgba(255,255,255,0.03); border-radius:6px; font-size:0.88em; line-height:1.6; color:#93c5fd;">
+                    ${currentTestSet.part2.model_answer || 'Band 9 speech delivery...'}
+                </div>`;
+            } else if (currentPart === 3 && currentTestSet.part3 && currentTestSet.part3.model_answers) {
+                html += '<h4 style="color:#fbbf24; font-size:1em; margin-bottom:8px;">Part 3 Band 9.0 Analytical Models:</h4>';
+                currentTestSet.part3.questions.forEach((q, i) => {
+                    html += `<div style="margin-bottom:10px; padding:10px; background:rgba(255,255,255,0.03); border-radius:6px;">
+                        <b style="color:#fff; font-size:0.9em;">Q${i+1}: ${q}</b>
+                        <p style="color:#93c5fd; font-size:0.85em; margin-top:4px; line-height:1.4;">${currentTestSet.part3.model_answers[i] || 'High band analytical response...'}</p>
+                    </div>`;
+                });
+            } else {
+                html = '<p style="color:#94a3b8;">মডেল উত্তর প্রস্তুত হচ্ছে...</p>';
+            }
+
+            body.innerHTML = html;
+            modal.style.display = 'flex';
+        }
+    }
+
+    function openTopicMakerModal() {
+        document.getElementById('topicMakerModal').style.display = 'flex';
+    }
+
+    function closeTopicMakerModal() {
+        document.getElementById('topicMakerModal').style.display = 'none';
+    }
+
+    function selectThemePill(text) {
+        document.getElementById('customSpeakingThemeInput').value = text;
+    }
+
+    async function generateCustomSpeakingTest() {
+        var theme = document.getElementById('customSpeakingThemeInput').value.trim();
+        closeTopicMakerModal();
+
+        var overlay = document.getElementById('speakingLoadingOverlay');
+        overlay.style.display = 'flex';
+        document.getElementById('loadingOverlayTitle').textContent = 'AI এক্সামিনার নতুন টেস্ট তৈরি করছে...';
+        document.getElementById('loadingOverlayDesc').textContent = 'Gemini AI "' + (theme || "Custom Theme") + '" বিষয়ের ওপর ৩-পার্ট অফিশিয়াল টেস্ট তৈরি করছে...';
+
+        try {
+            var res = await fetch('/api/v1/speaking/generate-set', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ theme: theme })
+            });
+            var data = await res.json();
+            if (data && data.part1) {
+                sessionStorage.setItem('ai_speaking_set', JSON.stringify(data));
+                window.location.href = '/speaking-practice?ai_live=1';
+                return;
+            }
+        } catch(e){}
+        window.location.href = '/speaking-practice';
+    }
+
+    /* ===== AI CONTEXT & HELPERS ===== */
+    function setCurrentAIContext(qText, partNum) {
+        _currentAIQuestion = qText;
+        _currentAIPart = partNum;
+        var hintContent = document.getElementById('hintContent');
+        if (hintContent) hintContent.style.display = 'none';
+        var chevron = document.getElementById('hintChevron');
+        if (chevron) chevron.textContent = '▼';
+        var hintInner = document.getElementById('hintInner');
+        if (hintInner) {
+            hintInner.innerHTML = '<div style="text-align:center; color:#475569; font-weight:600; padding:8px;">Click "✨ Load Hint" to get AI-powered key points and vocabulary</div>';
+        }
+        var fbPanel = document.getElementById('aiFeedbackPanel');
+        if (fbPanel) fbPanel.style.display = 'none';
+        var fbBtn = document.getElementById('getAIFeedbackBtn');
+        if (fbBtn) fbBtn.style.display = 'none';
+        var alertBox = document.getElementById('fillerWordAlert');
+        if (alertBox) alertBox.style.display = 'none';
+    }
+
+    function handleTranscriptFocus() {
+        var display = document.getElementById('speechTranscriptDisplay');
+        if (display && display.classList.contains('empty')) {
+            display.textContent = '';
+            display.classList.remove('empty');
+        }
+    }
+
+    function handleManualTranscriptInput() {
+        var display = document.getElementById('speechTranscriptDisplay');
+        if (!display) return;
+        var text = display.textContent.trim();
+        if (text) {
+            display.classList.remove('empty');
+            detectFillerWords(text);
+            showAIFeedbackBtn();
+        }
+        updateTranscriptWordCount();
+        saveCurrentTranscript();
+    }
+
+    var FILLER_WORDS = ['um', 'uh', 'er', 'ah', 'like', 'you know', 'basically', 'actually', 'literally', 'so yeah'];
+    function detectFillerWords(text) {
+        var alertBox = document.getElementById('fillerWordAlert');
+        var msgBox = document.getElementById('fillerWordMsg');
+        if (!alertBox || !msgBox) return;
+        if (!text) { alertBox.style.display = 'none'; return; }
+        var lower = text.toLowerCase();
+        var found = [];
+        for (var i = 0; i < FILLER_WORDS.length; i++) {
+            var w = FILLER_WORDS[i];
+            var regex = new RegExp('\\b' + w + '\\b', 'gi');
+            var matches = lower.match(regex);
+            if (matches && matches.length > 0) {
+                found.push(w + ' (' + matches.length + 'x)');
+            }
+        }
+        if (found.length > 0) {
+            msgBox.textContent = 'ফিলারের অতিরিক্ত ব্যবহার লক্ষ্য করা গেছে: ' + found.join(', ') + '। স্বাভাবিক বিরতি নিতে চেষ্টা করুন।';
+            alertBox.style.display = 'block';
+        } else {
+            alertBox.style.display = 'none';
+        }
+    }
+
+    function showAIFeedbackBtn() {
+        var btn = document.getElementById('getAIFeedbackBtn');
+        if (btn) btn.style.display = 'inline-flex';
+    }
+
+    async function requestAIEvaluation() {
+        var text = document.getElementById('speechTranscriptDisplay').textContent.trim();
+        if (!text || text.startsWith('Tap "Start Speaking"')) {
+            alert('অনুগ্রহ করে আগে কিছু কথা বলুন বা লিখুন।');
+            return;
+        }
+        var fbPanel = document.getElementById('aiFeedbackPanel');
+        var fbInner = document.getElementById('aiFeedbackInner');
+        if (fbPanel) fbPanel.style.display = 'block';
+        if (fbInner) fbInner.innerHTML = '<span style="color:#94a3b8;"><i class="fas fa-spinner fa-spin"></i> AI মূল্যায়ন তৈরি হচ্ছে...</span>';
+
+        try {
+            var res = await fetch('/api/v1/speaking/examiner-reaction', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    candidate_speech: text,
+                    current_question: _currentAIQuestion || document.getElementById('activeCandidatePromptDisplay').textContent,
+                    next_question: ""
+                })
+            });
+            var data = await res.json();
+            var reactionText = data.examiner_reaction || data.feedback || data.comment || "Good points made. Keep your delivery natural and elaborate further on your reasons.";
+            if (fbInner) {
+                fbInner.innerHTML = '<div style="color:#e2e8f0; font-size:0.86em; line-height:1.5;"><b>Examiner Observation:</b> ' + reactionText + '</div>';
+            }
+        } catch(e) {
+            if (fbInner) fbInner.innerHTML = '<div style="color:#94a3b8;">Natural response delivered. Continue expanding your ideas with examples.</div>';
+        }
+    }
+
+    function toggleHintExpand() {
+        var content = document.getElementById('hintContent');
+        var chevron = document.getElementById('hintChevron');
+        if (!content) return;
+        if (content.style.display === 'none' || !content.style.display) {
+            content.style.display = 'block';
+            if (chevron) chevron.textContent = '▲';
+        } else {
+            content.style.display = 'none';
+            if (chevron) chevron.textContent = '▼';
+        }
+    }
+
+    async function fetchAIHint() {
+        var content = document.getElementById('hintContent');
+        var chevron = document.getElementById('hintChevron');
+        var inner = document.getElementById('hintInner');
+        if (content) content.style.display = 'block';
+        if (chevron) chevron.textContent = '▲';
+        if (inner) inner.innerHTML = '<span style="color:#6366f1;"><i class="fas fa-spinner fa-spin"></i> AI হিন্ট ও ভোকাবুলারি লোড হচ্ছে...</span>';
+
+        try {
+            var res = await fetch('/api/v1/speaking/hint', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    question: _currentAIQuestion || document.getElementById('activeCandidatePromptDisplay').textContent,
+                    part_number: currentPart
+                })
+            });
+            var data = await res.json();
+            var pts = data.key_points || data.points || [];
+            var voc = data.vocab || data.vocabulary || [];
+            var ptsHtml = pts.length ? pts.map(p => `<li>${p}</li>`).join('') : '<li>Give a direct answer, explain the main reason, and provide a concrete example.</li>';
+            var vocHtml = voc.length ? voc.map(v => `<span style="background:rgba(99,102,241,0.2); border:1px solid #6366f1; color:#a5b4fc; padding:2px 8px; border-radius:12px; font-size:0.78em;">${v}</span>`).join(' ') : '<span style="color:#94a3b8;">Collocations ready</span>';
+
+            if (inner) {
+                inner.innerHTML = `
+                    <div style="margin-bottom:8px;">
+                        <div style="font-weight:700; color:#cbd5e1; margin-bottom:4px;">🎯 Key Points:</div>
+                        <ul style="padding-left:18px; color:#94a3b8; line-height:1.4;">${ptsHtml}</ul>
+                    </div>
+                    <div>
+                        <div style="font-weight:700; color:#cbd5e1; margin-bottom:4px;">📚 Topic Vocabulary:</div>
+                        <div style="display:flex; flex-wrap:wrap; gap:6px;">${vocHtml}</div>
+                    </div>
+                `;
+            }
+        } catch(e) {
+            if (inner) {
+                inner.innerHTML = '<div style="color:#94a3b8;">Directly answer the question, add details, and express personal views with varied adjectives.</div>';
+            }
+        }
+    }
+
+    /* ===== HEADER TOPIC CHANGE & CONFIGURE MODAL ===== */
+    function handleHeaderTopicChange(val) {
+        if (!val) return;
+        if (val === 'full_random') {
+            generateNewRandomSet();
+            return;
+        }
+        if (val === 'part_1_random') {
+            window.location.href = '/speaking-practice?part=1';
+            return;
+        }
+        if (val === 'part_2_random') {
+            window.location.href = '/speaking-practice?part=2';
+            return;
+        }
+        if (val === 'part_3_random') {
+            window.location.href = '/speaking-practice?part=3';
+            return;
+        }
+        if (val.startsWith('cambridge_')) {
+            var parts = val.split('_');
+            window.location.href = '/speaking-practice?book=' + parts[1] + '&test=' + parts[2];
+            return;
+        }
+        if (val.startsWith('part_1_')) {
+            window.location.href = '/speaking-practice?part=1&topic=' + val;
+            return;
+        }
+        if (val.startsWith('part_2_')) {
+            window.location.href = '/speaking-practice?part=2&topic=' + val;
+            return;
+        }
+        if (val.startsWith('part_3_')) {
+            window.location.href = '/speaking-practice?part=3&topic=' + val;
+            return;
+        }
+    }
+
+    function openConfigureModal() {
+        var modal = document.getElementById('configureModal');
+        if (modal) modal.style.display = 'flex';
+    }
+
+    function closeConfigureModal(e) {
+        if (e && e.target && e.target !== e.currentTarget && !e.target.classList.contains('cfg-cancel-btn')) return;
+        var modal = document.getElementById('configureModal');
+        if (modal) modal.style.display = 'none';
+    }
+
+    function selectCfgMode(mode) {
+        _selectedCfgMode = mode;
+        ['full', 'part1', 'part2', 'part3'].forEach(m => {
+            var el = document.getElementById('cfgMode_' + m);
+            if (el) el.classList.toggle('selected', m === mode);
+        });
+    }
+
+    function selectCfgCambridge(id) {
+        _selectedCfgCamb = id;
+        document.querySelectorAll('.cfg-cambridge-item').forEach(el => {
+            el.classList.remove('selected');
+        });
+        var target = document.getElementById('cfgCamb_' + id);
+        if (target) target.classList.add('selected');
+    }
+
+    function applyConfigure() {
+        closeConfigureModal();
+        var timerVal = document.querySelector('input[name="cfgTimer"]:checked');
+        var timerMin = timerVal ? parseInt(timerVal.value) : 14;
+        if (timerMin > 0) {
+            examSeconds = timerMin * 60;
+        }
+
+        var url = '/speaking-practice?';
+        if (_selectedCfgMode === 'part1') url += 'part=1&';
+        else if (_selectedCfgMode === 'part2') url += 'part=2&';
+        else if (_selectedCfgMode === 'part3') url += 'part=3&';
+
+        if (_selectedCfgCamb && _selectedCfgCamb !== 'random') {
+            var parts = _selectedCfgCamb.split('_');
+            url += 'book=' + parts[1] + '&test=' + parts[2];
+        }
+        window.location.href = url.replace(/[\?&]$/, '');
+    }
+
+    // Spacebar shortcut to start/stop speaking
+    window.addEventListener('keydown', function(e) {
+        if (e.code === 'Space' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+            e.preventDefault();
+            toggleSpeechRecording();
+        }
+    });
+    </script>
+</body>
+</html>

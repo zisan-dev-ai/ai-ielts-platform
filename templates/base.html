@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}AI IELTS — Modern AI Learning Ecosystem{% endblock %}</title>
+  <!-- Tailwind CSS & FontAwesome CDN for CBT UI components -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/static/css/variables.css?v=2">
+  <link rel="stylesheet" href="/static/css/main.css?v=2">
+  <link rel="stylesheet" href="/static/css/components.css?v=2">
+  <link rel="stylesheet" href="/static/css/cbt_reading.css?v=2">
+  <link rel="stylesheet" href="/static/css/writing_editor.css?v=2">
+  <link rel="stylesheet" href="/static/css/admin.css?v=2">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  {% block extra_head %}{% endblock %}
+</head>
+<body data-theme="light">
+  <div class="app-container">
+    <!-- Desktop Sidebar -->
+    <aside class="desktop-sidebar">
+      <div>
+        <a href="/" style="text-decoration:none;" class="brand-header">
+          <div class="brand-logo-icon">
+            <i class="fas fa-graduation-cap"></i>
+          </div>
+          <div class="brand-text-group">
+            <span class="brand-title">AI IELTS</span>
+            <span class="brand-subtitle">Cambridge 9-Band Suite</span>
+          </div>
+        </a>
+
+        <!-- 1. LEARNING & TUTORING (Dashboard, AI Teacher, Grammar, Vocabulary) -->
+        <div class="nav-category-label">
+          <i class="fas fa-graduation-cap" style="font-size:0.65rem;"></i> Learning & AI Tutor
+        </div>
+        <ul class="nav-links">
+          <li class="nav-item {% if active_page == 'dashboard' %}active{% endif %}">
+            <a href="/dashboard">
+              <span class="nav-link-left">
+                <i class="fas fa-chart-pie nav-icon"></i>
+                <span>Dashboard</span>
+              </span>
+            </a>
+          </li>
+          <li class="nav-item {% if active_page == 'ai_teacher' %}active{% endif %}">
+            <a href="/ai-teacher">
+              <span class="nav-link-left">
+                <i class="fas fa-robot nav-icon" style="color:#8b5cf6;"></i>
+                <span>AI Teacher (ARIA)</span>
+              </span>
+              <span class="sidebar-pill ai">Live</span>
+            </a>
+          </li>
+          <li class="nav-item {% if active_page == 'grammar' %}active{% endif %}">
+            <a href="/grammar">
+              <span class="nav-link-left">
+                <i class="fas fa-spell-check nav-icon" style="color:#10b981;"></i>
+                <span>Grammar Master</span>
+              </span>
+            </a>
+          </li>
+          <li class="nav-item {% if active_page == 'vocabulary' %}active{% endif %}">
+            <a href="/vocabulary">
+              <span class="nav-link-left">
+                <i class="fas fa-book-open-reader nav-icon" style="color:#06b6d4;"></i>
+                <span>Vocabulary Master</span>
+              </span>
+            </a>
+          </li>
+        </ul>
+
+        <!-- 2. PRACTICE & TESTING (Practice, Mock Exam, Mistake Notebook, Diagnostic) -->
+        <div class="nav-category-label">
+          <i class="fas fa-bullseye" style="font-size:0.65rem;"></i> Practice & Testing
+        </div>
+        <ul class="nav-links">
+          <li class="nav-item {% if active_page == 'practice' %}active{% endif %}">
+            <a href="/practice">
+              <span class="nav-link-left">
+                <i class="fas fa-layer-group nav-icon" style="color:#3b82f6;"></i>
+                <span>Practice Engine</span>
+              </span>
+              <span class="sidebar-pill cbt">CBT</span>
+            </a>
+          </li>
+          <li class="nav-item {% if active_page == 'mock_exam' %}active{% endif %}">
+            <a href="/mock-exam">
+              <span class="nav-link-left">
+                <i class="fas fa-file-signature nav-icon" style="color:#f43f5e;"></i>
+                <span>Mock CBT Exam</span>
+              </span>
+              <span class="sidebar-pill mock">Full</span>
+            </a>
+          </li>
+          <li class="nav-item {% if active_page == 'mistakes' %}active{% endif %}">
+            <a href="/mistake-notebook">
+              <span class="nav-link-left">
+                <i class="fas fa-book-bookmark nav-icon" style="color:#f59e0b;"></i>
+                <span>Mistake Notebook</span>
+              </span>
+            </a>
+          </li>
+        </ul>
+
+        <!-- 3. INSIGHTS & SETTINGS -->
+        <div class="nav-category-label">
+          <i class="fas fa-chart-line" style="font-size:0.65rem;"></i> Insights & Admin
+        </div>
+        <ul class="nav-links">
+          <li class="nav-item {% if active_page == 'analytics' %}active{% endif %}">
+            <a href="/analytics">
+              <span class="nav-link-left">
+                <i class="fas fa-chart-simple nav-icon" style="color:#6366f1;"></i>
+                <span>Analytics</span>
+              </span>
+            </a>
+          </li>
+          <li class="nav-item {% if active_page == 'admin' %}active{% endif %}">
+            <a href="/admin">
+              <span class="nav-link-left">
+                <i class="fas fa-sliders nav-icon" style="color:#64748b;"></i>
+                <span>Admin Portal</span>
+              </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      
+      <div style="padding-top: 14px; margin-top: 14px; border-top: var(--glass-border); display:flex; flex-direction:column; gap:10px;">
+        <button onclick="toggleTheme()" class="btn btn-outline" style="min-height:36px; font-size:0.82rem; justify-content:flex-start; border-radius:8px;">
+          <span id="theme-icon">☀️</span> <span id="theme-text">Day Mode</span>
+        </button>
+        <a href="/auth/logout" class="btn btn-outline" style="min-height:34px; font-size:0.82rem; justify-content:flex-start; border-radius:8px; color:#ef4444; border-color:rgba(239,68,68,0.25);">
+          <i class="fas fa-sign-out-alt"></i> <span>Sign Out</span>
+        </a>
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:0 6px;">
+          <div style="display:flex; align-items:center; gap:6px;">
+            <div style="width:8px; height:8px; background:var(--success-500); border-radius:50%; box-shadow: 0 0 8px var(--success-500);"></div>
+            <span style="font-size:0.75rem; color:var(--neutral-600); font-weight:700;">System Online</span>
+          </div>
+          <span style="font-size:0.7rem; font-weight:800; color:#8b5cf6; background:rgba(139,92,246,0.1); padding:1px 6px; border-radius:4px;">v2.5 Pro</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Mobile Top Header -->
+    <header class="mobile-header">
+      <div class="brand-header" style="margin-bottom:0;">
+        <div class="brand-logo-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <span>AI IELTS</span>
+      </div>
+      <span class="badge badge-primary">Academic Prep</span>
+    </header>
+
+    <!-- Main Body View -->
+    <main class="main-content">
+      {% block content %}{% endblock %}
+    </main>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav">
+      <a href="/dashboard" class="mobile-nav-btn {% if active_page == 'dashboard' %}active{% endif %}">
+        <i class="fas fa-chart-pie" style="font-size:1.1rem;"></i>
+        <span>Home</span>
+      </a>
+      <a href="/practice" class="mobile-nav-btn {% if active_page == 'practice' %}active{% endif %}">
+        <i class="fas fa-bullseye" style="font-size:1.1rem;"></i>
+        <span>Practice</span>
+      </a>
+      <a href="/mock-exam" class="mobile-nav-btn {% if active_page == 'mock_exam' %}active{% endif %}">
+        <i class="fas fa-file-signature" style="font-size:1.1rem;"></i>
+        <span>Mock</span>
+      </a>
+      <a href="/ai-teacher" class="mobile-nav-btn {% if active_page == 'ai_teacher' %}active{% endif %}">
+        <i class="fas fa-robot" style="font-size:1.1rem;"></i>
+        <span>ARIA</span>
+      </a>
+      <a href="/analytics" class="mobile-nav-btn {% if active_page == 'analytics' %}active{% endif %}">
+        <i class="fas fa-chart-line" style="font-size:1.1rem;"></i>
+        <span>Progress</span>
+      </a>
+    </nav>
+  </div>
+
+  <script src="/static/js/app.js"></script>
+  <script src="/static/js/autosave.js"></script>
+  <script>
+    function updateThemeUI(theme) {
+      document.body.setAttribute('data-theme', theme);
+      const icon = document.getElementById('theme-icon');
+      const text = document.getElementById('theme-text');
+      if (icon && text) {
+        if (theme === 'dark') {
+          icon.textContent = '🌙';
+          text.textContent = 'Dark Mode';
+        } else {
+          icon.textContent = '☀️';
+          text.textContent = 'Day Mode';
+        }
+      }
+    }
+
+    function toggleTheme() {
+      const current = document.body.getAttribute('data-theme') || 'light';
+      const next = current === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('ielts_theme', next);
+      updateThemeUI(next);
+    }
+
+    (function initTheme() {
+      const saved = localStorage.getItem('ielts_theme') || 'light';
+      updateThemeUI(saved);
+    })();
+  </script>
+  {% block extra_scripts %}{% endblock %}
+</body>
+</html>
